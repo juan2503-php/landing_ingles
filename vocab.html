@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Vocabulary | AceDev English</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .vocab-controls { display: flex; gap: 1rem; margin-bottom: 1.75rem; flex-wrap: wrap; position: relative; z-index: 1; }
+    .search-input { flex: 1; min-width: 220px; padding: 0.75rem 1.25rem; border-radius: var(--border-radius-pill); background: var(--color-surface); border: 1px solid var(--color-border); font-family: var(--font-family); font-size: 0.95rem; font-weight: 300; color: var(--color-text-main); outline: none; transition: var(--transition); }
+    .search-input:focus { border-color: var(--color-navy); box-shadow: 0 0 0 3px rgba(15,23,42,0.06); }
+    .sort-select { padding: 0.75rem 1.25rem; border-radius: var(--border-radius-pill); background: var(--color-surface); border: 1px solid var(--color-border); font-family: var(--font-family); font-size: 0.95rem; font-weight: 300; color: var(--color-text-main); cursor: pointer; outline: none; }
+    .vocab-table-wrap { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow-sm); position: relative; z-index: 1; }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: var(--color-navy); }
+    th { padding: 1rem 1.25rem; text-align: left; font-size: 0.82rem; font-weight: 400; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 0.07em; cursor: pointer; user-select: none; }
+    th:hover { color: #fff; }
+    td { padding: 1rem 1.25rem; font-size: 0.92rem; font-weight: 300; color: var(--color-text-main); border-bottom: 1px solid var(--color-border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--color-bg); }
+    .dept-badge { display: inline-block; padding: 0.15rem 0.55rem; border-radius: var(--border-radius-pill); font-size: 0.72rem; font-weight: 400; background: var(--color-bg); border: 1px solid var(--color-border); color: var(--color-navy); }
+    .vocab-count { font-size: 0.85rem; font-weight: 300; color: var(--color-text-muted); margin-bottom: 0.75rem; }
+    .row-link { cursor: pointer; }
+
+    /* Side illustrations */
+    .side-wrap { position: relative; }
+    .side-deco-left, .side-deco-right { position: absolute; top: 50%; transform: translateY(-50%); opacity: 0.05; pointer-events: none; z-index: 0; }
+    .side-deco-left { left: -110px; }
+    .side-deco-right { right: -110px; }
+    @media (max-width: 1024px) { .side-deco-left, .side-deco-right { display: none; } }
+    @media (max-width: 640px) { th:nth-child(4), td:nth-child(4) { display: none; } }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>AceDev English</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="intro.html" class="nav-link">Intro</a></li>
+        <li><a href="comic.html" class="nav-link">Comic</a></li>
+        <li><a href="reflection.html" class="nav-link">Reflection</a></li>
+        <li><a href="vocab.html" class="nav-link active">Vocab</a></li>
+        <li><a href="org-chart.html" class="nav-link">Org Chart</a></li>
+        <li><a href="expressions.html" class="nav-link">Expressions</a></li>
+        <li><a href="conversation.html" class="nav-link">Script</a></li>
+        <li><a href="grammar.html" class="nav-link">Grammar</a></li>
+        <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+        <li><a href="condicionales.html" class="nav-link">Condicionales</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="intro.html">1. Introduction</a></li>
+        <li><a href="comic.html">2. Comic Story</a></li>
+        <li><a href="reflection.html">3. Reflection</a></li>
+        <li><a href="vocab.html" class="active">4. Vocabulary</a></li>
+        <li><a href="org-chart.html">5. Org Chart</a></li>
+        <li><a href="expressions.html">6. Expressions</a></li>
+        <li><a href="conversation.html">7. Script</a></li>
+        <li><a href="grammar.html">8. Grammar</a></li>
+        <li><a href="quiz.html">9. Quiz</a></li>
+        <li><a href="condicionales.html">10. Condicionales</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container page-header">
+    <h1 class="page-title">Section 4 — Tech Job Vocabulary</h1>
+    <p class="page-subtitle">23 software company roles. Search, sort, and click any row for role details.</p>
+  </div>
+
+  <div class="container" style="padding-bottom: 5rem;">
+    <div class="side-wrap">
+      <!-- Left deco: database table icon -->
+      <div class="side-deco-left">
+        <svg width="120" height="360" viewBox="0 0 120 360" fill="none">
+          <rect x="10" y="20" width="100" height="30" rx="4" fill="#0f172a"/>
+          <rect x="10" y="58" width="100" height="24" rx="0" fill="#0f172a" opacity="0.6"/>
+          <rect x="10" y="90" width="100" height="24" rx="0" fill="#0f172a" opacity="0.4"/>
+          <rect x="10" y="122" width="100" height="24" rx="0" fill="#0f172a" opacity="0.6"/>
+          <rect x="10" y="154" width="100" height="24" rx="0" fill="#0f172a" opacity="0.4"/>
+          <rect x="10" y="186" width="100" height="24" rx="0" fill="#0f172a" opacity="0.6"/>
+          <rect x="10" y="218" width="100" height="24" rx="0" fill="#0f172a" opacity="0.4"/>
+          <rect x="10" y="250" width="100" height="24" rx="0" fill="#0f172a" opacity="0.6"/>
+          <line x1="40" y1="20" x2="40" y2="274" stroke="#0f172a" stroke-width="1.5" opacity="0.5"/>
+        </svg>
+      </div>
+      <!-- Right deco: search magnifier -->
+      <div class="side-deco-right">
+        <svg width="120" height="360" viewBox="0 0 120 360" fill="none">
+          <circle cx="55" cy="55" r="40" stroke="#0f172a" stroke-width="4"/>
+          <line x1="85" y1="85" x2="115" y2="120" stroke="#0f172a" stroke-width="5" stroke-linecap="round"/>
+          <line x1="35" y1="45" x2="70" y2="45" stroke="#0f172a" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+          <line x1="35" y1="58" x2="60" y2="58" stroke="#0f172a" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+          <text x="20" y="180" fill="#0f172a" font-size="12" font-family="monospace" opacity="0.4">SELECT *</text>
+          <text x="20" y="200" fill="#0f172a" font-size="12" font-family="monospace" opacity="0.4">FROM roles</text>
+          <text x="20" y="220" fill="#0f172a" font-size="12" font-family="monospace" opacity="0.4">WHERE dept</text>
+          <text x="20" y="240" fill="#0f172a" font-size="12" font-family="monospace" opacity="0.4">= 'tech';</text>
+        </svg>
+      </div>
+
+      <div class="vocab-controls">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search roles, departments, or descriptions…" oninput="filterTable()">
+        <select class="sort-select" id="sortSelect" onchange="filterTable()">
+          <option value="0">Sort by Role (A–Z)</option>
+          <option value="1">Sort by Spanish</option>
+          <option value="2">Sort by Department</option>
+        </select>
+      </div>
+      <div class="vocab-count" id="vocabCount">Showing all 23 roles</div>
+      <div class="vocab-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th onclick="sortBy(0)">Role in English ↕</th>
+              <th onclick="sortBy(1)">Rol en Español ↕</th>
+              <th onclick="sortBy(2)">Department ↕</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody id="vocabTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="closeModal()">×</button>
+      <h3 class="modal-title" id="modalTitle">Title</h3>
+      <div class="modal-subtitle" id="modalSubtitle">Subtitle</div>
+      <div class="modal-body" id="modalBody">Content</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">AceDev English Worksheet &nbsp;·&nbsp; Software Development Program &nbsp;·&nbsp; <span id="year"></span></div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('open'));
+
+    const vocabData = [
+      ["Chief Executive Officer", "Director Ejecutivo", "Executive", "The top decision-maker who oversees all company operations and defines long-term strategy.", "Requires strong leadership, communication, and business strategy skills."],
+      ["Chief Technology Officer", "Director de Tecnología", "Executive", "Leads all technology decisions, software architecture, and engineering direction.", "Interfaces directly with investors and boards about technical roadmap."],
+      ["Chief Operating Officer", "Director de Operaciones", "Executive", "Manages daily company operations, logistics, and business processes.", "Bridges gap between executive vision and ground-level execution."],
+      ["Project Manager", "Gerente de Proyectos", "Management", "Plans, executes, and closes projects within scope, budget, and timeline.", "Uses Agile, Scrum, or Waterfall methodologies."],
+      ["Scrum Master", "Maestro Scrum", "Management", "Facilitates Agile/Scrum ceremonies and removes team impediments.", "Protects the team from external distractions and blockers."],
+      ["Product Owner", "Dueño del Producto", "Management", "Defines the product backlog and prioritizes features from a business perspective.", "Acts as bridge between business stakeholders and development team."],
+      ["Full Stack Developer", "Desarrollador Full Stack", "Engineering", "Builds and maintains both frontend user interfaces and backend server logic.", "Typically proficient in JavaScript, Node.js, React, and databases."],
+      ["Frontend Developer", "Desarrollador Frontend", "Engineering", "Focuses on building user-facing web components using HTML, CSS, and JavaScript.", "Ensures pages are responsive, accessible, and performant."],
+      ["Backend Developer", "Desarrollador Backend", "Engineering", "Designs and builds server-side APIs, databases, and application logic.", "Common languages include Python, Java, Node.js, and Go."],
+      ["UX/UI Designer", "Diseñador UX/UI", "Design", "Creates wireframes, user flows, and high-fidelity interface designs.", "Conducts user testing and ensures intuitive navigation patterns."],
+      ["QA Engineer", "Ingeniero de Control de Calidad", "Quality Assurance", "Tests software for bugs, performance issues, and regression failures.", "Writes automated test suites and performs manual validation."],
+      ["DevOps Engineer", "Ingeniero DevOps", "Infrastructure", "Manages CI/CD pipelines, cloud infrastructure, and deployment automation.", "Bridges development and operations to ensure rapid, stable releases."],
+      ["Data Scientist", "Científico de Datos", "Data & AI", "Analyzes large datasets to build predictive models and extract business insights.", "Uses Python, R, SQL, machine learning frameworks."],
+      ["Machine Learning Engineer", "Ingeniero de Machine Learning", "Data & AI", "Develops, trains, and deploys machine learning models into production.", "Combines software engineering skills with statistical modeling."],
+      ["Cybersecurity Analyst", "Analista de Ciberseguridad", "Security", "Monitors systems, identifies vulnerabilities, and implements security protocols.", "Responds to incidents and conducts penetration testing."],
+      ["Cloud Architect", "Arquitecto de Nube", "Infrastructure", "Designs scalable and secure cloud infrastructure on AWS, GCP, or Azure.", "Defines cloud migration strategies and cost optimization plans."],
+      ["Business Analyst", "Analista de Negocios", "Business", "Bridges communication between clients, stakeholders, and the development team.", "Creates requirement documents and process flow diagrams."],
+      ["Database Administrator", "Administrador de Bases de Datos", "Data & AI", "Manages, optimizes, and maintains SQL and NoSQL database systems.", "Handles backups, performance tuning, and access control."],
+      ["Technical Lead", "Líder Técnico", "Engineering", "Guides the engineering team's technical decisions and code quality standards.", "Mentors junior developers and leads architecture discussions."],
+      ["Systems Analyst", "Analista de Sistemas", "Engineering", "Evaluates existing systems and recommends improvements and integrations.", "Works with cross-functional teams to document system requirements."],
+      ["IT Support Specialist", "Especialista de Soporte TI", "Support", "Resolves hardware, software, and network issues for internal staff.", "Front-line responder for all employee technical needs."],
+      ["Software Architect", "Arquitecto de Software", "Engineering", "Defines the overall structure and design patterns of complex software systems.", "Creates architecture decision records and scalability blueprints."],
+      ["Technical Recruiter", "Reclutador Técnico", "HR & Talent", "Sources, screens, and interviews candidates for technical positions.", "Must understand stack requirements and engineering culture."],
+    ];
+
+    let sortCol = 0, sortDir = 1;
+    function renderTable(data) {
+      const tbody = document.getElementById('vocabTable');
+      tbody.innerHTML = '';
+      data.forEach((row, i) => {
+        const tr = document.createElement('tr');
+        tr.className = 'row-link';
+        tr.innerHTML = `<td>${i + 1}</td><td><strong>${row[0]}</strong></td><td>${row[1]}</td><td><span class="dept-badge">${row[2]}</span></td><td>${row[3]}</td>`;
+        tr.addEventListener('click', () => openModal(row[0], row[2] + ' Department', `<p>${row[3]}</p><br><p><strong>Spanish:</strong> ${row[1]}</p><br><p>${row[4]}</p>`));
+        tbody.appendChild(tr);
+      });
+      document.getElementById('vocabCount').textContent = `Showing ${data.length} of 23 roles`;
+    }
+
+    function filterTable() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      let data = vocabData.filter(r => r.join(' ').toLowerCase().includes(q));
+      data.sort((a, b) => a[sortCol].localeCompare(b[sortCol]) * sortDir);
+      renderTable(data);
+    }
+
+    function sortBy(col) {
+      if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = 1; }
+      filterTable();
+    }
+
+    function openModal(t, s, b) {
+      document.getElementById('modalTitle').textContent = t;
+      document.getElementById('modalSubtitle').textContent = s;
+      document.getElementById('modalBody').innerHTML = b;
+      document.getElementById('detailModal').classList.add('active');
+    }
+    function closeModal() { document.getElementById('detailModal').classList.remove('active'); }
+    document.getElementById('detailModal').addEventListener('click', e => { if (e.target === document.getElementById('detailModal')) closeModal(); });
+
+    renderTable(vocabData);
+  </script>
+</body>
+</html>

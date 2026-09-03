@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workplace Script | AceDev </title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .script-wrap { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; position: relative; z-index: 1; }
+    .line-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--border-radius); padding: 1.75rem; cursor: pointer; transition: var(--transition); display: flex; gap: 1.25rem; align-items: flex-start; }
+    .line-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .speaker-av { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; flex-shrink: 0; background: var(--color-bg); border: 1px solid var(--color-border); }
+    .speaker-info { flex: 1; }
+    .speaker-name { font-size: 0.82rem; font-weight: 500; color: var(--color-navy); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem; }
+    .line-en { font-size: 1.05rem; font-weight: 400; color: var(--color-text-main); line-height: 1.65; margin-bottom: 0.55rem; }
+    .line-es { font-size: 0.88rem; font-weight: 300; color: var(--color-text-muted); font-style: italic; }
+    .grammar-tag { display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.75rem; padding: 0.2rem 0.6rem; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--border-radius-pill); font-size: 0.72rem; font-weight: 400; color: var(--color-navy); }
+
+    /* Side deco */
+    .side-wrap { position: relative; }
+    .side-deco-left, .side-deco-right { position: absolute; top: 50%; transform: translateY(-50%); opacity: 0.05; pointer-events: none; z-index: 0; }
+    .side-deco-left { left: -100px; }
+    .side-deco-right { right: -100px; }
+    @media (max-width: 1024px) { .side-deco-left, .side-deco-right { display: none; } }
+    @media (max-width: 600px) { .line-card { flex-direction: column; gap: 0.75rem; } }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>AceDev</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="intro.html" class="nav-link">Intro</a></li>
+        <li><a href="comic.html" class="nav-link">Comic</a></li>
+        <li><a href="reflection.html" class="nav-link">Reflection</a></li>
+        <li><a href="vocab.html" class="nav-link">Vocab</a></li>
+        <li><a href="org-chart.html" class="nav-link">Org Chart</a></li>
+        <li><a href="expressions.html" class="nav-link">Expressions</a></li>
+        <li><a href="conversation.html" class="nav-link active">Script</a></li>
+        <li><a href="grammar.html" class="nav-link">Grammar</a></li>
+        <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+        <li><a href="condicionales.html" class="nav-link">Condicionales</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="intro.html">1. Introduction</a></li>
+        <li><a href="comic.html">2. Comic Story</a></li>
+        <li><a href="reflection.html">3. Reflection</a></li>
+        <li><a href="vocab.html">4. Vocabulary</a></li>
+        <li><a href="org-chart.html">5. Org Chart</a></li>
+        <li><a href="expressions.html">6. Expressions</a></li>
+        <li><a href="conversation.html" class="active">7. Script</a></li>
+        <li><a href="grammar.html">8. Grammar</a></li>
+        <li><a href="quiz.html">9. Quiz</a></li>
+        <li><a href="condicionales.html">10. Condicionales</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container page-header">
+    <h1 class="page-title">Section 7 — Workplace Script</h1>
+    <p class="page-subtitle">A scripted English conversation between 4 characters in a tech company. Click any line to see the grammar breakdown.</p>
+  </div>
+
+  <div class="container" style="padding-bottom: 5rem;">
+    <div class="side-wrap">
+      <!-- Left deco: vertical ellipsis chat bubbles -->
+      <div class="side-deco-left">
+        <svg width="130" height="400" viewBox="0 0 130 400" fill="none">
+          <ellipse cx="65" cy="40" rx="55" ry="28" fill="#0f172a"/>
+          <polygon points="30,68 15,90 55,68" fill="#0f172a"/>
+          <ellipse cx="65" cy="140" rx="45" ry="24" fill="#0f172a" opacity="0.6"/>
+          <polygon points="85,164 105,185 70,164" fill="#0f172a" opacity="0.6"/>
+          <ellipse cx="65" cy="240" rx="55" ry="28" fill="#0f172a" opacity="0.4"/>
+          <polygon points="30,268 15,292 55,268" fill="#0f172a" opacity="0.4"/>
+          <ellipse cx="65" cy="350" rx="40" ry="22" fill="#0f172a" opacity="0.25"/>
+        </svg>
+      </div>
+      <!-- Right deco: script / screenplay lines -->
+      <div class="side-deco-right">
+        <svg width="130" height="400" viewBox="0 0 130 400" fill="none">
+          <rect x="10" y="20" width="110" height="360" rx="6" stroke="#0f172a" stroke-width="2"/>
+          <text x="20" y="55" fill="#0f172a" font-size="10" font-family="monospace">HANS:</text>
+          <line x1="20" y1="65" x2="110" y2="65" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="20" y1="80" x2="90" y2="80" stroke="#0f172a" stroke-width="1.5"/>
+          <text x="20" y="110" fill="#0f172a" font-size="10" font-family="monospace">ALEX:</text>
+          <line x1="20" y1="120" x2="110" y2="120" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="20" y1="135" x2="80" y2="135" stroke="#0f172a" stroke-width="1.5"/>
+          <text x="20" y="165" fill="#0f172a" font-size="10" font-family="monospace">HANS:</text>
+          <line x1="20" y1="175" x2="110" y2="175" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="20" y1="190" x2="95" y2="190" stroke="#0f172a" stroke-width="1.5"/>
+          <text x="20" y="220" fill="#0f172a" font-size="10" font-family="monospace">ALEX:</text>
+          <line x1="20" y1="230" x2="110" y2="230" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="20" y1="245" x2="70" y2="245" stroke="#0f172a" stroke-width="1.5"/>
+        </svg>
+      </div>
+
+      <div class="script-wrap" id="scriptWrap"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="closeModal()">×</button>
+      <h3 class="modal-title" id="modalTitle">Title</h3>
+      <div class="modal-subtitle" id="modalSubtitle">Subtitle</div>
+      <div class="modal-body" id="modalBody">Content</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">AceDev Worksheet &nbsp;·&nbsp; Software Development Program &nbsp;·&nbsp; <span id="year"></span></div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('open'));
+
+    const script = [
+      { speaker: "Mr. Hans (Investor)", svg: "<svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='var(--color-navy)' stroke-width='2'><rect x='2' y='7' width='20' height='14' rx='2' ry='2'/><path d='M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16'/></svg>", line: "Good morning. I have a 10:00 AM appointment with your CTO, Mr. Rivera. Could you let him know I have arrived?", es: "Buenos días. Tengo una cita a las 10:00 AM con su CTO, el Sr. Rivera. ¿Podría avisarle que he llegado?", grammar: "Present Perfect + Modal Request", detail: "Uses 'have arrived' (Present Perfect) to indicate a recently completed action. 'Could you let him know' is a polite modal request (could = more formal than can)." },
+      { speaker: "Alex (Developer)", svg: "<svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='var(--color-navy)' stroke-width='2'><polyline points='16 18 22 12 16 6'/><polyline points='8 6 2 12 8 18'/></svg>", line: "Good morning, Mr. Hans! Welcome to AceDev English Software Corp. Of course — please have a seat. I will notify Mr. Rivera immediately.", es: "¡Buenos días, Sr. Hans! Bienvenido. Por supuesto. Por favor, tome asiento. Notificaré al Sr. Rivera de inmediato.", grammar: "Future Simple (Will) + Imperative", detail: "'I will notify' uses the Future Simple (will + base verb) expressing a direct future action. 'Please have a seat' is an imperative with 'please' for politeness." },
+      { speaker: "Mr. Hans (Investor)", svg: "<svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='var(--color-navy)' stroke-width='2'><rect x='2' y='7' width='20' height='14' rx='2' ry='2'/><path d='M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16'/></svg>", line: "Thank you. I must say, your office environment looks very modern and collaborative. How many engineers do you currently have?", es: "Gracias. Debo decir que el ambiente de su oficina parece muy moderno y colaborativo. ¿Cuántos ingenieros tienen actualmente?", grammar: "Present Simple + Modal 'Must'", detail: "'I must say' is an idiomatic expression using 'must' to express strong opinion. 'How many engineers do you have?' uses the Present Simple for current state questions." },
+      { speaker: "Alex (Developer)", svg: "<svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='var(--color-navy)' stroke-width='2'><polyline points='16 18 22 12 16 6'/><polyline points='8 6 2 12 8 18'/></svg>", line: "We currently have forty-eight full-time engineers across eight specialized teams. We have been growing steadily for the past three years.", es: "Actualmente tenemos cuarenta y ocho ingenieros de tiempo completo en ocho equipos. Hemos crecido de manera constante durante los últimos tres años.", grammar: "Present Perfect Continuous", detail: "'We have been growing' uses the Present Perfect Continuous (have/has + been + V-ing) to describe an ongoing action that started in the past and continues now." },
+      { speaker: "Ms. Sarah (CEO)", svg: "<svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='var(--color-navy)' stroke-width='2'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/><circle cx='12' cy='7' r='4'/></svg>", line: "Good morning, Mr. Hans! It is wonderful to finally meet you in person. We have been looking forward to your visit all week.", es: "¡Buenos días, Sr. Hans! Es un placer conocerle en persona. Hemos estado esperando su visita toda la semana.", grammar: "Present Perfect Continuous", detail: "'Have been looking forward' — another Present Perfect Continuous example, emphasizing the duration of anticipation. 'Looking forward to' is a fixed phrasal verb expression." },
+      { speaker: "Mr. Hans (Investor)", svg: "<svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='var(--color-navy)' stroke-width='2'><rect x='2' y='7' width='20' height='14' rx='2' ry='2'/><path d='M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16'/></svg>", line: "The pleasure is mine, Ms. Chen. I have heard tremendous things about your team's technical achievements. Shall we proceed to the boardroom?", es: "El placer es mío, Sra. Chen. He escuchado cosas tremendas sobre los logros técnicos de su equipo. ¿Procedemos a la sala de juntas?", grammar: "Present Perfect + Modal 'Shall'", detail: "'I have heard' (Present Perfect) conveys recently received information. 'Shall we proceed?' is a formal modal suggestion — 'shall' is more formal than 'should' in British English." },
+      { speaker: "Ms. Sarah (CEO)", svg: "<svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='var(--color-navy)' stroke-width='2'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/><circle cx='12' cy='7' r='4'/></svg>", line: "Absolutely. Please follow me. We have prepared a full product roadmap presentation for you, along with our Q3 financial projections.", es: "Por supuesto. Por favor, sígame. Hemos preparado una presentación completa de la hoja de ruta del producto, junto con las proyecciones financieras del Q3.", grammar: "Present Perfect + Imperative", detail: "'We have prepared' (Present Perfect) shows a completed action relevant to the present. 'Please follow me' is a formal imperative guide phrase." },
+    ];
+
+    const wrap = document.getElementById('scriptWrap');
+    script.forEach((item, i) => {
+      const div = document.createElement('div');
+      div.className = 'line-card hover-wrap';
+      div.innerHTML = `
+        <div class="speaker-av">${item.svg}</div>
+        <div class="speaker-info">
+          <div class="speaker-name">${item.speaker}</div>
+          <div class="line-en">"${item.line}"</div>
+          <div class="line-es">${item.es}</div>
+          <span class="grammar-tag">📌 ${item.grammar}</span>
+          <span class="click-hint" style="display:block; margin-top:0.65rem;">Click for Grammar Breakdown →</span>
+          <div class="hover-info">Click to see a deep dive into the grammar rules for this line!</div>
+        </div>
+      `;
+      div.addEventListener('click', () => openModal(`Line ${i + 1}: ${item.speaker}`, `Grammar: ${item.grammar}`, `<p><strong>Line:</strong> <em>"${item.line}"</em></p><br><p><strong>Grammar Breakdown:</strong> ${item.detail}</p><br><p><strong>Spanish:</strong> ${item.es}</p>`));
+      wrap.appendChild(div);
+    });
+
+    function openModal(t, s, b) {
+      document.getElementById('modalTitle').textContent = t;
+      document.getElementById('modalSubtitle').textContent = s;
+      document.getElementById('modalBody').innerHTML = b;
+      document.getElementById('detailModal').classList.add('active');
+    }
+    function closeModal() { document.getElementById('detailModal').classList.remove('active'); }
+    document.getElementById('detailModal').addEventListener('click', e => { if (e.target === document.getElementById('detailModal')) closeModal(); });
+  </script>
+</body>
+</html>

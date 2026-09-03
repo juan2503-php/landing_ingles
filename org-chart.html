@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Org Chart | AceDev English</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .org-wrap { overflow-x: auto; padding-bottom: 2rem; position: relative; z-index: 1; }
+    .org-tree { display: flex; flex-direction: column; align-items: center; gap: 0; min-width: 720px; }
+    .org-level { display: flex; align-items: flex-start; justify-content: center; gap: 1.5rem; }
+    .org-col { display: flex; flex-direction: column; align-items: center; }
+    .connector-v { width: 2px; height: 30px; background: var(--color-border); }
+    .connector-h-wrap { display: flex; align-items: flex-start; position: relative; }
+    .connector-h { height: 2px; background: var(--color-border); }
+    .org-node {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-sm);
+      padding: 0.75rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      min-width: 120px;
+      max-width: 150px;
+    }
+    .org-node:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .org-node.ceo { background: var(--color-navy); color: #fff; min-width: 160px; border: none; }
+    .org-node.ceo .role-title { color: rgba(255,255,255,0.75); }
+    .node-name { font-weight: 500; font-size: 0.88rem; color: var(--color-navy); }
+    .org-node.ceo .node-name { color: #fff; }
+    .role-title { font-size: 0.72rem; font-weight: 300; color: var(--color-text-muted); margin-top: 0.2rem; }
+    .org-level-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-light); margin-bottom: 0.5rem; }
+    .team-section { margin-top: 3rem; }
+    .teams-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+    .team-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--border-radius); padding: 1.5rem; cursor: pointer; transition: var(--transition); }
+    .team-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .team-icon { font-size: 1.5rem; margin-bottom: 0.65rem; }
+    .team-name { font-weight: 500; font-size: 0.95rem; color: var(--color-navy); margin-bottom: 0.4rem; }
+    .team-lead { font-size: 0.8rem; font-weight: 300; color: var(--color-text-muted); }
+    .team-count { font-size: 0.78rem; font-weight: 400; margin-top: 0.5rem; color: var(--color-navy); }
+
+    /* Side deco */
+    .side-wrap { position: relative; }
+    .side-deco-left, .side-deco-right { position: absolute; top: 50%; transform: translateY(-50%); opacity: 0.05; pointer-events: none; z-index: 0; }
+    .side-deco-left { left: -100px; }
+    .side-deco-right { right: -100px; }
+    @media (max-width: 1024px) { .teams-grid { grid-template-columns: repeat(2, 1fr); } .side-deco-left, .side-deco-right { display: none; } }
+    @media (max-width: 800px) {
+      .org-wrap { overflow-x: hidden; }
+      .org-tree { min-width: 100%; padding: 0 1rem; }
+      .org-level { flex-direction: column; gap: 1rem !important; align-items: center; width: 100%; }
+      .org-col { width: 100%; align-items: center; }
+      .org-node { width: 100%; max-width: 300px; margin: 0 auto; }
+      .connector-v, .connector-h { display: none !important; }
+      .org-level-label { margin-top: 1.5rem; text-align: center; width: 100%; }
+      .org-level:has(.connector-h) { display: none !important; }
+    }
+    @media (max-width: 600px) { .teams-grid { grid-template-columns: 1fr; } }
+
+    /* Modal Profile Layout & Responsive Image */
+    .modal-profile-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      align-items: center;
+    }
+    @media (min-width: 520px) {
+      .modal-profile-wrap {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+    }
+    .modal-img-container {
+      width: 100%;
+      max-width: 150px;
+      height: 170px;
+      border-radius: var(--border-radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      background: var(--color-bg);
+      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-profile-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .modal-bio {
+      flex: 1;
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>AceDev English</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="intro.html" class="nav-link">Intro</a></li>
+        <li><a href="comic.html" class="nav-link">Comic</a></li>
+        <li><a href="reflection.html" class="nav-link">Reflection</a></li>
+        <li><a href="vocab.html" class="nav-link">Vocab</a></li>
+        <li><a href="org-chart.html" class="nav-link active">Org Chart</a></li>
+        <li><a href="expressions.html" class="nav-link">Expressions</a></li>
+        <li><a href="conversation.html" class="nav-link">Script</a></li>
+        <li><a href="grammar.html" class="nav-link">Grammar</a></li>
+        <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+        <li><a href="condicionales.html" class="nav-link">Condicionales</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="intro.html">1. Introduction</a></li>
+        <li><a href="comic.html">2. Comic Story</a></li>
+        <li><a href="reflection.html">3. Reflection</a></li>
+        <li><a href="vocab.html">4. Vocabulary</a></li>
+        <li><a href="org-chart.html" class="active">5. Org Chart</a></li>
+        <li><a href="expressions.html">6. Expressions</a></li>
+        <li><a href="conversation.html">7. Script</a></li>
+        <li><a href="grammar.html">8. Grammar</a></li>
+        <li><a href="quiz.html">9. Quiz</a></li>
+        <li><a href="condicionales.html">10. Condicionales</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container page-header">
+    <h1 class="page-title">Section 5 — Organizational Chart</h1>
+    <p class="page-subtitle">AceDev English Software Corp hierarchy from executive level to intern teams. Click any role to see details.</p>
+  </div>
+
+  <div class="container" style="padding-bottom: 5rem;">
+    <div class="side-wrap">
+      <!-- Left deco: org tree lines -->
+      <div class="side-deco-left">
+        <svg width="120" height="380" viewBox="0 0 120 380" fill="none">
+          <rect x="45" y="20" width="30" height="20" rx="3" fill="#0f172a"/>
+          <line x1="60" y1="40" x2="60" y2="70" stroke="#0f172a" stroke-width="2"/>
+          <line x1="15" y1="70" x2="105" y2="70" stroke="#0f172a" stroke-width="2"/>
+          <line x1="15" y1="70" x2="15" y2="100" stroke="#0f172a" stroke-width="2"/>
+          <line x1="60" y1="70" x2="60" y2="100" stroke="#0f172a" stroke-width="2"/>
+          <line x1="105" y1="70" x2="105" y2="100" stroke="#0f172a" stroke-width="2"/>
+          <rect x="0" y="100" width="30" height="20" rx="3" fill="#0f172a"/>
+          <rect x="45" y="100" width="30" height="20" rx="3" fill="#0f172a"/>
+          <rect x="90" y="100" width="30" height="20" rx="3" fill="#0f172a"/>
+          <line x1="15" y1="120" x2="15" y2="150" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="60" y1="120" x2="60" y2="150" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="10" y1="150" x2="20" y2="150" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="55" y1="150" x2="65" y2="150" stroke="#0f172a" stroke-width="1.5"/>
+          <rect x="5" y="150" width="20" height="15" rx="2" fill="#0f172a" opacity="0.6"/>
+          <rect x="50" y="150" width="20" height="15" rx="2" fill="#0f172a" opacity="0.6"/>
+          <rect x="84" y="120" width="22" height="15" rx="2" fill="#0f172a" opacity="0.6"/>
+          <rect x="84" y="145" width="22" height="15" rx="2" fill="#0f172a" opacity="0.6"/>
+        </svg>
+      </div>
+      <!-- Right deco: building silhouette -->
+      <div class="side-deco-right">
+        <svg width="120" height="380" viewBox="0 0 120 380" fill="none">
+          <rect x="20" y="80" width="80" height="280" fill="#0f172a"/>
+          <rect x="35" y="100" width="14" height="18" fill="#f8fafc"/>
+          <rect x="71" y="100" width="14" height="18" fill="#f8fafc"/>
+          <rect x="35" y="130" width="14" height="18" fill="#f8fafc"/>
+          <rect x="71" y="130" width="14" height="18" fill="#f8fafc"/>
+          <rect x="35" y="160" width="14" height="18" fill="#f8fafc"/>
+          <rect x="71" y="160" width="14" height="18" fill="#f8fafc"/>
+          <rect x="35" y="190" width="14" height="18" fill="#f8fafc"/>
+          <rect x="71" y="190" width="14" height="18" fill="#f8fafc"/>
+          <rect x="35" y="220" width="14" height="18" fill="#f8fafc"/>
+          <rect x="71" y="220" width="14" height="18" fill="#f8fafc"/>
+          <rect x="48" y="310" width="24" height="50" fill="#f8fafc"/>
+          <polygon points="10,80 60,20 110,80" fill="#0f172a"/>
+        </svg>
+      </div>
+
+      <!-- Org Chart Diagram -->
+      <div class="org-wrap">
+        <div class="org-tree">
+          <!-- CEO -->
+          <div class="org-level-label">Executive</div>
+          <div class="org-level">
+            <div class="org-col">
+              <div class="org-node ceo" onclick="openModal('Juan Pablo Acevedo', 'Chief Executive Officer (CEO)', '<div class=&quot;modal-profile-wrap&quot;><div class=&quot;modal-img-container&quot;><!-- FOTO DEL CEO: Puedes cambiar o agregar tu propia imagen en src=&quot;ceo_juan_pablo.jpg&quot; --><img src=&quot;fotojp.jpeg&quot; alt=&quot;Juan Pablo Acevedo - CEO&quot; class=&quot;modal-profile-img&quot;></div><div class=&quot;modal-bio&quot;><p>Defines the company vision, culture, and long-term strategy. Manages relationships with investors, board members, and key partners. Ultimate decision authority in all matters.</p><br><p><strong>Key Skill:</strong> Executive communication in English for global investor relations.</p></div></div>')">
+                <div class="node-name">Juan Pablo Acevedo</div>
+                <div class="role-title">Chief Executive Officer</div>
+              </div>
+            </div>
+          </div>
+          <div class="connector-v"></div>
+
+          <!-- C-Suite -->
+          <div class="org-level">
+            <div class="org-col">
+              <div class="connector-h" style="width:180px;"></div>
+            </div>
+          </div>
+          <div class="org-level" style="gap: 2.5rem;">
+            <div class="org-col">
+              <div class="connector-v"></div>
+              <div class="org-node" onclick="openModal('Chief Technology Officer', 'Executive Level', '<p>Oversees all technical decisions, software architecture, engineering team leadership, and technology roadmap. Primary technical contact for investors.</p>')">
+                <div class="node-name">Marcus Rivera</div>
+                <div class="role-title">CTO</div>
+              </div>
+            </div>
+            <div class="org-col">
+              <div class="connector-v"></div>
+              <div class="org-node" onclick="openModal('Chief Operating Officer', 'Executive Level', '<p>Manages company daily operations, workflow efficiency, and operational strategy. Ensures all departments are aligned with executive goals.</p>')">
+                <div class="node-name">Emma Park</div>
+                <div class="role-title">COO</div>
+              </div>
+            </div>
+            <div class="org-col">
+              <div class="connector-v"></div>
+              <div class="org-node" onclick="openModal('Chief Financial Officer', 'Executive Level', '<p>Manages all financial operations, budgeting, forecasting, and investor financial reporting. Oversees accounting and financial compliance.</p>')">
+                <div class="node-name">James Ho</div>
+                <div class="role-title">CFO</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Department Teams Grid -->
+      <div class="team-section">
+        <h2 style="font-size:1.3rem; font-weight:500; margin-bottom:1.25rem; color: var(--color-navy);">Department Teams — Click for Details</h2>
+        <div class="teams-grid">
+          <div class="team-card hover-wrap" onclick="openModal('Engineering Department', 'Led by Technical Lead', '<p><strong>Roles:</strong> Full Stack Developers, Frontend Developers, Backend Developers, Software Architects, QA Engineers</p><br><p><strong>Mission:</strong> Build and maintain the core software platform. Work with product owners to ship features.</p><br><p><strong>Team Size:</strong> ~18 engineers across 3 squads.</p>')">
+            <div class="team-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-navy)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+            <div class="team-name">Engineering</div>
+            <div class="team-lead">Lead: David Kim (Technical Lead)</div>
+            <div class="team-count">18 members</div>
+            <div class="hover-info">View team roles, mission, and current size.</div>
+          </div>
+          <div class="team-card hover-wrap" onclick="openModal('Product & Design', 'Led by Product Owner', '<p><strong>Roles:</strong> Product Owner, UX/UI Designers, Product Managers, Business Analysts</p><br><p><strong>Mission:</strong> Define and prioritize product features, user flows, and design systems.</p><br><p><strong>Team Size:</strong> ~8 members.</p>')">
+            <div class="team-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-navy)" stroke-width="2"><circle cx="13.5" cy="10.5" r=".5"/><circle cx="8.5" cy="10.5" r=".5"/><circle cx="11" cy="7.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.992 6.012 17.5 2 12 2z"/></svg></div>
+            <div class="team-name">Product & Design</div>
+            <div class="team-lead">Lead: Lisa Wong (Product Owner)</div>
+            <div class="team-count">8 members</div>
+            <div class="hover-info">View team roles, mission, and current size.</div>
+          </div>
+          <div class="team-card hover-wrap" onclick="openModal('Infrastructure & DevOps', 'Led by Cloud Architect', '<p><strong>Roles:</strong> DevOps Engineers, Cloud Architects, Site Reliability Engineers, Database Administrators</p><br><p><strong>Mission:</strong> Maintain uptime, CI/CD pipelines, cloud infrastructure, and system security.</p><br><p><strong>Team Size:</strong> ~6 members.</p>')">
+            <div class="team-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-navy)" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg></div>
+            <div class="team-name">Infrastructure</div>
+            <div class="team-lead">Lead: Carlos Mendez (Cloud Arch.)</div>
+            <div class="team-count">6 members</div>
+            <div class="hover-info">View team roles, mission, and current size.</div>
+          </div>
+          <div class="team-card hover-wrap" onclick="openModal('Data & AI', 'Led by Data Science Manager', '<p><strong>Roles:</strong> Data Scientists, ML Engineers, Data Analysts, Database Administrators</p><br><p><strong>Mission:</strong> Extract insights from data, build ML models, and power AI product features.</p><br><p><strong>Team Size:</strong> ~7 members.</p>')">
+            <div class="team-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-navy)" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></div>
+            <div class="team-name">Data & AI</div>
+            <div class="team-lead">Lead: Yuki Tanaka (Data Science)</div>
+            <div class="team-count">7 members</div>
+            <div class="hover-info">View team roles, mission, and current size.</div>
+          </div>
+          <div class="team-card hover-wrap" onclick="openModal('Security Team', 'Led by Cybersecurity Analyst', '<p><strong>Roles:</strong> Cybersecurity Analysts, Penetration Testers, Compliance Officers</p><br><p><strong>Mission:</strong> Protect all systems, data, and user information. Conduct regular security audits.</p><br><p><strong>Team Size:</strong> ~4 members.</p>')">
+            <div class="team-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-navy)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            <div class="team-name">Security</div>
+            <div class="team-lead">Lead: Ana García (CySec Analyst)</div>
+            <div class="team-count">4 members</div>
+            <div class="hover-info">View team roles, mission, and current size.</div>
+          </div>
+          <div class="team-card hover-wrap" onclick="openModal('Quality Assurance', 'Led by QA Engineer', '<p><strong>Roles:</strong> QA Engineers, Test Automation Specialists, UAT Testers</p><br><p><strong>Mission:</strong> Ensure all releases meet quality, performance, and accessibility standards.</p><br><p><strong>Team Size:</strong> ~5 members.</p>')">
+            <div class="team-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-navy)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+            <div class="team-name">Quality Assurance</div>
+            <div class="team-lead">Lead: Tom Baker (QA Engineer)</div>
+            <div class="team-count">5 members</div>
+            <div class="hover-info">View team roles, mission, and current size.</div>
+          </div>
+          <div class="team-card hover-wrap" onclick="openModal('Business & Operations', 'Led by Business Analyst', '<p><strong>Roles:</strong> Business Analysts, Systems Analysts, Project Managers, Scrum Masters</p><br><p><strong>Mission:</strong> Bridge technical teams and business stakeholders. Facilitate Agile ceremonies.</p><br><p><strong>Team Size:</strong> ~6 members.</p>')">
+            <div class="team-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-navy)" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14h6"/><path d="M9 10h6"/></svg></div>
+            <div class="team-name">Business Ops</div>
+            <div class="team-lead">Lead: Rachel Torres (BA)</div>
+            <div class="team-count">6 members</div>
+            <div class="hover-info">View team roles, mission, and current size.</div>
+          </div>
+          <div class="team-card hover-wrap" onclick="openModal('HR & Talent', 'Led by Technical Recruiter', '<p><strong>Roles:</strong> Technical Recruiters, HR Managers, People & Culture Specialists, IT Support</p><br><p><strong>Mission:</strong> Attract and retain top technical talent. Manage employee lifecycle and culture programs.</p><br><p><strong>Team Size:</strong> ~4 members.</p>')">
+            <div class="team-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-navy)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <div class="team-name">HR & Talent</div>
+            <div class="team-lead">Lead: Mike Johnson (Tech Recruiter)</div>
+            <div class="team-count">4 members</div>
+            <div class="hover-info">View team roles, mission, and current size.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="closeModal()">×</button>
+      <h3 class="modal-title" id="modalTitle">Title</h3>
+      <div class="modal-subtitle" id="modalSubtitle">Subtitle</div>
+      <div class="modal-body" id="modalBody">Content</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">AceDev English Worksheet &nbsp;·&nbsp; Software Development Program &nbsp;·&nbsp; <span id="year"></span></div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('open'));
+    function openModal(t, s, b) {
+      document.getElementById('modalTitle').textContent = t;
+      document.getElementById('modalSubtitle').textContent = s;
+      document.getElementById('modalBody').innerHTML = b;
+      document.getElementById('detailModal').classList.add('active');
+    }
+    function closeModal() { document.getElementById('detailModal').classList.remove('active'); }
+    document.getElementById('detailModal').addEventListener('click', e => { if (e.target === document.getElementById('detailModal')) closeModal(); });
+  </script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introduction | AceDev English</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .intro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; position: relative; z-index: 1; }
+    .intro-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--border-radius); padding: 2rem; cursor: pointer; transition: var(--transition); }
+    .intro-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .intro-icon { font-size: 1.75rem; margin-bottom: 1rem; }
+    .intro-card h3 { font-size: 1.2rem; font-weight: 500; color: var(--color-navy); margin-bottom: 0.65rem; }
+    .intro-card p { font-size: 0.92rem; font-weight: 300; color: var(--color-text-muted); line-height: 1.65; }
+
+    /* Side deco */
+    .side-wrap { position: relative; }
+    .side-deco-left, .side-deco-right {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      opacity: 0.055; pointer-events: none; z-index: 0;
+    }
+    .side-deco-left { left: -80px; }
+    .side-deco-right { right: -80px; }
+
+    @media (max-width: 1024px) {
+      .intro-grid { grid-template-columns: repeat(2, 1fr); }
+      .side-deco-left, .side-deco-right { display: none; }
+    }
+    @media (max-width: 640px) {
+      .intro-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>AceDev English</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="intro.html" class="nav-link active">Intro</a></li>
+        <li><a href="comic.html" class="nav-link">Comic</a></li>
+        <li><a href="reflection.html" class="nav-link">Reflection</a></li>
+        <li><a href="vocab.html" class="nav-link">Vocab</a></li>
+        <li><a href="org-chart.html" class="nav-link">Org Chart</a></li>
+        <li><a href="expressions.html" class="nav-link">Expressions</a></li>
+        <li><a href="conversation.html" class="nav-link">Script</a></li>
+        <li><a href="grammar.html" class="nav-link">Grammar</a></li>
+        <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+        <li><a href="condicionales.html" class="nav-link">Condicionales</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="intro.html" class="active">1. Introduction</a></li>
+        <li><a href="comic.html">2. Comic Story</a></li>
+        <li><a href="reflection.html">3. Reflection</a></li>
+        <li><a href="vocab.html">4. Vocabulary</a></li>
+        <li><a href="org-chart.html">5. Org Chart</a></li>
+        <li><a href="expressions.html">6. Expressions</a></li>
+        <li><a href="conversation.html">7. Script</a></li>
+        <li><a href="grammar.html">8. Grammar</a></li>
+        <li><a href="quiz.html">9. Quiz</a></li>
+        <li><a href="condicionales.html">10. Condicionales</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container page-header">
+    <h1 class="page-title">Section 1 — Activity Introduction</h1>
+    <p class="page-subtitle">Why English communication shapes the modern software company's success and investor relations.</p>
+  </div>
+
+  <!-- Side Decorative Illustrations -->
+  <div class="container">
+    <div class="side-wrap">
+      <!-- Left: Abstract molecules -->
+      <div class="side-deco-left">
+        <svg width="160" height="320" viewBox="0 0 160 320" fill="none">
+          <circle cx="80" cy="30" r="8" fill="#0f172a"/>
+          <circle cx="30" cy="90" r="5" fill="#0f172a"/>
+          <circle cx="130" cy="90" r="5" fill="#0f172a"/>
+          <circle cx="80" cy="160" r="10" fill="#0f172a"/>
+          <circle cx="20" cy="220" r="6" fill="#0f172a"/>
+          <circle cx="140" cy="220" r="6" fill="#0f172a"/>
+          <circle cx="80" cy="290" r="8" fill="#0f172a"/>
+          <line x1="80" y1="30" x2="30" y2="90" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="80" y1="30" x2="130" y2="90" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="30" y1="90" x2="80" y2="160" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="130" y1="90" x2="80" y2="160" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="80" y1="160" x2="20" y2="220" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="80" y1="160" x2="140" y2="220" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="20" y1="220" x2="80" y2="290" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="140" y1="220" x2="80" y2="290" stroke="#0f172a" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <!-- Right: Code brackets -->
+      <div class="side-deco-right">
+        <svg width="160" height="320" viewBox="0 0 160 320" fill="none">
+          <text x="10" y="60" fill="#0f172a" font-size="40" font-family="monospace">{</text>
+          <text x="20" y="110" fill="#0f172a" font-size="16" font-family="monospace">const</text>
+          <text x="20" y="140" fill="#0f172a" font-size="16" font-family="monospace">lang =</text>
+          <text x="20" y="170" fill="#0f172a" font-size="16" font-family="monospace">"EN";</text>
+          <text x="10" y="230" fill="#0f172a" font-size="40" font-family="monospace">}</text>
+          <rect x="30" y="255" width="90" height="4" rx="2" fill="#0f172a"/>
+          <rect x="50" y="270" width="60" height="4" rx="2" fill="#0f172a"/>
+          <rect x="40" y="285" width="75" height="4" rx="2" fill="#0f172a"/>
+        </svg>
+      </div>
+
+      <!-- Cards -->
+      <div class="intro-grid">
+        <div class="intro-card hover-wrap" onclick="openModal('Activity Objective', 'Educational Focus & Training Scope', '<p><strong>Primary Goal:</strong> Train software developers and technical staff to communicate confidently with international clients, foreign investors, and global remote teammates.</p><br><p><strong>Key Skills Developed:</strong></p><ul style=\'padding-left:1.25rem; margin-top:0.5rem;\'><li>Formal English greetings and receptions</li><li>Active listening in technical contexts</li><li>Self-introduction and role descriptions</li><li>Clarification and repetition techniques</li></ul>')">
+          <div class="intro-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-navy)" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          </div>
+          <h3>Activity Objective</h3>
+          <p>Train software engineering professionals for seamless English communication during investor visits, client negotiations, and global team collaboration.</p>
+          <span class="click-hint">Click for More →</span>
+          <div class="hover-info">Learn about the specific communication goals and training scope for developers.</div>
+        </div>
+
+        <div class="intro-card hover-wrap" onclick="openModal('Why English Matters in Software', 'Global Industry Standard Language', '<p><strong>The Lingua Franca of Tech:</strong> Over 85% of code repositories, API documentation, open-source frameworks, and developer communities (GitHub, StackOverflow) use English.</p><br><p><strong>Career Impact:</strong> English fluency unlocks remote positions at top global tech firms like Google, Microsoft, Amazon, and Meta.</p>')">
+          <div class="intro-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-navy)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <h3>Why English Matters in Software</h3>
+          <p>English is the universal language of computer science, documentation, pull requests, and global remote team collaboration.</p>
+          <span class="click-hint">Click for More →</span>
+          <div class="hover-info">Discover why English is the global standard for programming and APIs.</div>
+        </div>
+
+        <div class="intro-card hover-wrap" onclick="openModal('International Environments', 'Corporate Stakeholder Communication', '<p><strong>Business Impact:</strong> High-stakes investor pitches depend on smooth, clear communication. A single misunderstanding can delay approvals or damage brand reputation.</p><br><p><strong>Best Practice:</strong> Standardized bilingual front-desk protocols ensure seamless first impressions with foreign guests.</p>')">
+          <div class="intro-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-navy)" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+          </div>
+          <h3>International Environments</h3>
+          <p>Miscommunication with investors risks financial partnerships. Professional English protocols safeguard corporate reputation.</p>
+          <span class="click-hint">Click for More →</span>
+          <div class="hover-info">Explore how bilingual protocols protect corporate reputation with foreign stakeholders.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="closeModal()">×</button>
+      <h3 class="modal-title" id="modalTitle">Title</h3>
+      <div class="modal-subtitle" id="modalSubtitle">Subtitle</div>
+      <div class="modal-body" id="modalBody">Content</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">AceDev English Worksheet &nbsp;·&nbsp; Software Development Program &nbsp;·&nbsp; <span id="year"></span></div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('open'));
+    function openModal(t, s, b) {
+      document.getElementById('modalTitle').textContent = t;
+      document.getElementById('modalSubtitle').textContent = s;
+      document.getElementById('modalBody').innerHTML = b;
+      document.getElementById('detailModal').classList.add('active');
+    }
+    function closeModal() { document.getElementById('detailModal').classList.remove('active'); }
+    document.getElementById('detailModal').addEventListener('click', e => { if (e.target === document.getElementById('detailModal')) closeModal(); });
+  </script>
+</body>
+</html>

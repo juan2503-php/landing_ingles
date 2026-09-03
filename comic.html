@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comic Story | AceDev English</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    /* Cast of characters banner */
+    .cast-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .cast-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .cast-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--color-navy);
+    }
+    .cast-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: var(--color-bg);
+      border: 2px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .cast-avatar svg {
+      width: 100%;
+      height: 100%;
+    }
+    .cast-info h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--color-navy);
+      margin-bottom: 0.2rem;
+    }
+    .cast-role {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #2563eb;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+    .cast-desc {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      font-weight: 300;
+      line-height: 1.35;
+    }
+
+    /* Filter & Story controls */
+    .story-nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .story-acts-pills {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .act-btn {
+      padding: 0.45rem 1rem;
+      border-radius: var(--border-radius-pill);
+      font-family: var(--font-family);
+      font-size: 0.82rem;
+      font-weight: 400;
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .act-btn:hover, .act-btn.active {
+      background: var(--color-navy);
+      color: #fff;
+      border-color: var(--color-navy);
+    }
+    .story-helper-hint {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Comic Grid & Cards */
+    .comic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+      position: relative;
+      z-index: 1;
+    }
+    .comic-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      padding: 1.4rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+    }
+    .comic-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: #94a3b8;
+    }
+    .panel-header-badge {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+    }
+    .panel-tag {
+      background: var(--color-navy);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 0.2rem 0.65rem;
+      border-radius: var(--border-radius-pill);
+      letter-spacing: 0.04em;
+    }
+    .panel-time {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    /* SVG Illustration Box */
+    .illus-box {
+      width: 100%;
+      height: 210px;
+      background: #0b1329;
+      border-radius: var(--border-radius-sm);
+      margin-bottom: 1.15rem;
+      overflow: hidden;
+      border: 1px solid #1e293b;
+      position: relative;
+    }
+    .illus-box svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Dialogue Bubbles */
+    .bubble {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+    .bubble-speaker {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--color-navy);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .speech-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.82rem;
+      color: #2563eb;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+    .speech-btn:hover {
+      background: rgba(37,99,235,0.1);
+    }
+    .bubble-en {
+      font-weight: 500;
+      font-size: 0.92rem;
+      color: var(--color-navy);
+      line-height: 1.45;
+      margin-bottom: 0.45rem;
+    }
+    .bubble-es {
+      font-size: 0.82rem;
+      color: var(--color-es-flag);
+      background: var(--color-es-bg);
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      display: inline-block;
+      font-weight: 400;
+      line-height: 1.35;
+    }
+    .grammar-pill {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: #047857;
+      background: #d1fae5;
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--border-radius-pill);
+      margin-top: 0.4rem;
+    }
+    .panel-note {
+      font-size: 0.83rem;
+      font-weight: 300;
+      color: var(--color-text-muted);
+      border-top: 1px solid var(--color-border);
+      padding-top: 0.65rem;
+      margin-top: auto;
+      line-height: 1.45;
+    }
+
+    /* Key Phrases Cheat Sheet Section */
+    .phrases-section {
+      margin-top: 4rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      padding: 2.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .phrases-header {
+      margin-bottom: 1.5rem;
+    }
+    .phrases-header h2 {
+      font-size: 1.35rem;
+      color: var(--color-navy);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .phrases-header p {
+      font-size: 0.92rem;
+      color: var(--color-text-muted);
+      font-weight: 300;
+    }
+    .phrases-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+    .phrase-box {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-sm);
+      padding: 1.1rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      transition: var(--transition);
+    }
+    .phrase-box:hover {
+      border-color: #2563eb;
+      box-shadow: var(--shadow-sm);
+    }
+    .phrase-en-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .phrase-en {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--color-navy);
+    }
+    .phrase-es {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      font-style: italic;
+    }
+    .phrase-tip {
+      font-size: 0.78rem;
+      color: #0369a1;
+      background: #e0f2fe;
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      margin-top: 0.2rem;
+      align-self: flex-start;
+    }
+
+    /* Side illustrations */
+    .side-wrap { position: relative; }
+    .side-deco-left, .side-deco-right {
+      position: absolute;
+      top: 40%;
+      transform: translateY(-50%);
+      opacity: 0.055;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .side-deco-left { left: -90px; }
+    .side-deco-right { right: -90px; }
+
+    @media (max-width: 1080px) {
+      .comic-grid { grid-template-columns: repeat(2, 1fr); }
+      .cast-bar { grid-template-columns: 1fr; }
+      .side-deco-left, .side-deco-right { display: none; }
+    }
+    @media (max-width: 680px) {
+      .comic-grid { grid-template-columns: 1fr; }
+      .phrases-grid { grid-template-columns: 1fr; }
+      .story-nav-wrap { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>AceDev English</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="intro.html" class="nav-link">Intro</a></li>
+        <li><a href="comic.html" class="nav-link active">Comic</a></li>
+        <li><a href="reflection.html" class="nav-link">Reflection</a></li>
+        <li><a href="vocab.html" class="nav-link">Vocab</a></li>
+        <li><a href="org-chart.html" class="nav-link">Org Chart</a></li>
+        <li><a href="expressions.html" class="nav-link">Expressions</a></li>
+        <li><a href="conversation.html" class="nav-link">Script</a></li>
+        <li><a href="grammar.html" class="nav-link">Grammar</a></li>
+        <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+        <li><a href="condicionales.html" class="nav-link">Condicionales</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="intro.html">1. Introduction</a></li>
+        <li><a href="comic.html" class="active">2. Comic Story</a></li>
+        <li><a href="reflection.html">3. Reflection</a></li>
+        <li><a href="vocab.html">4. Vocabulary</a></li>
+        <li><a href="org-chart.html">5. Org Chart</a></li>
+        <li><a href="expressions.html">6. Expressions</a></li>
+        <li><a href="conversation.html">7. Script</a></li>
+        <li><a href="grammar.html">8. Grammar</a></li>
+        <li><a href="quiz.html">9. Quiz</a></li>
+        <li><a href="condicionales.html">10. Condicionales</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container page-header">
+    <h1 class="page-title">Section 2 — The Reception Dilemma (Comic Story)</h1>
+    <p class="page-subtitle">A foreign investor visits AceDev English Corp. Experience the misunderstanding, the rising tension, and the professional bilingual rescue.</p>
+  </div>
+
+  <div class="container" style="padding-bottom: 5rem;">
+    
+    <!-- Cast of Characters -->
+    <div class="cast-bar">
+      <!-- Hans -->
+      <div class="cast-card">
+        <div class="cast-avatar">
+          <svg viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="28" fill="#1e293b"/>
+            <!-- Head -->
+            <circle cx="30" cy="24" r="12" fill="#fde047"/>
+            <!-- Grey hair -->
+            <path d="M 18 22 C 18 12, 42 12, 42 22 C 40 16, 20 16, 18 22 Z" fill="#94a3b8"/>
+            <!-- Glasses -->
+            <rect x="22" y="21" width="7" height="5" rx="1" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+            <rect x="31" y="21" width="7" height="5" rx="1" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+            <line x1="29" y1="23" x2="31" y2="23" stroke="#0f172a" stroke-width="1.5"/>
+            <!-- Suit body -->
+            <path d="M 16 52 C 16 38, 44 38, 44 52 Z" fill="#1e3a8a"/>
+            <polygon points="27,39 33,39 30,50" fill="#38bdf8"/>
+          </svg>
+        </div>
+        <div class="cast-info">
+          <h4>Mr. Hans</h4>
+          <div class="cast-role">Silicon Valley Investor</div>
+          <div class="cast-desc">Speaks English natively. Needs to meet the CTO before his 3 PM flight.</div>
+        </div>
+      </div>
+
+      <!-- Sofia -->
+      <div class="cast-card">
+        <div class="cast-avatar">
+          <svg viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="28" fill="#1e293b"/>
+            <!-- Hair back -->
+            <circle cx="30" cy="22" r="14" fill="#3b1d11"/>
+            <!-- Head -->
+            <circle cx="30" cy="25" r="11" fill="#fed7aa"/>
+            <!-- Eyes & smile -->
+            <circle cx="26" cy="24" r="1.5" fill="#0f172a"/>
+            <circle cx="34" cy="24" r="1.5" fill="#0f172a"/>
+            <path d="M 28 29 Q 30 31 32 29" stroke="#0f172a" stroke-width="1.2" fill="none"/>
+            <!-- Headset -->
+            <path d="M 18 25 Q 18 14 30 14 Q 42 14 42 25" fill="none" stroke="#64748b" stroke-width="2"/>
+            <circle cx="42" cy="26" r="3" fill="#ec4899"/>
+            <!-- Clothes -->
+            <path d="M 17 52 C 17 38, 43 38, 43 52 Z" fill="#ec4899"/>
+          </svg>
+        </div>
+        <div class="cast-info">
+          <h4>Sofia</h4>
+          <div class="cast-role">Front-Desk Receptionist</div>
+          <div class="cast-desc">Friendly and diligent, but freezes when addressed in fast corporate English.</div>
+        </div>
+      </div>
+
+      <!-- Alex -->
+      <div class="cast-card">
+        <div class="cast-avatar">
+          <svg viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="28" fill="#1e293b"/>
+            <!-- Hair -->
+            <path d="M 18 22 C 18 12, 42 12, 42 22 Z" fill="#0f172a"/>
+            <!-- Head -->
+            <circle cx="30" cy="25" r="11" fill="#fed7aa"/>
+            <!-- Modern glasses -->
+            <rect x="23" y="22" width="6" height="5" rx="1" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+            <rect x="31" y="22" width="6" height="5" rx="1" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+            <!-- Dev Hoodie -->
+            <path d="M 16 52 C 16 38, 44 38, 44 52 Z" fill="#0d9488"/>
+            <!-- Lanyard -->
+            <path d="M 27 38 L 30 46 L 33 38" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="cast-info">
+          <h4>Alex</h4>
+          <div class="cast-role">Full Stack Developer</div>
+          <div class="cast-desc">Bilingual engineer who steps in to communicate fluently and professionally.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Story Filter Nav -->
+    <div class="story-nav-wrap">
+      <div class="story-acts-pills">
+        <button class="act-btn active" onclick="filterAct('all', this)">All Panels (1–6)</button>
+        <button class="act-btn" onclick="filterAct('act1', this)">Act 1: The Breakdown (1–3)</button>
+        <button class="act-btn" onclick="filterAct('act2', this)">Act 2: The Solution (4–6)</button>
+      </div>
+      <div class="story-helper-hint">
+        <span>Click any panel for dialogue analysis &amp;</span>
+        <button class="speech-btn" style="background: var(--color-bg); border: 1px solid var(--color-border);" onclick="speakText('Click on any speaker to listen to native English pronunciation!')">
+          🔊 Audio pronunciation
+        </button>
+      </div>
+    </div>
+
+    <div class="side-wrap">
+      <!-- Left decorative graphic -->
+      <div class="side-deco-left">
+        <svg width="140" height="400" viewBox="0 0 140 400" fill="none">
+          <rect x="10" y="20" width="100" height="50" rx="12" fill="#0f172a"/>
+          <polygon points="25,70 15,90 50,70" fill="#0f172a"/>
+          <rect x="20" y="130" width="80" height="40" rx="10" fill="#0f172a"/>
+          <polygon points="90,170 110,185 80,170" fill="#0f172a"/>
+          <rect x="10" y="230" width="110" height="45" rx="12" fill="#0f172a"/>
+          <polygon points="30,275 15,295 55,275" fill="#0f172a"/>
+        </svg>
+      </div>
+
+      <!-- Right decorative graphic -->
+      <div class="side-deco-right">
+        <svg width="140" height="400" viewBox="0 0 140 400" fill="none">
+          <rect x="10" y="20" width="120" height="80" rx="4" stroke="#0f172a" stroke-width="3"/>
+          <rect x="25" y="35" width="30" height="20" rx="2" stroke="#0f172a" stroke-width="2"/>
+          <rect x="10" y="130" width="120" height="80" rx="4" stroke="#0f172a" stroke-width="3"/>
+          <circle cx="70" cy="170" r="20" stroke="#0f172a" stroke-width="2"/>
+          <rect x="10" y="240" width="120" height="80" rx="4" stroke="#0f172a" stroke-width="3"/>
+        </svg>
+      </div>
+
+      <div class="comic-grid">
+        <!-- Panel 1: The Arrival -->
+        <div class="comic-card" data-act="act1" onclick="openPanelModal(1)">
+          <div class="panel-header-badge">
+            <span class="panel-tag">Panel 1 — Arrival</span>
+            <span class="panel-time">⏱ 10:00 AM</span>
+          </div>
+
+          <!-- SVG Illustration 1: Mr Hans at Reception Desk -->
+          <div class="illus-box">
+            <svg viewBox="0 0 420 210">
+              <!-- Background office -->
+              <rect width="420" height="210" fill="#0b1329"/>
+              <rect y="165" width="420" height="45" fill="#151e36"/>
+              <line x1="0" y1="165" x2="420" y2="165" stroke="#2a3756" stroke-width="2"/>
+
+              <!-- Company sign on wall -->
+              <rect x="135" y="18" width="150" height="28" rx="6" fill="#152243" stroke="#2a3f74" stroke-width="1.5"/>
+              <text x="210" y="36" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle" letter-spacing="1">AceDev English Corp.</text>
+
+              <!-- Clock at 10:00 -->
+              <circle cx="360" cy="32" r="16" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+              <line x1="360" y1="32" x2="360" y2="22" stroke="#f8fafc" stroke-width="2"/>
+              <line x1="360" y1="32" x2="368" y2="32" stroke="#38bdf8" stroke-width="1.5"/>
+
+              <!-- Plant on left -->
+              <rect x="25" y="130" width="22" height="35" rx="3" fill="#334155"/>
+              <path d="M 36 130 Q 15 100 22 80 Q 40 105 36 130" fill="#10b981"/>
+              <path d="M 36 130 Q 55 95 48 75 Q 35 105 36 130" fill="#059669"/>
+
+              <!-- Reception desk -->
+              <rect x="70" y="115" width="145" height="50" rx="6" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+              <rect x="75" y="120" width="135" height="8" fill="#334155"/>
+              <!-- Desktop Monitor -->
+              <rect x="145" y="90" width="40" height="26" rx="2" fill="#0f172a" stroke="#64748b" stroke-width="1.5"/>
+              <rect x="148" y="93" width="34" height="20" fill="#38bdf8" opacity="0.3"/>
+              <rect x="162" y="116" width="6" height="6" fill="#64748b"/>
+
+              <!-- Sofia behind desk -->
+              <ellipse cx="118" cy="85" rx="14" ry="17" fill="#fed7aa"/>
+              <!-- Sofia hair -->
+              <path d="M 104 80 C 104 60, 132 60, 132 80 C 130 68, 106 68, 104 80 Z" fill="#3b1d11"/>
+              <circle cx="132" cy="74" r="6" fill="#3b1d11"/> <!-- bun -->
+              <!-- Sofia eyes & smile -->
+              <circle cx="114" cy="83" r="1.5" fill="#0f172a"/>
+              <circle cx="123" cy="83" r="1.5" fill="#0f172a"/>
+              <path d="M 116 89 Q 118 92 121 89" stroke="#0f172a" stroke-width="1.2" fill="none"/>
+              <!-- Sofia body -->
+              <path d="M 100 115 C 100 98, 136 98, 136 115 Z" fill="#ec4899"/>
+              <!-- Headset -->
+              <path d="M 106 82 Q 106 72 118 72 Q 130 72 130 82" fill="none" stroke="#64748b" stroke-width="1.5"/>
+              <circle cx="130" cy="84" r="2.5" fill="#ec4899"/>
+
+              <!-- Mr Hans standing right -->
+              <!-- Legs -->
+              <rect x="280" y="145" width="11" height="35" rx="2" fill="#0f172a"/>
+              <rect x="296" y="145" width="11" height="35" rx="2" fill="#0f172a"/>
+              <!-- Suit Body -->
+              <rect x="272" y="85" width="34" height="62" rx="6" fill="#1e3a8a"/>
+              <!-- Shirt & Tie -->
+              <polygon points="284,85 294,85 289,112" fill="#38bdf8"/>
+              <polygon points="287,85 291,85 289,102" fill="#e11d48"/>
+              <!-- Head -->
+              <ellipse cx="289" cy="62" rx="14" ry="16" fill="#fde047"/>
+              <!-- Hair grey -->
+              <path d="M 275 60 C 275 44, 303 44, 303 60 Z" fill="#94a3b8"/>
+              <!-- Glasses -->
+              <rect x="280" y="58" width="7" height="6" rx="1.5" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+              <rect x="290" y="58" width="7" height="6" rx="1.5" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+              <line x1="287" y1="61" x2="290" y2="61" stroke="#0f172a" stroke-width="1.5"/>
+              <!-- Smile -->
+              <path d="M 285 69 Q 289 73 293 69" stroke="#0f172a" stroke-width="1.5" fill="none"/>
+              <!-- Briefcase in hand -->
+              <rect x="312" y="125" width="28" height="22" rx="3" fill="#854d0e" stroke="#5a3106" stroke-width="1.5"/>
+              <rect x="323" y="121" width="7" height="4" fill="none" stroke="#854d0e" stroke-width="1.5"/>
+              <rect x="324" y="133" width="4" height="4" fill="#fbbf24"/>
+            </svg>
+          </div>
+
+          <div class="bubble">
+            <div class="bubble-speaker">
+              <span>👔 Mr. Hans (Investor)</span>
+              <button class="speech-btn" onclick="event.stopPropagation(); speakText('Good morning! I have a 10:00 AM meeting with your CTO, Mr. Rivera.')">
+                🔊 Listen
+              </button>
+            </div>
+            <div class="bubble-en">"Good morning! I have a 10:00 AM meeting with your CTO, Mr. Rivera."</div>
+            <div class="bubble-es">"Buenos días. Tengo una reunión a las 10:00 AM con su CTO."</div>
+            <div class="grammar-pill">Formula: Present Simple (Have + Scheduled Meeting)</div>
+          </div>
+
+          <div class="panel-note">
+            Mr. Hans arrives on time at AceDev reception with a formal business appointment.
+          </div>
+          <span class="click-hint" style="margin-top: 0.5rem; font-size: 0.78rem; color: #2563eb;">Click panel for study notes →</span>
+        </div>
+
+        <!-- Panel 2: Language Barrier -->
+        <div class="comic-card" data-act="act1" onclick="openPanelModal(2)">
+          <div class="panel-header-badge">
+            <span class="panel-tag" style="background:#ea580c;">Panel 2 — Confusion</span>
+            <span class="panel-time">⏱ 10:01 AM</span>
+          </div>
+
+          <!-- SVG Illustration 2: Sofia Panicking -->
+          <div class="illus-box">
+            <svg viewBox="0 0 420 210">
+              <rect width="420" height="210" fill="#0b1329"/>
+              <rect y="165" width="420" height="45" fill="#151e36"/>
+
+              <!-- Question marks aura around Sofia -->
+              <text x="85" y="65" fill="#fbbf24" font-size="28" font-weight="bold">?</text>
+              <text x="175" y="55" fill="#f43f5e" font-size="34" font-weight="bold">?</text>
+              <text x="135" y="38" fill="#38bdf8" font-size="24" font-weight="bold">?</text>
+
+              <!-- Reception desk -->
+              <rect x="70" y="115" width="145" height="50" rx="6" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+
+              <!-- Sofia confused & scratching head -->
+              <ellipse cx="130" cy="85" rx="16" ry="18" fill="#fed7aa"/>
+              <path d="M 114 80 C 114 58, 146 58, 146 80 Z" fill="#3b1d11"/>
+              <!-- Sweat drop -->
+              <path d="M 152 75 C 148 68, 156 68, 152 75 Z" fill="#38bdf8"/>
+              <circle cx="152" cy="77" r="2.5" fill="#38bdf8"/>
+              <!-- Hand scratching head -->
+              <ellipse cx="150" cy="70" rx="5" ry="6" fill="#fed7aa"/>
+              <path d="M 142 105 Q 155 85 150 72" stroke="#fed7aa" stroke-width="5" fill="none" stroke-linecap="round"/>
+              <!-- Wavy mouth (hesitation) -->
+              <path d="M 124 93 Q 128 88 132 93 Q 136 98 140 93" stroke="#0f172a" stroke-width="1.5" fill="none"/>
+              <!-- Wide confused eyes -->
+              <ellipse cx="124" cy="83" rx="3" ry="4" fill="#0f172a"/>
+              <ellipse cx="136" cy="83" rx="3" ry="4" fill="#0f172a"/>
+              <path d="M 108 115 C 108 100, 148 100, 148 115 Z" fill="#ec4899"/>
+
+              <!-- Hans holding appointment card -->
+              <rect x="272" y="85" width="34" height="62" rx="6" fill="#1e3a8a"/>
+              <ellipse cx="289" cy="62" rx="14" ry="16" fill="#fde047"/>
+              <path d="M 275 60 C 275 44, 303 44, 303 60 Z" fill="#94a3b8"/>
+              <rect x="280" y="58" width="7" height="6" rx="1.5" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+              <rect x="290" y="58" width="7" height="6" rx="1.5" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+              <!-- Hans raised eyebrow -->
+              <path d="M 279 54 Q 284 51 288 55" stroke="#0f172a" stroke-width="1.5" fill="none"/>
+              <!-- Card showing CTO -->
+              <rect x="235" y="98" width="40" height="28" rx="3" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+              <text x="255" y="116" fill="#0f172a" font-size="11" font-weight="bold" text-anchor="middle">CTO</text>
+              <line x1="240" y1="120" x2="270" y2="120" stroke="#cbd5e1" stroke-width="1"/>
+            </svg>
+          </div>
+
+          <div class="bubble">
+            <div class="bubble-speaker">
+              <span>💼 Sofia (Receptionist)</span>
+              <button class="speech-btn" onclick="event.stopPropagation(); speakText('Excuse me, I do not speak English. Wait, CTO?')">
+                🔊 Listen
+              </button>
+            </div>
+            <div class="bubble-en">"¿Eh? Disculpe... no hablo inglés... Wait, did you say CTO?"</div>
+            <div class="bubble-es">"¿Eh? Disculpe, no hablo inglés... ¿Dijo usted CTO?"</div>
+            <div class="grammar-pill" style="background:#fee2e2; color:#991b1b;">Barrier: Recognition vs. Communication</div>
+          </div>
+
+          <div class="panel-note">
+            Sofia recognizes the acronym "CTO", but cannot sustain a basic bilingual conversation.
+          </div>
+          <span class="click-hint" style="margin-top: 0.5rem; font-size: 0.78rem; color: #2563eb;">Click panel for study notes →</span>
+        </div>
+
+        <!-- Panel 3: Time Pressure -->
+        <div class="comic-card" data-act="act1" onclick="openPanelModal(3)">
+          <div class="panel-header-badge">
+            <span class="panel-tag" style="background:#dc2626;">Panel 3 — Urgency</span>
+            <span class="panel-time">⏱ 10:04 AM</span>
+          </div>
+
+          <!-- SVG Illustration 3: Clock Ticking & Watch Check -->
+          <div class="illus-box">
+            <svg viewBox="0 0 420 210">
+              <rect width="420" height="210" fill="#0b1329"/>
+              <rect y="165" width="420" height="45" fill="#151e36"/>
+
+              <!-- Large pulsing urgency clock -->
+              <circle cx="210" cy="55" r="30" fill="#1e293b" stroke="#ef4444" stroke-width="3"/>
+              <circle cx="210" cy="55" r="36" fill="none" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,4" opacity="0.6"/>
+              <!-- Clock hands showing 10:05 -->
+              <line x1="210" y1="55" x2="200" y2="40" stroke="#f8fafc" stroke-width="2.5"/>
+              <line x1="210" y1="55" x2="225" y2="55" stroke="#ef4444" stroke-width="2"/>
+              <circle cx="210" cy="55" r="3" fill="#ef4444"/>
+              <text x="210" y="100" fill="#f87171" font-size="10" font-weight="bold" text-anchor="middle">TIME IS PASSING</text>
+
+              <!-- Hans looking at wrist watch with concern -->
+              <rect x="110" y="90" width="36" height="60" rx="6" fill="#1e3a8a"/>
+              <ellipse cx="128" cy="66" rx="14" ry="16" fill="#fde047"/>
+              <path d="M 114 64 C 114 48, 142 48, 142 64 Z" fill="#94a3b8"/>
+              <!-- Worried face -->
+              <rect x="119" y="62" width="7" height="6" rx="1.5" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+              <rect x="129" y="62" width="7" height="6" rx="1.5" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+              <path d="M 122 74 Q 128 70 134 74" stroke="#0f172a" stroke-width="1.5" fill="none"/>
+              <!-- Arm checking watch -->
+              <rect x="146" y="102" width="22" height="12" rx="3" fill="#1e3a8a"/>
+              <circle cx="168" cy="108" r="6" fill="#fbbf24" stroke="#78350f" stroke-width="1"/>
+              <!-- Plane ticket in pocket -->
+              <rect x="114" y="94" width="10" height="16" rx="1" fill="#fff" stroke="#94a3b8"/>
+              <text x="119" y="104" fill="#0f172a" font-size="7" font-weight="bold" text-anchor="middle">✈</text>
+
+              <!-- Sofia on phone nervous -->
+              <rect x="290" y="125" width="80" height="40" rx="4" fill="#1e293b"/>
+              <ellipse cx="330" cy="85" rx="14" ry="16" fill="#fed7aa"/>
+              <path d="M 316 80 C 316 60, 344 60, 344 80 Z" fill="#3b1d11"/>
+              <path d="M 318 115 C 318 100, 348 100, 348 115 Z" fill="#ec4899"/>
+              <!-- Phone receiver to ear -->
+              <path d="M 342 76 Q 350 82 344 94" stroke="#475569" stroke-width="4" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <div class="bubble">
+            <div class="bubble-speaker">
+              <span>👔 Mr. Hans (Investor)</span>
+              <button class="speech-btn" onclick="event.stopPropagation(); speakText('Excuse me, is there anyone who speaks English? My flight leaves at 3:00 PM.')">
+                🔊 Listen
+              </button>
+            </div>
+            <div class="bubble-en">"Excuse me, is anyone here fluent in English? My flight leaves at 3:00 PM."</div>
+            <div class="bubble-es">"¿Hay alguien aquí que hable inglés fluido? Mi vuelo sale a las 3:00 PM."</div>
+            <div class="grammar-pill">Formula: Modal Polite Question ('Is there anyone who...')</div>
+          </div>
+
+          <div class="panel-note">
+            Investor time is scarce. A delay of just five minutes threatens the entire business agenda.
+          </div>
+          <span class="click-hint" style="margin-top: 0.5rem; font-size: 0.78rem; color: #2563eb;">Click panel for study notes →</span>
+        </div>
+
+        <!-- Panel 4: Reputational Risk -->
+        <div class="comic-card" data-act="act2" onclick="openPanelModal(4)">
+          <div class="panel-header-badge">
+            <span class="panel-tag" style="background:#7c3aed;">Panel 4 — Turning Point</span>
+            <span class="panel-time">⏱ 10:06 AM</span>
+          </div>
+
+          <!-- SVG Illustration 4: Reputational Risk Concept -->
+          <div class="illus-box">
+            <svg viewBox="0 0 420 210">
+              <rect width="420" height="210" fill="#0b1329"/>
+              <rect y="165" width="420" height="45" fill="#151e36"/>
+
+              <!-- Warning central graphic -->
+              <polygon points="210,35 245,95 175,95" fill="#ef4444" opacity="0.9"/>
+              <text x="210" y="84" fill="#fff" font-size="28" font-weight="bold" text-anchor="middle">!</text>
+              <text x="210" y="118" fill="#fca5a5" font-size="11" font-weight="bold" text-anchor="middle">COMMUNICATION GAP</text>
+
+              <!-- Hans thinking about company reliability -->
+              <ellipse cx="320" cy="80" rx="14" ry="16" fill="#fde047"/>
+              <path d="M 306 78 C 306 62, 334 62, 334 78 Z" fill="#94a3b8"/>
+              <rect x="303" y="100" width="34" height="55" rx="6" fill="#1e3a8a"/>
+              <!-- Disappointed expression -->
+              <path d="M 314 88 Q 320 84 326 88" stroke="#0f172a" stroke-width="1.5" fill="none"/>
+              <!-- Broken deal thought bubble -->
+              <ellipse cx="370" cy="50" rx="26" ry="18" fill="#1e293b" stroke="#64748b" stroke-width="1"/>
+              <text x="370" y="54" fill="#f87171" font-size="12" text-anchor="middle">Deal at risk?</text>
+
+              <!-- Sofia realizing the gravity -->
+              <ellipse cx="100" cy="80" rx="14" ry="16" fill="#fed7aa"/>
+              <path d="M 86 75 C 86 55, 114 55, 114 75 Z" fill="#3b1d11"/>
+              <path d="M 85 102 C 85 90, 115 90, 115 102 Z" fill="#ec4899"/>
+              <!-- Hands on face in realization -->
+              <circle cx="89" cy="86" r="3.5" fill="#fed7aa"/>
+              <circle cx="111" cy="86" r="3.5" fill="#fed7aa"/>
+            </svg>
+          </div>
+
+          <div class="bubble">
+            <div class="bubble-speaker">
+              <span>👔 Investor Reflection</span>
+              <button class="speech-btn" onclick="event.stopPropagation(); speakText('Clear communication is vital for international software partnerships.')">
+                🔊 Listen
+              </button>
+            </div>
+            <div class="bubble-en">"Clear communication is vital for international software partnerships."</div>
+            <div class="bubble-es">"La comunicación clara es vital para las alianzas de software internacionales."</div>
+            <div class="grammar-pill" style="background:#ede9fe; color:#6d28d9;">Concept: Corporate Credibility in Tech</div>
+          </div>
+
+          <div class="panel-note">
+            67% of international tech partnerships evaluate communication agility during the first 10 minutes.
+          </div>
+          <span class="click-hint" style="margin-top: 0.5rem; font-size: 0.78rem; color: #2563eb;">Click panel for study notes →</span>
+        </div>
+
+        <!-- Panel 5: Alex Intervenes -->
+        <div class="comic-card" data-act="act2" onclick="openPanelModal(5)">
+          <div class="panel-header-badge">
+            <span class="panel-tag" style="background:#0d9488;">Panel 5 — Bilingual Help</span>
+            <span class="panel-time">⏱ 10:07 AM</span>
+          </div>
+
+          <!-- SVG Illustration 5: Alex Steps in with Coffee & Lanyard -->
+          <div class="illus-box">
+            <svg viewBox="0 0 420 210">
+              <rect width="420" height="210" fill="#0b1329"/>
+              <rect y="165" width="420" height="45" fill="#151e36"/>
+
+              <!-- Alex in the center -->
+              <!-- Legs -->
+              <rect x="195" y="145" width="10" height="35" rx="2" fill="#0f172a"/>
+              <rect x="210" y="145" width="10" height="35" rx="2" fill="#0f172a"/>
+              <!-- Teal Hoodie Body -->
+              <rect x="186" y="85" width="42" height="62" rx="6" fill="#0d9488"/>
+              <!-- Dev Lanyard with Yellow Badge -->
+              <path d="M 200 85 L 207 106 L 214 85" fill="none" stroke="#f59e0b" stroke-width="2"/>
+              <rect x="202" y="106" width="10" height="14" rx="2" fill="#fbbf24"/>
+              <text x="207" y="116" fill="#0f172a" font-size="6" font-weight="bold" text-anchor="middle">DEV</text>
+              <!-- Head -->
+              <ellipse cx="207" cy="62" rx="14" ry="16" fill="#fed7aa"/>
+              <!-- Hair -->
+              <path d="M 193 60 C 193 44, 221 44, 221 60 Z" fill="#0f172a"/>
+              <!-- Round glasses -->
+              <circle cx="202" cy="61" r="4" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+              <circle cx="212" cy="61" r="4" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+              <line x1="206" y1="61" x2="208" y2="61" stroke="#0f172a" stroke-width="1.5"/>
+              <!-- Confident friendly smile -->
+              <path d="M 203 70 Q 207 74 211 70" stroke="#0f172a" stroke-width="1.5" fill="none"/>
+              <!-- Coffee mug in left hand with steam -->
+              <rect x="165" y="112" width="14" height="16" rx="2" fill="#3b82f6"/>
+              <path d="M 165 116 Q 159 120 165 124" stroke="#3b82f6" stroke-width="2" fill="none"/>
+              <path d="M 169 108 Q 167 102 171 96" stroke="#93c5fd" stroke-width="1.2" fill="none"/>
+              <path d="M 174 108 Q 176 102 173 96" stroke="#93c5fd" stroke-width="1.2" fill="none"/>
+              <!-- Right hand welcoming gesture -->
+              <path d="M 228 100 Q 248 95 255 105" stroke="#fed7aa" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+
+              <!-- Sofia relieved on left -->
+              <ellipse cx="80" cy="88" rx="13" ry="15" fill="#fed7aa"/>
+              <path d="M 68 85 C 68 68, 92 68, 92 85 Z" fill="#3b1d11"/>
+              <path d="M 69 110 C 69 98, 93 98, 93 110 Z" fill="#ec4899"/>
+              <!-- Sofia shiny happy eyes & big smile -->
+              <path d="M 76 92 Q 80 96 84 92" stroke="#0f172a" stroke-width="1.5" fill="none"/>
+              <text x="96" y="75" fill="#38bdf8" font-size="16">✨</text>
+
+              <!-- Hans smiling & relieved on right -->
+              <ellipse cx="325" cy="65" rx="14" ry="16" fill="#fde047"/>
+              <path d="M 311 63 C 311 47, 339 47, 339 63 Z" fill="#94a3b8"/>
+              <rect x="308" y="87" width="34" height="60" rx="6" fill="#1e3a8a"/>
+              <!-- Smiling Hans -->
+              <path d="M 321 72 Q 325 76 329 72" stroke="#0f172a" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+
+          <div class="bubble">
+            <div class="bubble-speaker">
+              <span>💻 Alex (Developer)</span>
+              <button class="speech-btn" onclick="event.stopPropagation(); speakText('Good morning, sir! Welcome to AceDev. Don’t worry, I will assist you right away.')">
+                🔊 Listen
+              </button>
+            </div>
+            <div class="bubble-en">"Good morning, sir! Welcome to AceDev. I will assist you right away."</div>
+            <div class="bubble-es">"¡Buenos días, señor! Bienvenido a AceDev. Le asisto de inmediato."</div>
+            <div class="grammar-pill">Formula: Future Simple (Will + Immediate Action)</div>
+          </div>
+
+          <div class="panel-note">
+            Alex steps in calmly with welcoming English, instantly diffusing the reception friction.
+          </div>
+          <span class="click-hint" style="margin-top: 0.5rem; font-size: 0.78rem; color: #2563eb;">Click panel for study notes →</span>
+        </div>
+
+        <!-- Panel 6: Resolution -->
+        <div class="comic-card" data-act="act2" onclick="openPanelModal(6)">
+          <div class="panel-header-badge">
+            <span class="panel-tag" style="background:#16a34a;">Panel 6 — Resolution</span>
+            <span class="panel-time">⏱ 10:08 AM</span>
+          </div>
+
+          <!-- SVG Illustration 6: Guiding to Boardroom B -->
+          <div class="illus-box">
+            <svg viewBox="0 0 420 210">
+              <rect width="420" height="210" fill="#0b1329"/>
+              <rect y="165" width="420" height="45" fill="#151e36"/>
+
+              <!-- Boardroom Door on right with frosted glass -->
+              <rect x="300" y="30" width="90" height="150" rx="6" fill="#152038" stroke="#38bdf8" stroke-width="2"/>
+              <rect x="312" y="45" width="66" height="50" rx="3" fill="#38bdf8" opacity="0.15" stroke="#38bdf8" stroke-width="1"/>
+              <text x="345" y="70" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">BOARDROOM B</text>
+              <text x="345" y="83" fill="#94a3b8" font-size="7" text-anchor="middle">CTO MEETING</text>
+              <circle cx="380" cy="115" r="3.5" fill="#e2e8f0"/> <!-- handle -->
+              <circle cx="308" cy="40" r="3" fill="#22c55e"/> <!-- green status light -->
+
+              <!-- Alex gesturing toward boardroom -->
+              <rect x="120" y="85" width="38" height="62" rx="6" fill="#0d9488"/>
+              <ellipse cx="139" cy="62" rx="14" ry="16" fill="#fed7aa"/>
+              <path d="M 125 60 C 125 44, 153 44, 153 60 Z" fill="#0f172a"/>
+              <path d="M 158 98 Q 195 90 205 85" stroke="#fed7aa" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+
+              <!-- Hans walking happily towards meeting -->
+              <rect x="220" y="85" width="36" height="62" rx="6" fill="#1e3a8a"/>
+              <ellipse cx="238" cy="62" rx="14" ry="16" fill="#fde047"/>
+              <path d="M 224 60 C 224 44, 252 44, 252 60 Z" fill="#94a3b8"/>
+              <!-- Big smile and thumbs up -->
+              <path d="M 234 69 Q 238 74 242 69" stroke="#0f172a" stroke-width="1.5" fill="none"/>
+              <rect x="260" y="125" width="24" height="18" rx="2" fill="#854d0e"/>
+
+              <!-- Sofia in back with English book -->
+              <ellipse cx="50" cy="90" rx="12" ry="14" fill="#fed7aa"/>
+              <path d="M 40 85 C 40 70, 60 70, 60 85 Z" fill="#3b1d11"/>
+              <!-- Book titled "English" on desk -->
+              <rect x="35" y="125" width="30" height="20" rx="2" fill="#f59e0b" stroke="#b45309"/>
+              <text x="50" y="138" fill="#fff" font-size="7" font-weight="bold" text-anchor="middle">ENGLISH</text>
+              <text x="50" y="70" fill="#22c55e" font-size="16">✓</text>
+            </svg>
+          </div>
+
+          <div class="bubble">
+            <div class="bubble-speaker">
+              <span>💻 Alex &amp; 👔 Mr. Hans</span>
+              <button class="speech-btn" onclick="event.stopPropagation(); speakText('Mr. Rivera is waiting in Boardroom B. Please, follow me! - Thank you!')">
+                🔊 Listen
+              </button>
+            </div>
+            <div class="bubble-en">"Mr. Rivera is in Boardroom B. Please, follow me!" — "Thank you!"</div>
+            <div class="bubble-es">"El Sr. Rivera está en la Sala B. ¡Por favor, acompáñeme!" — "¡Gracias!"</div>
+            <div class="grammar-pill">Formula: Formal Direction (Polite Imperative + Follow me)</div>
+          </div>
+
+          <div class="panel-note">
+            The meeting begins right on schedule. Sofia is inspired to learn English for receptionists.
+          </div>
+          <span class="click-hint" style="margin-top: 0.5rem; font-size: 0.78rem; color: #2563eb;">Click panel for study notes →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Reception English Cheat Sheet -->
+    <div class="phrases-section">
+      <div class="phrases-header">
+        <h2>Key Reception English Phrases (Guía Práctica)</h2>
+        <p>Essential formulas every software company team member should master when receiving foreign visitors:</p>
+      </div>
+
+      <div class="phrases-grid">
+        <div class="phrase-box">
+          <div class="phrase-en-row">
+            <span class="phrase-en">"Good morning! Welcome to AceDev."</span>
+            <button class="speech-btn" onclick="speakText('Good morning! Welcome to AceDev.')">🔊</button>
+          </div>
+          <span class="phrase-es">"¡Buenos días! Bienvenido a AceDev."</span>
+          <span class="phrase-tip">Ideal warm greeting for any guest or client.</span>
+        </div>
+
+        <div class="phrase-box">
+          <div class="phrase-en-row">
+            <span class="phrase-en">"Who are you meeting with today?"</span>
+            <button class="speech-btn" onclick="speakText('Who are you meeting with today?')">🔊</button>
+          </div>
+          <span class="phrase-es">"¿Con quién tiene su reunión el día de hoy?"</span>
+          <span class="phrase-tip">Clear polite question to identify the host.</span>
+        </div>
+
+        <div class="phrase-box">
+          <div class="phrase-en-row">
+            <span class="phrase-en">"Please have a seat. I will notify him right away."</span>
+            <button class="speech-btn" onclick="speakText('Please have a seat. I will notify him right away.')">🔊</button>
+          </div>
+          <span class="phrase-es">"Por favor tome asiento. Le avisaré de inmediato."</span>
+          <span class="phrase-tip">Essential polite waiting instruction.</span>
+        </div>
+
+        <div class="phrase-box">
+          <div class="phrase-en-row">
+            <span class="phrase-en">"Please follow me to the boardroom."</span>
+            <button class="speech-btn" onclick="speakText('Please follow me to the boardroom.')">🔊</button>
+          </div>
+          <span class="phrase-es">"Por favor, acompáñeme a la sala de juntas."</span>
+          <span class="phrase-tip">Professional phrase to guide guests through the office.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="closeModal()">×</button>
+      <h3 class="modal-title" id="modalTitle">Title</h3>
+      <div class="modal-subtitle" id="modalSubtitle">Subtitle</div>
+      <div class="modal-body" id="modalBody">Content</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">AceDev English Worksheet &nbsp;·&nbsp; Software Development Program &nbsp;·&nbsp; <span id="year"></span></div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('open'));
+
+    // Native Speech Synthesis
+    function speakText(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'en-US';
+        utter.rate = 0.95;
+        window.speechSynthesis.speak(utter);
+      } else {
+        alert("Audio playback is not supported by your current browser.");
+      }
+    }
+
+    // Story Act Filtering
+    function filterAct(act, btn) {
+      document.querySelectorAll('.act-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.comic-card');
+      cards.forEach(card => {
+        if (act === 'all' || card.getAttribute('data-act') === act) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Panel Analysis Data
+    const panelDetails = {
+      1: {
+        title: "Panel 1: Investor Arrival & Scheduled Meetings",
+        sub: "Professional appointment verification at corporate reception",
+        body: `
+          <div style="margin-bottom: 1.25rem;">
+            <p><strong>English Dialogue:</strong><br>
+            <span style="font-size: 1.05rem; color: var(--color-navy); font-weight: 500;">
+              "Good morning! I have a 10:00 AM meeting with your CTO, Mr. Rivera."
+            </span>
+            <button class="speech-btn" onclick="speakText('Good morning! I have a 10:00 AM meeting with your CTO, Mr. Rivera.')" style="margin-left: 0.5rem;">🔊 Listen</button>
+            </p>
+          </div>
+          <p><strong>Spanish Translation:</strong><br>
+          "Buenos días. Tengo una reunión a las 10:00 AM con su Director de Tecnología, el Sr. Rivera."</p>
+          <br>
+          <p><strong>Grammar Spotlight:</strong><br>
+          Uses <em>Present Simple</em> with a scheduled time phrase: <code>Subject + have + a [time] meeting with [person]</code>.</p>
+          <br>
+          <p><strong>Business Etiquette Tip:</strong><br>
+          In US and European corporate culture, arriving 5 to 10 minutes prior to a scheduled meeting is considered standard professionalism. Always state your meeting host's name and exact time.</p>
+        `
+      },
+      2: {
+        title: "Panel 2: The Language Barrier Dilemma",
+        sub: "When reception staff are unprepared for international visitors",
+        body: `
+          <div style="margin-bottom: 1.25rem;">
+            <p><strong>Situation:</strong><br>
+            Sofia recognizes the acronym <strong>CTO</strong>, but without English training, she freezes and cannot ask the visitor to wait or sign in.</p>
+          </div>
+          <p><strong>Root Cause:</strong><br>
+          Lack of standard bilingual reception protocols and basic emergency phrases for front-desk staff.</p>
+          <br>
+          <p><strong>Safe Phrases Sofia could say immediately:</strong></p>
+          <ul style="padding-left: 1.25rem; line-height: 1.8;">
+            <li><code>"One moment, please. I will find someone who speaks English."</code> <button class="speech-btn" onclick="speakText('One moment, please. I will find someone who speaks English.')">🔊</button></li>
+            <li><code>"Please have a seat. Let me call Mr. Rivera."</code> <button class="speech-btn" onclick="speakText('Please have a seat. Let me call Mr. Rivera.')">🔊</button></li>
+          </ul>
+        `
+      },
+      3: {
+        title: "Panel 3: Urgency & High Stakes",
+        sub: "Why time efficiency directly impacts investor trust",
+        body: `
+          <div style="margin-bottom: 1.25rem;">
+            <p><strong>English Dialogue:</strong><br>
+            <span style="font-size: 1.05rem; color: var(--color-navy); font-weight: 500;">
+              "Excuse me, is anyone here fluent in English? My flight leaves at 3:00 PM."
+            </span>
+            <button class="speech-btn" onclick="speakText('Excuse me, is anyone here fluent in English? My flight leaves at 3:00 PM.')" style="margin-left: 0.5rem;">🔊 Listen</button>
+            </p>
+          </div>
+          <p><strong>Spanish Translation:</strong><br>
+          "Disculpe, ¿hay alguien aquí que hable inglés fluido? Mi vuelo sale a las 3:00 PM."</p>
+          <br>
+          <p><strong>Grammar Structure:</strong><br>
+          <code>Excuse me + is there anyone who [action]?</code> is a polite, indirect request format widely used in business English.</p>
+          <br>
+          <p><strong>Key Insight:</strong><br>
+          Delays caused by language barriers produce unnecessary anxiety for clients who operate on rigid international travel schedules.</p>
+        `
+      },
+      4: {
+        title: "Panel 4: Corporate Reputation & Deal Success",
+        sub: "How communication friction harms modern tech startups",
+        body: `
+          <div style="margin-bottom: 1.25rem;">
+            <p><strong>Key Principle:</strong><br>
+            Investors invest not just in code, but in organizational agility and communication readiness.</p>
+          </div>
+          <p><strong>Stat:</strong> Over 67% of international tech ventures fail or experience severe delays due to friction in requirements communication, not code quality.</p>
+          <br>
+          <p><strong>Corporate Lesson:</strong><br>
+          Training receptionist teams in just 10 key English phrases eliminates over 90% of front-desk friction for global visitors.</p>
+        `
+      },
+      5: {
+        title: "Panel 5: Bilingual Developer Intervention",
+        sub: "Stepping in calmly with professional conversational English",
+        body: `
+          <div style="margin-bottom: 1.25rem;">
+            <p><strong>English Dialogue:</strong><br>
+            <span style="font-size: 1.05rem; color: var(--color-navy); font-weight: 500;">
+              "Good morning, sir! Welcome to AceDev. Don't worry, I will assist you right away."
+            </span>
+            <button class="speech-btn" onclick="speakText('Good morning, sir! Welcome to AceDev. Don’t worry, I will assist you right away.')" style="margin-left: 0.5rem;">🔊 Listen</button>
+            </p>
+          </div>
+          <p><strong>Spanish Translation:</strong><br>
+          "¡Buenos días, señor! Bienvenido a AceDev. No se preocupe, le ayudo de inmediato."</p>
+          <br>
+          <p><strong>Vocabulary & Formulas:</strong></p>
+          <ul style="padding-left: 1.25rem; line-height: 1.8;">
+            <li><code>"I will assist you right away"</code>: Future Simple for spontaneous willingness.</li>
+            <li><code>"Welcome to [Company]"</code>: Standard warm corporate greeting.</li>
+          </ul>
+        `
+      },
+      6: {
+        title: "Panel 6: Professional Resolution & Guidance",
+        sub: "Directing clients to boardrooms with courtesy",
+        body: `
+          <div style="margin-bottom: 1.25rem;">
+            <p><strong>English Dialogue:</strong><br>
+            <span style="font-size: 1.05rem; color: var(--color-navy); font-weight: 500;">
+              "Mr. Rivera is waiting in Boardroom B. Please, follow me!"
+            </span>
+            <button class="speech-btn" onclick="speakText('Mr. Rivera is waiting in Boardroom B. Please, follow me!')" style="margin-left: 0.5rem;">🔊 Listen</button>
+            </p>
+          </div>
+          <p><strong>Spanish Translation:</strong><br>
+          "El Sr. Rivera lo está esperando en la Sala de Juntas B. ¡Por favor, acompáñeme!"</p>
+          <br>
+          <p><strong>Key Resolution Takeaways:</strong></p>
+          <ul style="padding-left: 1.25rem; line-height: 1.8;">
+            <li>The meeting starts on time, preserving the company's high technical and operational reputation.</li>
+            <li>Sofia signs up for the <strong>AceDev English for Professionals</strong> training program.</li>
+          </ul>
+        `
+      }
+    };
+
+    function openPanelModal(num) {
+      const p = panelDetails[num];
+      if (!p) return;
+      openModal(p.title, p.sub, p.body);
+    }
+
+    function openModal(t, s, b) {
+      document.getElementById('modalTitle').textContent = t;
+      document.getElementById('modalSubtitle').textContent = s;
+      document.getElementById('modalBody').innerHTML = b;
+      document.getElementById('detailModal').classList.add('active');
+    }
+    function closeModal() {
+      document.getElementById('detailModal').classList.remove('active');
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    }
+    document.getElementById('detailModal').addEventListener('click', e => {
+      if (e.target === document.getElementById('detailModal')) closeModal();
+    });
+  </script>
+</body>
+</html>

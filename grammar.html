@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grammar Guide | AceDev English</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .grammar-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.75rem; position: relative; z-index: 1; }
+    .grammar-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--border-radius); padding: 2rem; cursor: pointer; transition: var(--transition); }
+    .grammar-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .g-num { display: inline-block; padding: 0.2rem 0.7rem; border-radius: var(--border-radius-pill); background: var(--color-navy); color: #fff; font-size: 0.75rem; font-weight: 400; margin-bottom: 0.85rem; }
+    .g-title { font-size: 1.2rem; font-weight: 500; color: var(--color-navy); margin-bottom: 0.55rem; }
+    .g-desc { font-size: 0.92rem; font-weight: 300; color: var(--color-text-muted); line-height: 1.65; margin-bottom: 1.1rem; }
+    .formula-box { background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--border-radius-sm); padding: 0.85rem 1.1rem; font-family: var(--font-mono); font-size: 0.88rem; color: var(--color-navy); margin-bottom: 0.85rem; }
+    .example-list { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
+    .example-list li { font-size: 0.88rem; font-weight: 300; color: var(--color-text-muted); padding-left: 0.85rem; border-left: 2px solid var(--color-border); }
+    .example-list li em { color: var(--color-navy); font-style: normal; font-weight: 400; }
+    .g-tip { margin-top: 0.85rem; font-size: 0.82rem; font-weight: 300; color: var(--color-text-muted); }
+    .tip-label { font-weight: 500; color: var(--color-navy); }
+
+    /* Full-width 5th card */
+    .grammar-card.wide { grid-column: 1 / -1; }
+
+    /* Side deco */
+    .side-wrap { position: relative; }
+    .side-deco-left, .side-deco-right { position: absolute; top: 50%; transform: translateY(-50%); opacity: 0.05; pointer-events: none; z-index: 0; }
+    .side-deco-left { left: -100px; }
+    .side-deco-right { right: -100px; }
+    @media (max-width: 1024px) { .side-deco-left, .side-deco-right { display: none; } }
+    @media (max-width: 700px) { .grammar-grid { grid-template-columns: 1fr; } .grammar-card.wide { grid-column: 1; } }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>AceDev English</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="intro.html" class="nav-link">Intro</a></li>
+        <li><a href="comic.html" class="nav-link">Comic</a></li>
+        <li><a href="reflection.html" class="nav-link">Reflection</a></li>
+        <li><a href="vocab.html" class="nav-link">Vocab</a></li>
+        <li><a href="org-chart.html" class="nav-link">Org Chart</a></li>
+        <li><a href="expressions.html" class="nav-link">Expressions</a></li>
+        <li><a href="conversation.html" class="nav-link">Script</a></li>
+        <li><a href="grammar.html" class="nav-link active">Grammar</a></li>
+        <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+        <li><a href="condicionales.html" class="nav-link">Condicionales</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="intro.html">1. Introduction</a></li>
+        <li><a href="comic.html">2. Comic Story</a></li>
+        <li><a href="reflection.html">3. Reflection</a></li>
+        <li><a href="vocab.html">4. Vocabulary</a></li>
+        <li><a href="org-chart.html">5. Org Chart</a></li>
+        <li><a href="expressions.html">6. Expressions</a></li>
+        <li><a href="conversation.html">7. Script</a></li>
+        <li><a href="grammar.html" class="active">8. Grammar</a></li>
+        <li><a href="quiz.html">9. Quiz</a></li>
+        <li><a href="condicionales.html">10. Condicionales</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container page-header">
+    <h1 class="page-title">Section 8 — Grammar Guide</h1>
+    <p class="page-subtitle">5 practical English grammar rules used in professional software environments. Click any card for detailed examples.</p>
+  </div>
+
+  <div class="container" style="padding-bottom: 5rem;">
+    <div class="side-wrap">
+      <!-- Left deco: grammar symbols -->
+      <div class="side-deco-left">
+        <svg width="130" height="400" viewBox="0 0 130 400" fill="none">
+          <text x="15" y="50" fill="#0f172a" font-size="30" font-family="serif">S</text>
+          <text x="55" y="50" fill="#0f172a" font-size="30" font-family="serif">+</text>
+          <text x="90" y="50" fill="#0f172a" font-size="30" font-family="serif">V</text>
+          <line x1="10" y1="60" x2="120" y2="60" stroke="#0f172a" stroke-width="1.5"/>
+          <text x="15" y="110" fill="#0f172a" font-size="22" font-family="serif">have</text>
+          <text x="15" y="145" fill="#0f172a" font-size="22" font-family="serif">been</text>
+          <text x="15" y="180" fill="#0f172a" font-size="22" font-family="serif">V-ing</text>
+          <line x1="10" y1="195" x2="120" y2="195" stroke="#0f172a" stroke-width="1.5"/>
+          <text x="15" y="240" fill="#0f172a" font-size="20" font-family="serif">will +</text>
+          <text x="15" y="268" fill="#0f172a" font-size="20" font-family="serif">base V</text>
+          <line x1="10" y1="285" x2="120" y2="285" stroke="#0f172a" stroke-width="1.5"/>
+          <text x="15" y="325" fill="#0f172a" font-size="20" font-family="serif">could</text>
+          <text x="15" y="353" fill="#0f172a" font-size="20" font-family="serif">you?</text>
+        </svg>
+      </div>
+      <!-- Right deco: open book -->
+      <div class="side-deco-right">
+        <svg width="130" height="400" viewBox="0 0 130 400" fill="none">
+          <path d="M 65 30 L 65 370" stroke="#0f172a" stroke-width="3"/>
+          <path d="M 65 30 Q 10 40 10 350 L 65 360" stroke="#0f172a" stroke-width="2" fill="none"/>
+          <path d="M 65 30 Q 120 40 120 350 L 65 360" stroke="#0f172a" stroke-width="2" fill="none"/>
+          <line x1="20" y1="90" x2="58" y2="90" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="20" y1="115" x2="55" y2="115" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="20" y1="140" x2="58" y2="140" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="72" y1="90" x2="110" y2="90" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="72" y1="115" x2="108" y2="115" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="72" y1="140" x2="110" y2="140" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="20" y1="200" x2="58" y2="200" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="20" y1="225" x2="45" y2="225" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="72" y1="200" x2="110" y2="200" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="72" y1="225" x2="98" y2="225" stroke="#0f172a" stroke-width="1.5"/>
+        </svg>
+      </div>
+
+      <div class="grammar-grid">
+        <div class="grammar-card hover-wrap" onclick="openModal('Grammar 1: Present Simple', 'Habitual actions and general truths', '<p><strong>Formula:</strong> Subject + base verb (+ s/es for he/she/it)</p><br><p><strong>Examples in Tech:</strong></p><ul style=\'padding-left:1.25rem;\'><li>She <em>reviews</em> pull requests every morning.</li><li>The API <em>returns</em> a JSON response.</li><li>We <em>use</em> Agile sprints for development.</li></ul><br><p><strong>Common Mistake:</strong> Forgetting the -s for third person: ❌ She review → ✅ She reviews</p>')">
+          <div class="g-num">Grammar 1</div>
+          <div class="g-title">Present Simple</div>
+          <div class="g-desc">Used for habitual actions, general truths, and recurring processes in tech workflows.</div>
+          <div class="formula-box">Subject + base verb [+ s/es]</div>
+          <ul class="example-list">
+            <li>She <em>reviews</em> pull requests every morning.</li>
+            <li>The API <em>returns</em> a JSON response.</li>
+            <li>We <em>deploy</em> twice per sprint.</li>
+          </ul>
+          <div class="g-tip"><span class="tip-label">Pitfall:</span> Add -s/-es for he/she/it: She <em>works</em>, He <em>codes</em>.</div>
+          <span class="click-hint" style="display:block; margin-top:0.85rem;">Click for Full Details →</span>
+          <div class="hover-info">Click to see formula, more examples, and common mistakes.</div>
+        </div>
+
+        <div class="grammar-card hover-wrap" onclick="openModal('Grammar 2: Present Perfect', 'Actions with current relevance', '<p><strong>Formula:</strong> Subject + have/has + past participle</p><br><p><strong>Examples in Tech:</strong></p><ul style=\'padding-left:1.25rem;\'><li>We <em>have deployed</em> the new feature today.</li><li>The team <em>has reviewed</em> the architecture document.</li><li>I <em>have worked</em> with React for 3 years.</li></ul><br><p><strong>Common Mistake:</strong> Using Past Simple instead of Present Perfect: ❌ We deployed it today → ✅ We have deployed it today.</p>')">
+          <div class="g-num">Grammar 2</div>
+          <div class="g-title">Present Perfect</div>
+          <div class="g-desc">Connects past actions to the present moment — essential for technical status updates and handoffs.</div>
+          <div class="formula-box">Subject + have/has + past participle</div>
+          <ul class="example-list">
+            <li>We <em>have deployed</em> the new feature.</li>
+            <li>The client <em>has approved</em> the mockups.</li>
+            <li>I <em>have fixed</em> the critical bug.</li>
+          </ul>
+          <div class="g-tip"><span class="tip-label">Pitfall:</span> Don't use with specific past time: ❌ I have finished at 3 PM.</div>
+          <span class="click-hint" style="display:block; margin-top:0.85rem;">Click for Full Details →</span>
+          <div class="hover-info">Click to see formula, more examples, and common mistakes.</div>
+        </div>
+
+        <div class="grammar-card" onclick="openModal('Grammar 3: Present Perfect Continuous', 'Ongoing actions from past to now', '<p><strong>Formula:</strong> Subject + have/has + been + verb-ing</p><br><p><strong>Examples in Tech:</strong></p><ul style=\'padding-left:1.25rem;\'><li>We <em>have been migrating</em> the database for two hours.</li><li>She <em>has been debugging</em> the authentication module all morning.</li><li>The team <em>has been working</em> remotely since 2021.</li></ul><br><p><strong>Vs. Present Perfect:</strong> The continuous form emphasizes duration and ongoing process, while Present Perfect focuses on completion and result.</p>')">
+          <div class="g-num">Grammar 3</div>
+          <div class="g-title">Present Perfect Continuous</div>
+          <div class="g-desc">Highlights the duration and continuity of an action — ideal for describing ongoing development or investigations.</div>
+          <div class="formula-box">Subject + have/has + been + V-ing</div>
+          <ul class="example-list">
+            <li>We <em>have been migrating</em> the database for 2h.</li>
+            <li>She <em>has been debugging</em> the auth module.</li>
+            <li>The team <em>has been testing</em> for a week.</li>
+          </ul>
+          <div class="g-tip"><span class="tip-label">Key Use:</span> Emphasizes process duration, not just result.</div>
+          <span class="click-hint" style="display:block; margin-top:0.85rem;">Click for Full Details →</span>
+        </div>
+
+        <div class="grammar-card" onclick="openModal('Grammar 4: Future Simple (Will)', 'Predictions and commitments', '<p><strong>Formula:</strong> Subject + will + base verb</p><br><p><strong>Examples in Tech:</strong></p><ul style=\'padding-left:1.25rem;\'><li>I <em>will notify</em> Mr. Rivera immediately.</li><li>The system <em>will scale</em> automatically.</li><li>We <em>will ship</em> version 2.0 next quarter.</li></ul><br><p><strong>Vs. Going To:</strong> Use \'will\' for spontaneous decisions and promises. Use \'going to\' for planned intentions: We\'re going to redesign the dashboard next sprint.</p>')">
+          <div class="g-num">Grammar 4</div>
+          <div class="g-title">Future Simple — Will</div>
+          <div class="g-desc">Used for promises, commitments, predictions, and spontaneous decisions. Essential in client-facing communication.</div>
+          <div class="formula-box">Subject + will + base verb</div>
+          <ul class="example-list">
+            <li>I <em>will notify</em> the team right away.</li>
+            <li>The system <em>will auto-scale</em> at peak load.</li>
+            <li>We <em>will deliver</em> the MVP by Friday.</li>
+          </ul>
+          <div class="g-tip"><span class="tip-label">Pitfall:</span> ❌ I will to go → ✅ I will go (no "to" after will).</div>
+          <span class="click-hint" style="display:block; margin-top:0.85rem;">Click for Full Details →</span>
+        </div>
+
+        <div class="grammar-card wide" onclick="openModal('Grammar 5: Modal Verbs for Politeness', 'Could, would, may, shall in professional English', '<p><strong>Polite Requests (Ascending Formality):</strong></p><ul style=\'padding-left:1.25rem;\'><li><em>Can</em> you review this PR? (informal)</li><li><em>Could</em> you review this PR? (polite)</li><li><em>Would</em> you mind reviewing this PR? (very polite)</li></ul><br><p><strong>Offers:</strong></p><ul style=\'padding-left:1.25rem;\'><li><em>May</em> I assist you? (formal)</li><li><em>Shall</em> we proceed to the boardroom? (very formal)</li></ul><br><p><strong>Rule of Thumb:</strong> In professional English, always default to \'could\' or \'would\' over \'can\' or \'will\' in client-facing situations.</p>')">
+          <div class="g-num">Grammar 5</div>
+          <div class="g-title">Modal Verbs for Politeness</div>
+          <div class="g-desc">Modals like <em>could, would, may, shall</em> signal formality level. Choosing the right modal is essential in investor and client interactions.</div>
+          <div class="formula-box">Modal (could/would/may/shall) + base verb</div>
+          <ul class="example-list" style="columns: 2; gap: 2rem;">
+            <li><em>Could</em> you review this document?</li>
+            <li><em>May</em> I assist you with that?</li>
+            <li><em>Would</em> you mind waiting a moment?</li>
+            <li><em>Shall</em> we proceed to the boardroom?</li>
+          </ul>
+          <div class="g-tip"><span class="tip-label">Formality Scale:</span> can → could → would → may → shall (most formal)</div>
+          <span class="click-hint" style="display:block; margin-top:0.85rem;">Click for Full Details →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="closeModal()">×</button>
+      <h3 class="modal-title" id="modalTitle">Title</h3>
+      <div class="modal-subtitle" id="modalSubtitle">Subtitle</div>
+      <div class="modal-body" id="modalBody">Content</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">AceDev English Worksheet &nbsp;·&nbsp; Software Development Program &nbsp;·&nbsp; <span id="year"></span></div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('open'));
+    function openModal(t, s, b) {
+      document.getElementById('modalTitle').textContent = t;
+      document.getElementById('modalSubtitle').textContent = s;
+      document.getElementById('modalBody').innerHTML = b;
+      document.getElementById('detailModal').classList.add('active');
+    }
+    function closeModal() { document.getElementById('detailModal').classList.remove('active'); }
+    document.getElementById('detailModal').addEventListener('click', e => { if (e.target === document.getElementById('detailModal')) closeModal(); });
+  </script>
+</body>
+</html>

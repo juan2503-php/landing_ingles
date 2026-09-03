@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reflection Questions | AceDev English</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .reflection-list { display: flex; flex-direction: column; gap: 1.75rem; max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+    .ref-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--border-radius); padding: 2rem; cursor: pointer; transition: var(--transition); }
+    .ref-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .q-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.25rem; }
+    .q-num { width: 34px; height: 34px; border-radius: 50%; background: var(--color-navy); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 500; flex-shrink: 0; }
+    .q-text { font-size: 1.1rem; font-weight: 500; color: var(--color-navy); line-height: 1.4; }
+    .a-en { font-size: 1rem; font-weight: 300; color: var(--color-text-main); line-height: 1.75; margin-bottom: 1rem; padding-left: 0.75rem; border-left: 2px solid var(--color-border); }
+    .a-es { font-size: 0.88rem; font-weight: 300; color: var(--color-text-muted); border-top: 1px solid var(--color-border); padding-top: 0.75rem; display: flex; gap: 0.5rem; align-items: flex-start; }
+    .es-tag { background: var(--color-es-bg); color: var(--color-es-flag); font-size: 0.72rem; font-weight: 500; padding: 0.1rem 0.4rem; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
+
+    /* Side illustration */
+    .side-wrap { position: relative; }
+    .side-deco-left, .side-deco-right { position: absolute; top: 50%; transform: translateY(-50%); opacity: 0.05; pointer-events: none; z-index: 0; }
+    .side-deco-left { left: -100px; }
+    .side-deco-right { right: -100px; }
+    @media (max-width: 1024px) { .side-deco-left, .side-deco-right { display: none; } }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>AceDev English</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="intro.html" class="nav-link">Intro</a></li>
+        <li><a href="comic.html" class="nav-link">Comic</a></li>
+        <li><a href="reflection.html" class="nav-link active">Reflection</a></li>
+        <li><a href="vocab.html" class="nav-link">Vocab</a></li>
+        <li><a href="org-chart.html" class="nav-link">Org Chart</a></li>
+        <li><a href="expressions.html" class="nav-link">Expressions</a></li>
+        <li><a href="conversation.html" class="nav-link">Script</a></li>
+        <li><a href="grammar.html" class="nav-link">Grammar</a></li>
+        <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+        <li><a href="condicionales.html" class="nav-link">Condicionales</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="intro.html">1. Introduction</a></li>
+        <li><a href="comic.html">2. Comic Story</a></li>
+        <li><a href="reflection.html" class="active">3. Reflection</a></li>
+        <li><a href="vocab.html">4. Vocabulary</a></li>
+        <li><a href="org-chart.html">5. Org Chart</a></li>
+        <li><a href="expressions.html">6. Expressions</a></li>
+        <li><a href="conversation.html">7. Script</a></li>
+        <li><a href="grammar.html">8. Grammar</a></li>
+        <li><a href="quiz.html">9. Quiz</a></li>
+        <li><a href="condicionales.html">10. Condicionales</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container page-header">
+    <h1 class="page-title">Section 3 — Reflection Questions</h1>
+    <p class="page-subtitle">Bilingual analysis of the communication case study. Click any card to read expanded insights and key takeaways.</p>
+  </div>
+
+  <div class="container" style="padding-bottom:5rem;">
+    <div class="side-wrap">
+      <!-- Left: question marks -->
+      <div class="side-deco-left">
+        <svg width="130" height="380" viewBox="0 0 130 380" fill="none">
+          <text x="15" y="70" fill="#0f172a" font-size="60" font-family="serif">?</text>
+          <text x="35" y="170" fill="#0f172a" font-size="40" font-family="serif">?</text>
+          <text x="10" y="260" fill="#0f172a" font-size="55" font-family="serif">?</text>
+          <text x="40" y="350" fill="#0f172a" font-size="35" font-family="serif">?</text>
+        </svg>
+      </div>
+      <!-- Right: notepad lines -->
+      <div class="side-deco-right">
+        <svg width="130" height="380" viewBox="0 0 130 380" fill="none">
+          <rect x="10" y="20" width="110" height="340" rx="8" stroke="#0f172a" stroke-width="2"/>
+          <line x1="25" y1="60" x2="105" y2="60" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="25" y1="90" x2="105" y2="90" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="25" y1="120" x2="105" y2="120" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="25" y1="150" x2="105" y2="150" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="25" y1="180" x2="105" y2="180" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="25" y1="210" x2="95" y2="210" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="25" y1="240" x2="105" y2="240" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="25" y1="270" x2="85" y2="270" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="25" y1="300" x2="105" y2="300" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="25" y1="330" x2="90" y2="330" stroke="#0f172a" stroke-width="1.5"/>
+          <circle cx="17" cy="30" r="5" fill="#0f172a"/>
+        </svg>
+      </div>
+
+      <div class="reflection-list">
+        <div class="ref-card hover-wrap" onclick="openModal('Question 1 — Deep Analysis', 'Communication Problems in the Scenario', '<p><strong>Root Causes Identified:</strong></p><ul style=\'padding-left:1.25rem; margin-top:0.5rem; list-style-type:disc;\'><li>No English training protocol for reception staff</li><li>No emergency referral card available at the front desk</li><li>No bilingual colleague contact list posted near reception</li><li>No signage or visitor materials in English</li></ul><br><p><strong>Recommendation:</strong> Implement a 2-hour monthly English reception training for all front-desk staff.</p>')">
+          <div class="q-header">
+            <div class="q-num">1</div>
+            <div class="q-text">What communication problems are evident in this situation?</div>
+          </div>
+          <div class="a-en">
+            The primary problem is a language barrier at the company's first point of contact. The receptionist lacked basic English greeting phrases, leading to confusion, awkward delays, and visitor anxiety.
+          </div>
+          <div class="a-es">
+            <span class="es-tag">ES</span>
+            El problema principal es la barrera del idioma en recepción. La falta de frases básicas en inglés provocó confusión y demoras incómodas para el visitante.
+          </div>
+          <span class="click-hint">Click Card for Deep Insight →</span>
+          <div class="hover-info">Click to view deep analysis of the communication issues.</div>
+        </div>
+
+        <div class="ref-card hover-wrap" onclick="openModal('Question 2 — Deep Analysis', 'Corporate Image and Investor Perception', '<p><strong>Brand Reputation Impact:</strong> Foreign investors evaluate both technical output AND organizational polish. A language barrier at reception signals poor preparation and lack of global readiness.</p><br><p><strong>Investor Psychology:</strong> If a company cannot handle a lobby greeting, how will it handle a cross-border project delivery?</p>')">
+          <div class="q-header">
+            <div class="q-num">2</div>
+            <div class="q-text">How does this affect the company's image?</div>
+          </div>
+          <div class="a-en">
+            It projects an unprofessional image to international partners. Investors may question the global readiness of a software company if front-desk staff cannot handle basic English greetings.
+          </div>
+          <div class="a-es">
+            <span class="es-tag">ES</span>
+            Proyecta una imagen poco profesional a los socios internacionales. Los inversionistas pueden cuestionar la preparación global de la empresa si el personal no maneja el inglés básico.
+          </div>
+          <span class="click-hint">Click Card for Deep Insight →</span>
+          <div class="hover-info">Click to view deep analysis of the communication issues.</div>
+        </div>
+
+        <div class="ref-card hover-wrap" onclick="openModal('Question 3 — Deep Analysis', 'Immediately Effective English Phrases', '<p><strong>Top 5 Phrases That Would Have Resolved This:</strong></p><ol style=\'padding-left:1.25rem; margin-top:0.5rem;\'><li>\"Good morning! Welcome to our company.\"</li><li>\"Please have a seat while I notify the manager.\"</li><li>\"One moment please. I will find an English speaker.\"</li><li>\"May I have your name, please?\"</li><li>\"Thank you for your patience.\"</li></ol>')">
+          <div class="q-header">
+            <div class="q-num">3</div>
+            <div class="q-text">What simple English phrases could have solved this immediately?</div>
+          </div>
+          <div class="a-en">
+            Phrases like <em>"Good morning! Please have a seat while I notify the manager"</em> or <em>"One moment please, I will connect you with an English speaker"</em> would have immediately reassured the investor.
+          </div>
+          <div class="a-es">
+            <span class="es-tag">ES</span>
+            Frases como <em>"Please have a seat..."</em> o <em>"One moment please..."</em> habrían tranquilizado inmediatamente al visitante.
+          </div>
+          <span class="click-hint">Click Card for Deep Insight →</span>
+          <div class="hover-info">Click to view deep analysis of the communication issues.</div>
+        </div>
+
+        <div class="ref-card" onclick="openModal('Question 4 — Deep Analysis', 'Real-World Experience & Workplace Lessons', '<p><strong>Professional Takeaway:</strong> Preparing a small set of memorized clarification phrases gives engineering teams confidence during unexpected English interactions in code demos, client calls, and stand-ups.</p><br><p><strong>Practice Method:</strong> Role-play 10-minute English scenarios weekly during team standups.</p>')">
+          <div class="q-header">
+            <div class="q-num">4</div>
+            <div class="q-text">Have you ever experienced a similar situation?</div>
+          </div>
+          <div class="a-en">
+            Yes. During an international code demo, an overseas client asked an unexpected question in fast English. A teammate panicked, but our lead quickly intervened with clarifying phrases, saving the entire presentation.
+          </div>
+          <div class="a-es">
+            <span class="es-tag">ES</span>
+            Sí. Durante una demo de código internacional, un cliente extranjero hizo una pregunta rápida. Un compañero se desorientó, pero el líder intervino con frases de aclaración y salvó la presentación.
+          </div>
+          <span class="click-hint">Click Card for Deep Insight →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="closeModal()">×</button>
+      <h3 class="modal-title" id="modalTitle">Title</h3>
+      <div class="modal-subtitle" id="modalSubtitle">Subtitle</div>
+      <div class="modal-body" id="modalBody">Content</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">AceDev English Worksheet &nbsp;·&nbsp; Software Development Program &nbsp;·&nbsp; <span id="year"></span></div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('open'));
+    function openModal(t, s, b) {
+      document.getElementById('modalTitle').textContent = t;
+      document.getElementById('modalSubtitle').textContent = s;
+      document.getElementById('modalBody').innerHTML = b;
+      document.getElementById('detailModal').classList.add('active');
+    }
+    function closeModal() { document.getElementById('detailModal').classList.remove('active'); }
+    document.getElementById('detailModal').addEventListener('click', e => { if (e.target === document.getElementById('detailModal')) closeModal(); });
+  </script>
+</body>
+</html>

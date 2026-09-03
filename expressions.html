@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Office Expressions | AceDev English</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .expr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; position: relative; z-index: 1; }
+    .expr-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--border-radius); padding: 1.65rem; cursor: pointer; transition: var(--transition); }
+    .expr-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .expr-num { font-size: 0.72rem; font-weight: 400; color: var(--color-text-light); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.65rem; }
+    .expr-phrase { font-size: 1.1rem; font-weight: 500; color: var(--color-navy); margin-bottom: 0.35rem; line-height: 1.35; }
+    .expr-phonetic { font-size: 0.82rem; font-weight: 300; color: var(--color-text-muted); margin-bottom: 0.6rem; font-style: italic; }
+    .expr-es { font-size: 0.88rem; color: var(--color-es-flag); background: var(--color-es-bg); padding: 0.25rem 0.65rem; border-radius: 6px; display: inline-block; font-weight: 300; margin-bottom: 0.85rem; }
+    .expr-use { font-size: 0.85rem; font-weight: 300; color: var(--color-text-muted); line-height: 1.55; border-top: 1px solid var(--color-border); padding-top: 0.65rem; }
+
+    /* Side deco */
+    .side-wrap { position: relative; }
+    .side-deco-left, .side-deco-right { position: absolute; top: 50%; transform: translateY(-50%); opacity: 0.05; pointer-events: none; z-index: 0; }
+    .side-deco-left { left: -100px; }
+    .side-deco-right { right: -100px; }
+    @media (max-width: 1024px) { .expr-grid { grid-template-columns: repeat(2, 1fr); } .side-deco-left, .side-deco-right { display: none; } }
+    @media (max-width: 600px) { .expr-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>AceDev English</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="intro.html" class="nav-link">Intro</a></li>
+        <li><a href="comic.html" class="nav-link">Comic</a></li>
+        <li><a href="reflection.html" class="nav-link">Reflection</a></li>
+        <li><a href="vocab.html" class="nav-link">Vocab</a></li>
+        <li><a href="org-chart.html" class="nav-link">Org Chart</a></li>
+        <li><a href="expressions.html" class="nav-link active">Expressions</a></li>
+        <li><a href="conversation.html" class="nav-link">Script</a></li>
+        <li><a href="grammar.html" class="nav-link">Grammar</a></li>
+        <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+        <li><a href="condicionales.html" class="nav-link">Condicionales</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="intro.html">1. Introduction</a></li>
+        <li><a href="comic.html">2. Comic Story</a></li>
+        <li><a href="reflection.html">3. Reflection</a></li>
+        <li><a href="vocab.html">4. Vocabulary</a></li>
+        <li><a href="org-chart.html">5. Org Chart</a></li>
+        <li><a href="expressions.html" class="active">6. Expressions</a></li>
+        <li><a href="conversation.html">7. Script</a></li>
+        <li><a href="grammar.html">8. Grammar</a></li>
+        <li><a href="quiz.html">9. Quiz</a></li>
+        <li><a href="condicionales.html">10. Condicionales</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container page-header">
+    <h1 class="page-title">Section 6 — Office Expressions</h1>
+    <p class="page-subtitle">15 essential workplace phrases with phonetics, Spanish meaning, and context. Click any card for a detailed usage example.</p>
+  </div>
+
+  <div class="container" style="padding-bottom:5rem;">
+    <div class="side-wrap">
+      <!-- Left deco: speech wave -->
+      <div class="side-deco-left">
+        <svg width="130" height="380" viewBox="0 0 130 380" fill="none">
+          <path d="M 30 50 Q 80 30 30 80 Q -20 130 30 180 Q 80 230 30 280 Q -20 330 50 370" stroke="#0f172a" stroke-width="3" fill="none"/>
+          <circle cx="30" cy="50" r="5" fill="#0f172a"/>
+          <circle cx="30" cy="180" r="5" fill="#0f172a"/>
+          <circle cx="50" cy="370" r="5" fill="#0f172a"/>
+          <g transform="translate(48, 56)">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </g>
+          <g transform="translate(43, 176)">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2"><path d="M2 12h20"/><path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8"/><path d="M4 12V6a4 4 0 0 1 8 0 4 4 0 0 1 8 0v6"/></svg>
+          </g>
+          <g transform="translate(48, 296)">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          </g>
+        </svg>
+      </div>
+      <!-- Right deco: phonetics pattern -->
+      <div class="side-deco-right">
+        <svg width="130" height="380" viewBox="0 0 130 380" fill="none">
+          <text x="10" y="40" fill="#0f172a" font-size="13" font-family="serif">/ɡʊd ˈmɔːrnɪŋ/</text>
+          <text x="10" y="80" fill="#0f172a" font-size="13" font-family="serif">/pleɪs həv ə siːt/</text>
+          <text x="10" y="120" fill="#0f172a" font-size="13" font-family="serif">/haʊ keɪn aɪ/</text>
+          <text x="10" y="160" fill="#0f172a" font-size="13" font-family="serif">/θæŋk juː/</text>
+          <text x="10" y="200" fill="#0f172a" font-size="13" font-family="serif">/wʌn ˈmoʊmənt/</text>
+          <text x="10" y="240" fill="#0f172a" font-size="13" font-family="serif">/aɪm sɒri/</text>
+          <text x="10" y="280" fill="#0f172a" font-size="13" font-family="serif">/weɪt/</text>
+          <text x="10" y="320" fill="#0f172a" font-size="13" font-family="serif">/ɑːsk/</text>
+        </svg>
+      </div>
+
+      <div class="expr-grid" id="expressionGrid"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="closeModal()">×</button>
+      <h3 class="modal-title" id="modalTitle">Title</h3>
+      <div class="modal-subtitle" id="modalSubtitle">Subtitle</div>
+      <div class="modal-body" id="modalBody">Content</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">AceDev English Worksheet &nbsp;·&nbsp; Software Development Program &nbsp;·&nbsp; <span id="year"></span></div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('open'));
+
+    const expressions = [
+      { phrase: "Good morning / Good afternoon", phonetic: "/ɡʊd ˈmɔːrnɪŋ / ˈɑːftərnuːn/", es: "Buenos días / Buenas tardes", use: "Standard professional greeting when arriving at the office or meeting a client.", detail: "Use 'Good morning' before noon and 'Good afternoon' after. Never use 'Hey' in formal settings." },
+      { phrase: "How may I help you?", phonetic: "/haʊ meɪ aɪ help juː/", es: "¿En qué puedo ayudarle?", use: "Formal offer to assist a visitor or client at reception or in a meeting.", detail: "More formal than 'How can I help you?' — the use of 'may' indicates respect and professionalism." },
+      { phrase: "Please have a seat", phonetic: "/pliːz hæv ə siːt/", es: "Por favor, tome asiento", use: "Inviting a visitor to sit down while waiting at reception.", detail: "Accompanied by a gesture toward chairs. Can add: 'Someone will be with you shortly.'" },
+      { phrase: "One moment, please", phonetic: "/wʌn ˈmoʊmənt pliːz/", es: "Un momento, por favor", use: "Used when you need a brief pause to check or retrieve information.", detail: "Avoid leaving a visitor waiting without this phrase — it reduces frustration and maintains professionalism." },
+      { phrase: "Could you repeat that, please?", phonetic: "/kʊd juː rɪˈpiːt ðæt/", es: "¿Podría repetir eso, por favor?", use: "Asking someone to say something again when you did not hear or understand.", detail: "Always more polite than 'What?' or 'Huh?' — shows attentiveness and respect for the speaker." },
+      { phrase: "I will connect you right away", phonetic: "/aɪ wɪl kəˈnekt juː raɪt əˈweɪ/", es: "Le comunicaré de inmediato", use: "Used when routing a visitor or caller to the correct department or person.", detail: "Ideal for reception or customer service roles when transferring a call or walking a visitor." },
+      { phrase: "Thank you for your patience", phonetic: "/θæŋk juː fɔːr jʊər ˈpeɪʃəns/", es: "Gracias por su paciencia", use: "Acknowledging a wait time and showing appreciation for the visitor's understanding.", detail: "Use after any delay: 'Thank you for your patience, Mr. Chen. Mr. Rivera is ready for you now.'" },
+      { phrase: "Welcome to our company", phonetic: "/ˈwelkəm tuː aʊər ˈkʌmpəni/", es: "Bienvenido a nuestra empresa", use: "Professional greeting for new employees, clients, or visiting investors.", detail: "Can extend with: 'Welcome to our company. We are thrilled to have you here.'" },
+      { phrase: "I apologize for the inconvenience", phonetic: "/aɪ əˈpɒlədʒaɪz fɔːr ðə ɪnkənˈviːniəns/", es: "Me disculpo por la inconveniencia", use: "Formal apology when a mistake, delay, or problem has occurred.", detail: "More appropriate than just 'Sorry' in professional contexts — shows accountability." },
+      { phrase: "Let me check that for you", phonetic: "/let miː tʃek ðæt fɔːr juː/", es: "Permítame verificar eso para usted", use: "Buying time to verify information before responding definitively.", detail: "Always better to check than to guess — builds trust and prevents miscommunication." },
+      { phrase: "Is there anything else I can assist you with?", phonetic: "/ɪz ðer ˈeniθɪŋ els/", es: "¿Hay algo más en que pueda ayudarle?", use: "Closing phrase to ensure full satisfaction after assisting a client or visitor.", detail: "Essential end-of-interaction phrase that demonstrates complete commitment to service." },
+      { phrase: "Please follow me", phonetic: "/pliːz ˈfɒloʊ miː/", es: "Por favor, sígame", use: "Guiding a visitor from reception to a meeting room, office, or area.", detail: "Walk at a moderate pace. Consider adding: 'The boardroom is on the third floor.'" },
+      { phrase: "The meeting is scheduled for...", phonetic: "/ðə ˈmiːtɪŋ ɪz ˈʃedjuːld fɔːr/", es: "La reunión está programada para...", use: "Confirming appointment times when coordinating with visitors or colleagues.", detail: "Always confirm with date, time, and location: 'The meeting is scheduled for 2 PM in Conference Room B.'" },
+      { phrase: "Could I take a message?", phonetic: "/kʊd aɪ teɪk ə ˈmesɪdʒ/", es: "¿Puedo tomar un mensaje?", use: "Offered when the person being contacted is unavailable.", detail: "Follow with: 'What is the best way to reach you?' to ensure proper callback." },
+      { phrase: "Have a great day!", phonetic: "/hæv ə ɡreɪt deɪ/", es: "¡Que tenga un excelente día!", use: "Warm professional closing after successfully helping a visitor or colleague.", detail: "Can vary: 'Have a wonderful day!', 'Safe travels!', or 'It was a pleasure meeting you!'" },
+    ];
+
+    const grid = document.getElementById('expressionGrid');
+    expressions.forEach((e, i) => {
+      const card = document.createElement('div');
+      card.className = 'expr-card hover-wrap';
+      card.innerHTML = `
+        <div class="expr-num">Expression ${i + 1}</div>
+        <div class="expr-phrase">"${e.phrase}"</div>
+        <div class="expr-phonetic">${e.phonetic}</div>
+        <div class="expr-es">${e.es}</div>
+        <div class="expr-use"><strong>When to use:</strong> ${e.use}</div>
+        <span class="click-hint" style="display:block;margin-top:0.65rem;">Click for Deep Dive →</span>
+        <div class="hover-info">Click to learn pronunciation tips and see detailed examples!</div>
+      `;
+      card.addEventListener('click', () => openModal(`"${e.phrase}"`, e.es, `<p><strong>Phonetic:</strong> <em>${e.phonetic}</em></p><br><p><strong>When to use:</strong> ${e.use}</p><br><p><strong>Pro Tip:</strong> ${e.detail}</p>`));
+      grid.appendChild(card);
+    });
+
+    function openModal(t, s, b) {
+      document.getElementById('modalTitle').textContent = t;
+      document.getElementById('modalSubtitle').textContent = s;
+      document.getElementById('modalBody').innerHTML = b;
+      document.getElementById('detailModal').classList.add('active');
+    }
+    function closeModal() { document.getElementById('detailModal').classList.remove('active'); }
+    document.getElementById('detailModal').addEventListener('click', e => { if (e.target === document.getElementById('detailModal')) closeModal(); });
+  </script>
+</body>
+</html>

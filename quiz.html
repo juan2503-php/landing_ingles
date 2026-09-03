@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Quiz | AceDev English</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .quiz-wrap { max-width: 780px; margin: 0 auto; position: relative; z-index: 1; }
+    .progress-bar-outer { background: var(--color-border); border-radius: var(--border-radius-pill); height: 6px; margin-bottom: 2rem; overflow: hidden; }
+    .progress-bar-inner { height: 100%; background: var(--color-navy); border-radius: var(--border-radius-pill); transition: width 0.4s ease; }
+    .q-counter { font-size: 0.82rem; font-weight: 400; color: var(--color-text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.07em; }
+    .q-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--border-radius); padding: 2.25rem; margin-bottom: 1.5rem; }
+    .q-text { font-size: 1.2rem; font-weight: 500; color: var(--color-navy); line-height: 1.55; }
+    .options-list { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; }
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 1rem 1.25rem;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-sm);
+      font-family: var(--font-family);
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--color-text-main);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .option-btn:hover:not([disabled]) { background: var(--color-navy); color: #fff; }
+    .option-btn.correct { background: #dcfce7; border-color: var(--color-correct); color: #064e3b; font-weight: 400; }
+    .option-btn.incorrect { background: #fee2e2; border-color: var(--color-incorrect); color: #7f1d1d; font-weight: 400; }
+    .option-btn[disabled] { cursor: default; }
+    .feedback-box { background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--border-radius-sm); padding: 1rem 1.25rem; margin-top: 1rem; font-size: 0.92rem; font-weight: 300; line-height: 1.6; color: var(--color-text-main); display: none; }
+    .next-btn { margin-top: 1.5rem; }
+    .result-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--border-radius); padding: 3rem; text-align: center; display: none; }
+    .result-score { font-size: 4rem; font-weight: 500; color: var(--color-navy); }
+    .result-label { font-size: 1.15rem; font-weight: 300; color: var(--color-text-muted); margin-bottom: 1.75rem; }
+    .result-breakdown { display: flex; justify-content: center; gap: 2.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .result-item { text-align: center; }
+    .result-item-num { font-size: 2rem; font-weight: 500; color: var(--color-navy); }
+    .result-item-label { font-size: 0.78rem; font-weight: 300; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* Side deco */
+    .side-wrap { position: relative; }
+    .side-deco-left, .side-deco-right { position: absolute; top: 50%; transform: translateY(-50%); opacity: 0.05; pointer-events: none; z-index: 0; }
+    .side-deco-left { left: -100px; }
+    .side-deco-right { right: -100px; }
+    @media (max-width: 1024px) { .side-deco-left, .side-deco-right { display: none; } }
+    @media (max-width: 600px) { .q-box { padding: 1.5rem; } .q-text { font-size: 1.05rem; } .result-breakdown { gap: 1.5rem; } }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>AceDev English</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="intro.html" class="nav-link">Intro</a></li>
+        <li><a href="comic.html" class="nav-link">Comic</a></li>
+        <li><a href="reflection.html" class="nav-link">Reflection</a></li>
+        <li><a href="vocab.html" class="nav-link">Vocab</a></li>
+        <li><a href="org-chart.html" class="nav-link">Org Chart</a></li>
+        <li><a href="expressions.html" class="nav-link">Expressions</a></li>
+        <li><a href="conversation.html" class="nav-link">Script</a></li>
+        <li><a href="grammar.html" class="nav-link">Grammar</a></li>
+        <li><a href="quiz.html" class="nav-link active">Quiz</a></li>
+        <li><a href="condicionales.html" class="nav-link">Condicionales</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="intro.html">1. Introduction</a></li>
+        <li><a href="comic.html">2. Comic Story</a></li>
+        <li><a href="reflection.html">3. Reflection</a></li>
+        <li><a href="vocab.html">4. Vocabulary</a></li>
+        <li><a href="org-chart.html">5. Org Chart</a></li>
+        <li><a href="expressions.html">6. Expressions</a></li>
+        <li><a href="conversation.html">7. Script</a></li>
+        <li><a href="grammar.html">8. Grammar</a></li>
+        <li><a href="quiz.html" class="active">9. Quiz</a></li>
+        <li><a href="condicionales.html">10. Condicionales</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container page-header">
+    <h1 class="page-title">Section 9 — Interactive Quiz</h1>
+    <p class="page-subtitle">10 questions covering vocabulary, grammar, and professional English expressions from this worksheet.</p>
+  </div>
+
+  <div class="container" style="padding-bottom: 5rem;">
+    <div class="side-wrap">
+      <!-- Left deco: checkmarks -->
+      <div class="side-deco-left">
+        <svg width="120" height="380" viewBox="0 0 120 380" fill="none">
+          <circle cx="40" cy="40" r="24" stroke="#0f172a" stroke-width="3"/>
+          <polyline points="28,40 38,52 58,28" stroke="#0f172a" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="40" cy="130" r="24" stroke="#0f172a" stroke-width="3"/>
+          <polyline points="28,130 38,142 58,118" stroke="#0f172a" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="40" cy="220" r="24" stroke="#0f172a" stroke-width="3"/>
+          <line x1="28" y1="208" x2="52" y2="232" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
+          <line x1="52" y1="208" x2="28" y2="232" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="40" cy="310" r="24" stroke="#0f172a" stroke-width="3"/>
+          <polyline points="28,310 38,322 58,298" stroke="#0f172a" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <!-- Right deco: percentage gauge -->
+      <div class="side-deco-right">
+        <svg width="120" height="380" viewBox="0 0 120 380" fill="none">
+          <circle cx="60" cy="70" r="50" stroke="#0f172a" stroke-width="4" stroke-dasharray="188" stroke-dashoffset="47"/>
+          <text x="60" y="76" fill="#0f172a" font-size="18" text-anchor="middle" font-weight="bold">75%</text>
+          <rect x="20" y="150" width="80" height="12" rx="6" fill="#0f172a" opacity="0.3"/>
+          <rect x="20" y="150" width="60" height="12" rx="6" fill="#0f172a"/>
+          <rect x="20" y="178" width="80" height="12" rx="6" fill="#0f172a" opacity="0.3"/>
+          <rect x="20" y="178" width="45" height="12" rx="6" fill="#0f172a"/>
+          <rect x="20" y="206" width="80" height="12" rx="6" fill="#0f172a" opacity="0.3"/>
+          <rect x="20" y="206" width="72" height="12" rx="6" fill="#0f172a"/>
+        </svg>
+      </div>
+
+      <div class="quiz-wrap">
+        <div id="quizSection">
+          <div class="q-counter" id="qCounter">Question 1 of 10</div>
+          <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar" style="width:10%"></div></div>
+          <div class="q-box">
+            <div class="q-text" id="qText">Loading...</div>
+          </div>
+          <ul class="options-list" id="optionsList"></ul>
+          <div class="feedback-box" id="feedbackBox"></div>
+          <button class="btn btn-navy next-btn" id="nextBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+        </div>
+        <div class="result-box" id="resultBox">
+          <div class="result-score" id="resultScore">0/10</div>
+          <div class="result-label" id="resultLabel">Quiz Completed</div>
+          <div class="result-breakdown">
+            <div class="result-item"><div class="result-item-num" id="resCorrect">0</div><div class="result-item-label">Correct</div></div>
+            <div class="result-item"><div class="result-item-num" id="resIncorrect">0</div><div class="result-item-label">Incorrect</div></div>
+            <div class="result-item"><div class="result-item-num" id="resPct">0%</div><div class="result-item-label">Percentage</div></div>
+          </div>
+          <button class="btn btn-navy" onclick="restartQuiz()">Retake Quiz</button>
+          &nbsp;
+          <a href="index.html" class="btn btn-ghost">Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">AceDev English Worksheet &nbsp;·&nbsp; Software Development Program &nbsp;·&nbsp; <span id="year"></span></div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('open'));
+
+    const questions = [
+      { q: "What is the English title for 'Director de Tecnología' in a software company?", opts: ["Chief Technology Officer", "Technical Lead", "Product Manager", "Software Architect"], ans: 0, feedback: "CTO (Chief Technology Officer) is the executive responsible for all technical strategy and engineering decisions." },
+      { q: "Which phrase is the MOST formal and polite way to ask for help in English?", opts: ["Can you help me?", "Could you help me?", "Would you mind helping me?", "Do you help me?"], ans: 2, feedback: "'Would you mind helping me?' is the most polite form using a double modal construction. It's ideal for formal client or investor interactions." },
+      { q: "Complete the sentence: 'We _____ growing steadily for the past three years.' (Present Perfect Continuous)", opts: ["have been", "has been", "are", "were"], ans: 0, feedback: "'Have been growing' is the Present Perfect Continuous (have/has + been + V-ing), expressing a continuous action from the past to the present." },
+      { q: "What does 'Please have a seat' mean in Spanish?", opts: ["Por favor, ayúdeme", "Por favor, tome asiento", "Por favor, espere aquí afuera", "Por favor, llame antes"], ans: 1, feedback: "'Please have a seat' = 'Por favor, tome asiento' — an essential reception phrase for welcoming visitors professionally." },
+      { q: "Which role is primarily responsible for bridging the gap between clients and the dev team?", opts: ["Scrum Master", "Business Analyst", "QA Engineer", "Cloud Architect"], ans: 1, feedback: "The Business Analyst bridges communication between business stakeholders and the development team by gathering, documenting, and translating requirements." },
+      { q: "In the formula 'Subject + will + base verb', which grammar tense is this?", opts: ["Present Simple", "Past Continuous", "Future Simple", "Present Perfect"], ans: 2, feedback: "'Will + base verb' is the Future Simple tense, used for promises, commitments, predictions, and spontaneous decisions in English." },
+      { q: "What should you say when someone calls but the contact is unavailable?", opts: ["Call back later", "Could I take a message?", "He is busy right now", "I don't know where he is"], ans: 1, feedback: "'Could I take a message?' is the professional standard phrase used when the requested person is unavailable — shows service and attentiveness." },
+      { q: "Which professional phrase is used to thank someone for waiting?", opts: ["You are very patient", "Thank you for your patience", "I am sorry for making you wait so long", "Please wait"], ans: 1, feedback: "'Thank you for your patience' is a formal, concise phrase that acknowledges a wait while maintaining a positive, respectful tone." },
+      { q: "The DevOps Engineer primarily manages which of these?", opts: ["UI wireframes and prototypes", "Financial budgeting and reports", "CI/CD pipelines and cloud deployments", "Job recruitment and onboarding"], ans: 2, feedback: "DevOps Engineers manage CI/CD pipelines, cloud infrastructure, and deployment automation — bridging development and operations for stable, rapid releases." },
+      { q: "Complete: 'She _____ the pull request every morning.' (Present Simple, third person)", opts: ["review", "reviews", "reviewed", "is review"], ans: 1, feedback: "Present Simple third person (he/she/it) adds -s/-es to the base verb: She review → She reviews. This is one of the most common grammar errors in English." },
+    ];
+
+    let current = 0, correct = 0, incorrect = 0;
+
+    function loadQuestion() {
+      const q = questions[current];
+      document.getElementById('qCounter').textContent = `Question ${current + 1} of ${questions.length}`;
+      document.getElementById('progressBar').style.width = `${((current + 1) / questions.length) * 100}%`;
+      document.getElementById('qText').textContent = q.q;
+      document.getElementById('feedbackBox').style.display = 'none';
+      document.getElementById('nextBtn').style.display = 'none';
+      const ol = document.getElementById('optionsList');
+      ol.innerHTML = '';
+      q.opts.forEach((opt, i) => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = `${String.fromCharCode(65 + i)}. ${opt}`;
+        btn.onclick = () => selectAnswer(i);
+        li.appendChild(btn);
+        ol.appendChild(li);
+      });
+    }
+
+    function selectAnswer(idx) {
+      const q = questions[current];
+      const btns = document.querySelectorAll('.option-btn');
+      btns.forEach(b => b.disabled = true);
+      if (idx === q.ans) {
+        btns[idx].classList.add('correct');
+        correct++;
+      } else {
+        btns[idx].classList.add('incorrect');
+        btns[q.ans].classList.add('correct');
+        incorrect++;
+      }
+      const fb = document.getElementById('feedbackBox');
+      fb.textContent = q.feedback;
+      fb.style.display = 'block';
+      document.getElementById('nextBtn').style.display = 'inline-flex';
+      document.getElementById('nextBtn').textContent = current < questions.length - 1 ? 'Next Question →' : 'See Results';
+    }
+
+    function nextQuestion() {
+      current++;
+      if (current >= questions.length) {
+        showResults();
+      } else {
+        loadQuestion();
+      }
+    }
+
+    function showResults() {
+      document.getElementById('quizSection').style.display = 'none';
+      const res = document.getElementById('resultBox');
+      res.style.display = 'block';
+      const pct = Math.round((correct / questions.length) * 100);
+      document.getElementById('resultScore').textContent = `${correct}/${questions.length}`;
+      const labels = ['Keep Practicing!', 'Good Effort!', 'Well Done!', 'Excellent!', 'Outstanding!'];
+      document.getElementById('resultLabel').textContent = pct < 50 ? labels[0] : pct < 65 ? labels[1] : pct < 80 ? labels[2] : pct < 95 ? labels[3] : labels[4];
+      document.getElementById('resCorrect').textContent = correct;
+      document.getElementById('resIncorrect').textContent = incorrect;
+      document.getElementById('resPct').textContent = `${pct}%`;
+    }
+
+    function restartQuiz() {
+      current = 0; correct = 0; incorrect = 0;
+      document.getElementById('quizSection').style.display = 'block';
+      document.getElementById('resultBox').style.display = 'none';
+      loadQuestion();
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
