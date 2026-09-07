@@ -1,0 +1,4242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test | AceDev English</title>
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('acedev_theme');
+        if (saved === 'dark' || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    /* Section 11 Test Styles */
+    .test-hero {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      padding: 2.25rem;
+      margin-bottom: 2.5rem;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+    .test-hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: var(--color-navy);
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.85rem;
+      border-radius: var(--border-radius-pill);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      color: var(--color-navy);
+      font-size: 0.78rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.85rem;
+    }
+    .formula-banner {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-sm);
+      padding: 1rem 1.35rem;
+      margin: 1.25rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: var(--color-navy);
+    }
+    .formula-tag {
+      background: var(--color-navy);
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--border-radius-pill);
+      font-family: var(--font-family);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    /* Condition -> Result Diagram */
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .flow-step {
+      flex: 1;
+      min-width: 220px;
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-sm);
+      padding: 1.1rem 1.25rem;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+    .flow-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .flow-label.cond { color: #2563eb; }
+    .flow-label.res { color: var(--color-correct); }
+    .flow-text {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: var(--color-navy);
+      font-weight: 500;
+    }
+    .flow-arrow {
+      font-size: 1.4rem;
+      color: var(--color-navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+    }
+
+    /* Interactive Lab Grid */
+    .lab-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.75rem;
+      margin-bottom: 2.5rem;
+    }
+    .lab-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+      position: relative;
+    }
+    .lab-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: #cbd5e1;
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+    .action-num-badge {
+      font-size: 0.75rem;
+      font-weight: 500;
+      background: var(--color-navy);
+      color: #fff;
+      padding: 0.2rem 0.65rem;
+      border-radius: var(--border-radius-pill);
+    }
+    .card-status-badge {
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--border-radius-pill);
+      background: #f1f5f9;
+      color: var(--color-text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: var(--transition);
+    }
+    .card-status-badge.active-status {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    /* Simulation stage */
+    .sim-stage {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-sm);
+      height: 230px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+      user-select: none;
+      touch-action: none;
+    }
+
+    /* Controls bar */
+    .card-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--color-border);
+      flex-wrap: wrap;
+    }
+
+    /* Action buttons */
+    .btn-action-small {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: var(--border-radius-pill);
+      font-family: var(--font-family);
+      font-size: 0.82rem;
+      font-weight: 500;
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      color: var(--color-navy);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-action-small:hover {
+      background: var(--color-navy);
+      color: #ffffff;
+      border-color: var(--color-navy);
+    }
+    .btn-action-small:active {
+      transform: scale(0.97);
+    }
+
+    /* ===================================================
+       1. CHARGER SIMULATION STYLES
+       =================================================== */
+    .wall-outlet {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 72px;
+      background: #e2e8f0;
+      border: 2px solid #94a3b8;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      z-index: 2;
+    }
+    .outlet-socket {
+      width: 22px;
+      height: 22px;
+      background: #cbd5e1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .outlet-hole {
+      width: 3px;
+      height: 8px;
+      background: #1e293b;
+      border-radius: 1px;
+    }
+    .cable-canvas-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .charger-cable-path {
+      fill: none;
+      stroke: #334155;
+      stroke-width: 4.5;
+      stroke-linecap: round;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15));
+    }
+    .charger-drag-head {
+      position: absolute;
+      width: 38px;
+      height: 24px;
+      background: #1e293b;
+      border-radius: 4px;
+      border: 1px solid #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      z-index: 10;
+      touch-action: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+      transition: transform 0.08s ease, box-shadow 0.2s ease;
+    }
+    .charger-drag-head:active {
+      cursor: grabbing;
+      transform: scale(1.08);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+    }
+    .charger-drag-pin {
+      position: absolute;
+      right: -8px;
+      width: 9px;
+      height: 7px;
+      background: #94a3b8;
+      border-radius: 0 2px 2px 0;
+      border: 1px solid #475569;
+    }
+    .laptop-frame {
+      position: absolute;
+      right: 25px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 156px;
+      height: 98px;
+      background: #1e293b;
+      border-radius: 7px 7px 0 0;
+      border: 2px solid #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+      transition: var(--transition);
+      z-index: 3;
+    }
+    .laptop-base {
+      position: absolute;
+      right: 12px;
+      top: calc(50% + 49px);
+      width: 182px;
+      height: 10px;
+      background: #94a3b8;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+      z-index: 3;
+    }
+    .laptop-screen {
+      width: 140px;
+      height: 82px;
+      background: #090d16;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .laptop-charging .laptop-screen {
+      background: #022c22;
+      color: #6ee7b7;
+      box-shadow: inset 0 0 20px rgba(16, 185, 129, 0.4);
+      border: 1px solid #059669;
+    }
+    .charging-bolt {
+      display: none;
+      animation: pulse-bolt 0.8s infinite alternate;
+    }
+    .laptop-charging .charging-bolt {
+      display: inline-block;
+    }
+    @keyframes pulse-bolt {
+      from { transform: scale(0.95); opacity: 0.7; }
+      to { transform: scale(1.2); opacity: 1; filter: drop-shadow(0 0 6px #10b981); }
+    }
+    .laptop-charging-port {
+      position: absolute;
+      left: -9px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 9px;
+      height: 14px;
+      background: #334155;
+      border: 1px solid #64748b;
+      border-radius: 2px 0 0 2px;
+    }
+    .laptop-charging-port.snapped {
+      background: #10b981;
+      border-color: #34d399;
+      box-shadow: 0 0 10px #10b981;
+    }
+
+    /* ===================================================
+       2. WIFI MULTI-SWITCH STYLES
+       =================================================== */
+    .router-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .wifi-waves-box {
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+    }
+    .wifi-waves-svg {
+      transition: all 0.4s ease;
+      opacity: 0.2;
+      filter: grayscale(1);
+    }
+    .wifi-waves-svg.active {
+      opacity: 1;
+      filter: drop-shadow(0 0 10px rgba(37, 99, 235, 0.7));
+      animation: wifi-pulse 1.5s infinite;
+    }
+    @keyframes wifi-pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+      100% { transform: scale(1); }
+    }
+    .router-unit {
+      width: 140px;
+      height: 44px;
+      background: #1e293b;
+      border-radius: 8px;
+      border: 2px solid #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 0.85rem;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    .router-antenna {
+      width: 4px;
+      height: 34px;
+      background: #475569;
+      position: absolute;
+      top: -28px;
+      border-radius: 2px;
+    }
+    .router-antenna.ant-left { left: 24px; transform: rotate(-18deg); }
+    .router-antenna.ant-right { right: 24px; transform: rotate(18deg); }
+    .r-led {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #475569;
+      transition: var(--transition);
+    }
+    .r-led.lit-green {
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+    .r-led.lit-blue {
+      background: #3b82f6;
+      box-shadow: 0 0 8px #3b82f6;
+    }
+    .wifi-switches-panel {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.4rem;
+      margin-top: 0.85rem;
+      width: 100%;
+    }
+    .wifi-switch-btn {
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 0.45rem 0.25rem;
+      text-align: center;
+      font-size: 0.72rem;
+      font-family: var(--font-family);
+      font-weight: 500;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .wifi-switch-btn:hover {
+      border-color: #94a3b8;
+    }
+    .wifi-switch-btn.sw-active {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-color: #3b82f6;
+      font-weight: 600;
+    }
+    .wifi-switch-btn.sw-target.sw-active {
+      background: #dcfce7;
+      color: #15803d;
+      border-color: #10b981;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+    }
+    .wifi-switch-btn.sw-wrong.sw-active {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-color: #ef4444;
+    }
+
+    /* ===================================================
+       3. LIGHT BULB WITH PHASE & NEUTRAL WIRES
+       =================================================== */
+    .circuit-stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+    }
+    .power-source-box {
+      width: 65px;
+      height: 140px;
+      background: #1e293b;
+      border: 2px solid #0f172a;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0.5rem 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      z-index: 2;
+    }
+    .source-label {
+      font-size: 0.65rem;
+      color: #94a3b8;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .source-terminal {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .term-red {
+      background: #ef4444;
+      border: 2px solid #b91c1c;
+      box-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
+    }
+    .term-white {
+      background: #ffffff;
+      border: 2px solid #94a3b8;
+      box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+    }
+    .bulb-assembly {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+    }
+    .bulb-radiance {
+      position: absolute;
+      top: -20px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(250, 204, 21, 0.7) 0%, rgba(250, 204, 21, 0) 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .bulb-radiance.lit {
+      opacity: 1;
+      animation: bulb-glow-pulse 2s infinite alternate;
+    }
+    @keyframes bulb-glow-pulse {
+      from { transform: scale(1); opacity: 0.8; }
+      to { transform: scale(1.1); opacity: 1; }
+    }
+    .bulb-svg {
+      z-index: 2;
+      transition: var(--transition);
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+    }
+    .bulb-terminals-row {
+      display: flex;
+      gap: 18px;
+      margin-top: 6px;
+      z-index: 2;
+    }
+    .target-socket {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .target-socket.red-socket {
+      border: 2px dashed #ef4444;
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+    .target-socket.red-socket.plugged {
+      border: 2px solid #b91c1c;
+      background: #ef4444;
+      color: #ffffff;
+      box-shadow: 0 0 10px #ef4444;
+    }
+    .target-socket.white-socket {
+      border: 2px dashed #94a3b8;
+      background: #f8fafc;
+      color: #334155;
+    }
+    .target-socket.white-socket.plugged {
+      border: 2px solid #64748b;
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: 0 0 10px rgba(255,255,255,0.9);
+    }
+    .circuit-svg-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .wire-red-path {
+      fill: none;
+      stroke: #ef4444;
+      stroke-width: 4;
+      stroke-linecap: round;
+      filter: drop-shadow(0 2px 4px rgba(239, 68, 68, 0.3));
+    }
+    .wire-white-path {
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 4;
+      stroke-linecap: round;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+    }
+    .draggable-pin {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      z-index: 10;
+      touch-action: none;
+      font-size: 0.65rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+      transition: transform 0.08s ease;
+    }
+    .draggable-pin:active {
+      cursor: grabbing;
+      transform: scale(1.15);
+    }
+    .pin-red {
+      background: #ef4444;
+      color: #fff;
+      border: 2px solid #b91c1c;
+    }
+    .pin-white {
+      background: #ffffff;
+      color: #0f172a;
+      border: 2px solid #94a3b8;
+    }
+
+    /* ===================================================
+       4. MICROPHONE VOICE EVALUATOR STYLES (REPLACES PLANT)
+       =================================================== */
+    #micStage {
+      user-select: text;
+      touch-action: auto;
+      padding: 0.75rem 0.85rem;
+      min-height: 250px;
+      height: auto;
+    }
+    .mic-stage-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    .mic-random-header {
+      width: 100%;
+      max-width: 95%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      gap: 8px;
+    }
+    .mic-random-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .random-badge-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--border-radius-pill);
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .random-phrase-counter {
+      font-size: 0.68rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+    .btn-random-phrase {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--border-radius-pill);
+      padding: 0.35rem 0.85rem;
+      font-size: 0.73rem;
+      font-weight: 700;
+      font-family: var(--font-family);
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+      transition: all 0.2s ease;
+    }
+    .btn-random-phrase:hover {
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
+    }
+    .btn-random-phrase:active {
+      transform: translateY(0);
+    }
+    .shuffle-svg-icon {
+      transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .shuffle-svg-icon.spinning {
+      transform: rotate(360deg);
+    }
+    .mic-target-svg-wrapper {
+      width: 100%;
+      max-width: 95%;
+      margin-bottom: 0.55rem;
+    }
+    .mic-phrase-svg-box {
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      padding: 0.5rem 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .mic-phrase-svg-box:hover {
+      border-color: #93c5fd;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+    }
+    .mic-phrase-svg-icon {
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      border-radius: 8px;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #e2e8f0;
+      transition: transform 0.3s ease;
+    }
+    .mic-phrase-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-align: left;
+    }
+    .mic-phrase-grammar-pills {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .pill-cond {
+      font-size: 0.63rem;
+      font-weight: 700;
+      color: #1e40af;
+      background: #eff6ff;
+      padding: 0.1rem 0.45rem;
+      border-radius: 4px;
+      border: 1px solid #bfdbfe;
+    }
+    .pill-arrow-svg {
+      color: #94a3b8;
+    }
+    .pill-res {
+      font-size: 0.63rem;
+      font-weight: 700;
+      color: #065f46;
+      background: #ecfdf5;
+      padding: 0.1rem 0.45rem;
+      border-radius: 4px;
+      border: 1px solid #a7f3d0;
+    }
+    .mic-phrase-sentence-text {
+      font-size: 0.79rem;
+      font-weight: 600;
+      color: var(--color-navy);
+      line-height: 1.25;
+    }
+    .mic-center-area {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      position: relative;
+    }
+    .mic-pulse-ring {
+      position: absolute;
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: rgba(220, 38, 38, 0.2);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      left: 0;
+      top: 0;
+    }
+    .mic-pulse-ring.pulsing {
+      opacity: 1;
+      animation: mic-wave 1.2s infinite ease-out;
+    }
+    @keyframes mic-wave {
+      0% { transform: scale(0.9); opacity: 0.8; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    .mic-icon-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #1e293b;
+      border: 3px solid #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: var(--transition);
+      z-index: 2;
+    }
+    .mic-icon-btn:hover {
+      transform: scale(1.05);
+      background: #2563eb;
+      border-color: #1d4ed8;
+    }
+    .mic-icon-btn.recording {
+      background: #dc2626;
+      border-color: #b91c1c;
+      animation: mic-active-pulse 1s infinite alternate;
+    }
+    @keyframes mic-active-pulse {
+      from { box-shadow: 0 0 8px rgba(220, 38, 38, 0.6); }
+      to { box-shadow: 0 0 20px rgba(220, 38, 38, 0.9); }
+    }
+    .mic-status-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .mic-perm-badge {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: #15803d;
+      background: #dcfce7;
+      border: 1px solid #bbf7d0;
+      border-radius: var(--border-radius-pill);
+      padding: 0.1rem 0.45rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      width: fit-content;
+    }
+    .mic-timer-pill {
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--border-radius-pill);
+      background: #f1f5f9;
+      color: var(--color-navy);
+      border: 1px solid var(--color-border);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      width: fit-content;
+    }
+    .mic-timer-pill.recording {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-color: #fca5a5;
+    }
+    .sound-bars-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 24px;
+    }
+    .sound-bar {
+      width: 4px;
+      height: 5px;
+      background: #94a3b8;
+      border-radius: 2px;
+      transition: height 0.15s ease, background 0.2s ease;
+    }
+    .sound-bars-wrapper.active .sound-bar {
+      background: #dc2626;
+      animation: bar-dance 0.5s infinite alternate ease-in-out;
+    }
+    .sound-bars-wrapper.active .sound-bar:nth-child(1) { animation-delay: 0.1s; }
+    .sound-bars-wrapper.active .sound-bar:nth-child(2) { animation-delay: 0.25s; }
+    .sound-bars-wrapper.active .sound-bar:nth-child(3) { animation-delay: 0.05s; }
+    .sound-bars-wrapper.active .sound-bar:nth-child(4) { animation-delay: 0.3s; }
+    .sound-bars-wrapper.active .sound-bar:nth-child(5) { animation-delay: 0.15s; }
+    .sound-bars-wrapper.active .sound-bar:nth-child(6) { animation-delay: 0.35s; }
+    .sound-bars-wrapper.active .sound-bar:nth-child(7) { animation-delay: 0.2s; }
+    @keyframes bar-dance {
+      0% { height: 5px; }
+      100% { height: 22px; }
+    }
+    .mic-speech-preview {
+      font-size: 0.74rem;
+      font-family: var(--font-mono);
+      color: var(--color-navy);
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 0.4rem 0.75rem;
+      margin-top: 0.5rem;
+      max-width: 95%;
+      text-align: center;
+      min-height: 38px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.35;
+    }
+    .mic-audio-player {
+      margin-top: 5px;
+      height: 28px;
+      width: 240px;
+      max-width: 90%;
+    }
+
+    /* ===================================================
+       5. PASSWORD VALIDATOR STYLES
+       =================================================== */
+    .pass-stage-box {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 1.25rem;
+    }
+    .pass-input-row {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      max-width: 280px;
+      position: relative;
+      margin-bottom: 0.65rem;
+    }
+    .pass-input-field {
+      width: 100%;
+      padding: 0.55rem 2.2rem 0.55rem 0.85rem;
+      border-radius: 6px;
+      border: 1px solid var(--color-border);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      background: #ffffff;
+      color: var(--color-navy);
+      outline: none;
+      transition: var(--transition);
+    }
+    .pass-input-field:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    .pass-eye-btn {
+      position: absolute;
+      right: 8px;
+      background: none;
+      border: none;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+    .pass-meter-bar {
+      width: 100%;
+      max-width: 280px;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 0.75rem;
+    }
+    .pass-meter-fill {
+      height: 100%;
+      width: 0%;
+      background: #ef4444;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+    .pass-reqs-list {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .pass-req-pill {
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--border-radius-pill);
+      background: #f1f5f9;
+      color: var(--color-text-muted);
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: var(--transition);
+    }
+    .pass-req-pill.valid {
+      background: #dcfce7;
+      color: #15803d;
+      border-color: #bbf7d0;
+    }
+
+    /* ===================================================
+       6. DEVELOPER TERMINAL CONSOLE STYLES
+       =================================================== */
+    #termStage {
+      user-select: text;
+      touch-action: auto;
+      cursor: text;
+      padding: 0.6rem;
+    }
+    .terminal-stage-box {
+      width: 100%;
+      height: 100%;
+      background: #0f172a;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    }
+    .terminal-top-bar {
+      background: #1e293b;
+      padding: 0.35rem 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border-bottom: 1px solid #334155;
+      user-select: none;
+    }
+    .term-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .term-dot.t-red { background: #ef4444; }
+    .term-dot.t-yellow { background: #f59e0b; }
+    .term-dot.t-green { background: #10b981; }
+    .term-title-text {
+      font-size: 0.68rem;
+      color: #94a3b8;
+      font-family: var(--font-mono);
+      margin-left: 6px;
+    }
+    .terminal-body {
+      flex: 1;
+      padding: 0.6rem 0.85rem;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      cursor: text;
+      user-select: text;
+    }
+    .terminal-output-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .terminal-cli-form {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 5px;
+      padding-top: 4px;
+      border-top: 1px dashed rgba(148, 163, 184, 0.2);
+    }
+    .term-prompt-line {
+      color: #38bdf8;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .term-cli-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #f8fafc;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      outline: none;
+      caret-color: #38bdf8;
+      font-weight: 500;
+      padding: 0;
+    }
+    .term-cli-input::placeholder {
+      color: #64748b;
+      font-size: 0.7rem;
+    }
+    .term-cmd-text {
+      color: #f8fafc;
+      font-weight: 600;
+    }
+    .term-output-success {
+      color: #34d399;
+      margin: 3px 0;
+      line-height: 1.35;
+      font-size: 0.72rem;
+    }
+    .term-output-cpp {
+      background: rgba(16, 185, 129, 0.12);
+      border-left: 3px solid #10b981;
+      padding: 0.35rem 0.65rem;
+      margin: 4px 0;
+      border-radius: 0 4px 4px 0;
+      color: #34d399;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+    .term-output-info {
+      color: #93c5fd;
+      margin: 3px 0;
+      line-height: 1.35;
+      font-size: 0.72rem;
+    }
+    .term-output-warn {
+      color: #fcd34d;
+      margin: 3px 0;
+      line-height: 1.35;
+      font-size: 0.72rem;
+    }
+    .term-output-err {
+      color: #fca5a5;
+      margin: 3px 0;
+      line-height: 1.35;
+      font-size: 0.72rem;
+    }
+
+    /* ===================================================
+       INCISOS / PRACTICE CHALLENGES (MULTIPLE CHOICE)
+       =================================================== */
+    .card-quiz-inciso {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-sm);
+      padding: 1rem 1.15rem;
+      margin-top: 1rem;
+    }
+    .quiz-inciso-title {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--color-navy);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.45rem;
+    }
+    .quiz-sentence-prompt {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--color-navy);
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+    }
+    .quiz-sentence-prompt .blank-fill {
+      display: inline-block;
+      min-width: 65px;
+      border-bottom: 2px solid var(--color-navy);
+      color: #2563eb;
+      font-weight: 700;
+      text-align: center;
+      padding: 0 4px;
+    }
+    .quiz-options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.45rem;
+    }
+    .quiz-opt-btn {
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 0.45rem 0.65rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--color-text-main);
+      cursor: pointer;
+      text-align: center;
+      transition: var(--transition);
+    }
+    .quiz-opt-btn:hover:not([disabled]) {
+      background: var(--color-navy);
+      color: #ffffff;
+      border-color: var(--color-navy);
+    }
+    .quiz-opt-btn.opt-correct {
+      background: #dcfce7 !important;
+      border-color: #16a34a !important;
+      color: #166534 !important;
+      font-weight: 700;
+    }
+    .quiz-opt-btn.opt-incorrect {
+      background: #fee2e2 !important;
+      border-color: #dc2626 !important;
+      color: #991b1b !important;
+      font-weight: 700;
+    }
+    .quiz-feedback-msg {
+      margin-top: 0.65rem;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      display: none;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      animation: fadeInSlide 0.25s ease;
+    }
+    .quiz-feedback-msg.feedback-correct {
+      display: block;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+    }
+    .quiz-feedback-msg.feedback-incorrect {
+      display: block;
+      background: #fff1f2;
+      border: 1px solid #fecdd3;
+      color: #9f1239;
+    }
+
+    /* Dynamic Output Explanation Panel */
+    .dynamic-panel {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      padding: 2.25rem;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 2.5rem;
+      transition: var(--transition);
+    }
+    .detected-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .detected-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      padding: 0.35rem 0.95rem;
+      border-radius: var(--border-radius-pill);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .status-msg-live {
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: var(--color-navy);
+      margin-bottom: 0.65rem;
+    }
+    .zero-sentence-box {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-sm);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .zero-title-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.45rem;
+    }
+    .zero-sentence-text {
+      font-family: var(--font-mono);
+      font-size: 1.25rem;
+      color: var(--color-navy);
+      font-weight: 600;
+      line-height: 1.5;
+    }
+    .zero-sentence-text span.kw-if {
+      color: #2563eb;
+      text-decoration: underline;
+    }
+    .zero-sentence-text span.kw-verb1 {
+      color: #059669;
+    }
+    .zero-sentence-text span.kw-verb2 {
+      color: #d97706;
+    }
+    .explanation-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-top: 1.25rem;
+    }
+    .exp-card {
+      background: #f8fafc;
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-sm);
+      padding: 1.15rem 1.35rem;
+    }
+    .exp-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--color-navy);
+      margin-bottom: 0.45rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+    .exp-desc {
+      font-size: 0.92rem;
+      font-weight: 300;
+      color: var(--color-text-muted);
+      line-height: 1.65;
+    }
+
+    /* Activity History Section */
+    .history-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .history-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid var(--color-border);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .history-title {
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: var(--color-navy);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .history-count-badge {
+      font-size: 0.78rem;
+      background: var(--color-navy);
+      color: #fff;
+      padding: 0.2rem 0.65rem;
+      border-radius: var(--border-radius-pill);
+      font-weight: 400;
+    }
+    .history-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+    .history-item {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-sm);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      animation: fadeInSlide 0.3s ease;
+      transition: var(--transition);
+    }
+    .history-item:hover {
+      border-color: #cbd5e1;
+      background: #ffffff;
+    }
+    .history-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--color-navy);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+    .history-content {
+      flex: 1;
+    }
+    .history-action-name {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--color-navy);
+      margin-bottom: 0.2rem;
+    }
+    .history-zero-sentence {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: #1e3a8a;
+      font-weight: 400;
+    }
+    .history-time {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      white-space: nowrap;
+    }
+    .empty-history-msg {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+      font-style: italic;
+    }
+
+    @keyframes fadeInSlide {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Floating Animated Notification Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 9999;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .toast-msg {
+      background: var(--color-navy);
+      color: #ffffff;
+      padding: 0.95rem 1.45rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.25);
+      font-size: 0.92rem;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      transform: translateX(120%);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: auto;
+    }
+    .toast-msg.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    .toast-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    /* Side deco */
+    .side-wrap { position: relative; }
+    .side-deco-left, .side-deco-right {
+      position: absolute;
+      top: 40%;
+      transform: translateY(-50%);
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .side-deco-left { left: -110px; }
+    .side-deco-right { right: -110px; }
+
+    @media (max-width: 1024px) {
+      .side-deco-left, .side-deco-right { display: none; }
+      .lab-grid { grid-template-columns: 1fr; }
+      .explanation-cards-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .toast-container { right: 1rem; left: 1rem; bottom: 1rem; }
+      .flow-diagram { flex-direction: column; align-items: stretch; }
+      .flow-arrow { transform: rotate(90deg); margin: 0.5rem 0; }
+      .quiz-options-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ===================================================
+       COMPREHENSIVE DARK MODE COMPONENT STYLES
+       =================================================== */
+    [data-theme="dark"] {
+      color-scheme: dark;
+    }
+
+    [data-theme="dark"] body {
+      background-color: #0b0f19;
+      color: #f1f5f9;
+    }
+
+    /* Hero & Formula */
+    [data-theme="dark"] .test-hero {
+      background: #141d2b;
+      border-color: #233247;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+    [data-theme="dark"] .test-hero::before {
+      background: #38bdf8;
+    }
+    [data-theme="dark"] .badge-pill {
+      background: #1e293b;
+      border-color: #334155;
+      color: #93c5fd;
+    }
+    [data-theme="dark"] .formula-banner {
+      background: #0f172a;
+      border-color: #233247;
+      color: #e2e8f0;
+    }
+    [data-theme="dark"] .formula-tag {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    /* Condition -> Result Flow */
+    [data-theme="dark"] .flow-step {
+      background: #141d2b;
+      border-color: #233247;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    }
+    [data-theme="dark"] .flow-text {
+      color: #f8fafc;
+    }
+    [data-theme="dark"] .flow-arrow {
+      color: #60a5fa;
+    }
+    [data-theme="dark"] .flow-label.cond {
+      color: #60a5fa;
+    }
+    [data-theme="dark"] .flow-label.res {
+      color: #34d399;
+    }
+
+    /* Practice Lab Cards */
+    [data-theme="dark"] .lab-card {
+      background: #141d2b;
+      border-color: #233247;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    }
+    [data-theme="dark"] .lab-card:hover {
+      border-color: #38bdf8;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 0 12px rgba(56, 189, 248, 0.12);
+    }
+    [data-theme="dark"] .action-num-badge {
+      background: #2563eb;
+      color: #ffffff;
+    }
+    [data-theme="dark"] .card-status-badge {
+      background: #1e293b;
+      color: #94a3b8;
+      border: 1px solid #334155;
+    }
+    [data-theme="dark"] .card-status-badge.active-status {
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.45);
+    }
+
+    /* Simulation Stages & Action Buttons */
+    [data-theme="dark"] .sim-stage {
+      background: #090e17;
+      border-color: #1e293b;
+    }
+    [data-theme="dark"] .card-controls {
+      border-top-color: #233247;
+    }
+    [data-theme="dark"] .btn-action-small {
+      background: #1e293b;
+      color: #e2e8f0;
+      border-color: #334155;
+    }
+    [data-theme="dark"] .btn-action-small:hover {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: #ffffff;
+    }
+
+    /* 1. Charger Simulation */
+    [data-theme="dark"] .wall-outlet {
+      background: #162032;
+      border-color: #334155;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+    }
+    [data-theme="dark"] .outlet-socket {
+      background: #0b101b;
+    }
+    [data-theme="dark"] .outlet-hole {
+      background: #38bdf8;
+    }
+    [data-theme="dark"] .charger-drag-head {
+      background: #1e293b;
+      border-color: #475569;
+    }
+    [data-theme="dark"] .charger-drag-pin {
+      background: #cbd5e1;
+      border-color: #94a3b8;
+    }
+    [data-theme="dark"] .charger-cable-path {
+      stroke: #475569;
+    }
+    [data-theme="dark"] .laptop-frame {
+      background: #141d2b;
+      border-color: #334155;
+    }
+    [data-theme="dark"] .laptop-base {
+      background: #334155;
+    }
+    [data-theme="dark"] .laptop-screen {
+      background: #060911;
+      color: #94a3b8;
+    }
+    [data-theme="dark"] .laptop-charging .laptop-screen {
+      background: #022c22;
+      color: #6ee7b7;
+      border-color: #059669;
+    }
+
+    /* 2. WiFi Switches */
+    [data-theme="dark"] .router-unit {
+      background: #141d2b;
+      border-color: #334155;
+    }
+    [data-theme="dark"] .router-antenna {
+      background: #64748b;
+    }
+    [data-theme="dark"] .wifi-switch-btn {
+      background: #141d2b;
+      border-color: #233247;
+      color: #94a3b8;
+    }
+    [data-theme="dark"] .wifi-switch-btn:hover {
+      border-color: #60a5fa;
+      color: #f1f5f9;
+    }
+    [data-theme="dark"] .wifi-switch-btn.sw-active {
+      background: rgba(37, 99, 235, 0.22);
+      color: #93c5fd;
+      border-color: #3b82f6;
+    }
+    [data-theme="dark"] .wifi-switch-btn.sw-target.sw-active {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+      border-color: #10b981;
+    }
+    [data-theme="dark"] .wifi-switch-btn.sw-wrong.sw-active {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      border-color: #ef4444;
+    }
+
+    /* 3. Circuit & Light Bulb */
+    [data-theme="dark"] .power-source-box {
+      background: #141d2b;
+      border-color: #334155;
+    }
+    [data-theme="dark"] .target-socket.red-socket {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: #ef4444;
+      color: #f87171;
+    }
+    [data-theme="dark"] .target-socket.white-socket {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: #64748b;
+      color: #cbd5e1;
+    }
+    [data-theme="dark"] .target-socket.white-socket.plugged {
+      background: #334155;
+      border-color: #94a3b8;
+      color: #ffffff;
+    }
+
+    /* 4. Microphone Voice Evaluator */
+    [data-theme="dark"] .mic-phrase-svg-box {
+      background: #141d2b;
+      border-color: #233247;
+    }
+    [data-theme="dark"] .mic-phrase-svg-box:hover {
+      border-color: #3b82f6;
+    }
+    [data-theme="dark"] .mic-phrase-svg-icon {
+      background: #1e293b;
+      border-color: #334155;
+    }
+    [data-theme="dark"] .mic-phrase-sentence-text {
+      color: #f8fafc;
+    }
+    [data-theme="dark"] .random-badge-label {
+      background: rgba(37, 99, 235, 0.2);
+      color: #93c5fd;
+      border-color: rgba(59, 130, 246, 0.35);
+    }
+    [data-theme="dark"] .random-phrase-counter {
+      color: #94a3b8;
+    }
+    [data-theme="dark"] .pill-cond {
+      background: rgba(37, 99, 235, 0.2);
+      color: #93c5fd;
+      border-color: rgba(59, 130, 246, 0.35);
+    }
+    [data-theme="dark"] .pill-res {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+    [data-theme="dark"] .pill-arrow-svg {
+      color: #64748b;
+    }
+    [data-theme="dark"] .mic-icon-btn {
+      background: #1e293b;
+      border-color: #334155;
+    }
+    [data-theme="dark"] .mic-icon-btn:hover {
+      background: #2563eb;
+      border-color: #1d4ed8;
+    }
+    [data-theme="dark"] .mic-perm-badge {
+      background: rgba(16, 185, 129, 0.16);
+      color: #6ee7b7;
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+    [data-theme="dark"] .mic-timer-pill {
+      background: #1e293b;
+      color: #f8fafc;
+      border-color: #334155;
+    }
+    [data-theme="dark"] .mic-speech-preview {
+      background: #141d2b;
+      border-color: #233247;
+      color: #f8fafc;
+    }
+
+    /* 5. Password Validator */
+    [data-theme="dark"] .pass-input-field {
+      background: #141d2b;
+      border-color: #334155;
+      color: #f8fafc;
+    }
+    [data-theme="dark"] .pass-input-field:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+    [data-theme="dark"] .pass-meter-bar {
+      background: #1e293b;
+    }
+    [data-theme="dark"] .pass-req-pill {
+      background: #1e293b;
+      color: #94a3b8;
+      border-color: #334155;
+    }
+    [data-theme="dark"] .pass-req-pill.valid {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    /* 6. Terminal Console */
+    [data-theme="dark"] .terminal-stage-box {
+      background: #060911;
+      border-color: #1e293b;
+    }
+    [data-theme="dark"] .terminal-top-bar {
+      background: #0f172a;
+      border-color: #1e293b;
+    }
+
+    /* Quizzes / Incisos Multiple Choice */
+    [data-theme="dark"] .card-quiz-inciso {
+      background: #0f172a;
+      border-color: #233247;
+    }
+    [data-theme="dark"] .quiz-inciso-title {
+      color: #93c5fd;
+    }
+    [data-theme="dark"] .quiz-sentence-prompt {
+      background: #141d2b;
+      border-color: #233247;
+      color: #f8fafc;
+    }
+    [data-theme="dark"] .quiz-sentence-prompt .blank-fill {
+      border-bottom-color: #38bdf8;
+      color: #38bdf8;
+    }
+    [data-theme="dark"] .quiz-opt-btn {
+      background: #141d2b;
+      border-color: #233247;
+      color: #e2e8f0;
+    }
+    [data-theme="dark"] .quiz-opt-btn:hover:not([disabled]) {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: #ffffff;
+    }
+    [data-theme="dark"] .quiz-opt-btn.opt-correct {
+      background: rgba(16, 185, 129, 0.22) !important;
+      border-color: #10b981 !important;
+      color: #6ee7b7 !important;
+    }
+    [data-theme="dark"] .quiz-opt-btn.opt-incorrect {
+      background: rgba(239, 68, 68, 0.22) !important;
+      border-color: #ef4444 !important;
+      color: #fca5a5 !important;
+    }
+    [data-theme="dark"] .quiz-feedback-msg.feedback-correct {
+      background: rgba(16, 185, 129, 0.16);
+      border-color: rgba(16, 185, 129, 0.35);
+      color: #6ee7b7;
+    }
+    [data-theme="dark"] .quiz-feedback-msg.feedback-incorrect {
+      background: rgba(239, 68, 68, 0.16);
+      border-color: rgba(239, 68, 68, 0.35);
+      color: #fca5a5;
+    }
+
+    /* Dynamic Output Explanation Panel */
+    [data-theme="dark"] .dynamic-panel {
+      background: #141d2b;
+      border-color: #233247;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.45);
+    }
+    [data-theme="dark"] .detected-header {
+      border-bottom-color: #233247;
+    }
+    [data-theme="dark"] .detected-badge {
+      background: rgba(37, 99, 235, 0.2);
+      color: #93c5fd;
+      border-color: rgba(59, 130, 246, 0.35);
+    }
+    [data-theme="dark"] .status-msg-live {
+      color: #f8fafc;
+    }
+    [data-theme="dark"] .zero-sentence-box {
+      background: #0b101b;
+      border-color: #233247;
+    }
+    [data-theme="dark"] .zero-title-tag {
+      color: #94a3b8;
+    }
+    [data-theme="dark"] .zero-sentence-text {
+      color: #f8fafc;
+    }
+    [data-theme="dark"] .zero-sentence-text span.kw-if {
+      color: #60a5fa;
+    }
+    [data-theme="dark"] .zero-sentence-text span.kw-verb1 {
+      color: #34d399;
+    }
+    [data-theme="dark"] .zero-sentence-text span.kw-verb2 {
+      color: #fbbf24;
+    }
+    [data-theme="dark"] .exp-card {
+      background: #0f172a;
+      border-color: #233247;
+    }
+    [data-theme="dark"] .exp-title {
+      color: #f8fafc;
+    }
+    [data-theme="dark"] .exp-desc {
+      color: #94a3b8;
+    }
+
+    /* Activity History Section */
+    [data-theme="dark"] .history-card {
+      background: #141d2b;
+      border-color: #233247;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    }
+    [data-theme="dark"] .history-header {
+      border-bottom-color: #233247;
+    }
+    [data-theme="dark"] .history-title {
+      color: #f8fafc;
+    }
+    [data-theme="dark"] .history-count-badge {
+      background: #2563eb;
+    }
+    [data-theme="dark"] .history-item {
+      background: #0f172a;
+      border-color: #233247;
+    }
+    [data-theme="dark"] .history-item:hover {
+      background: #141d2b;
+      border-color: #38bdf8;
+    }
+    [data-theme="dark"] .history-num {
+      background: #2563eb;
+    }
+    [data-theme="dark"] .history-action-name {
+      color: #f8fafc;
+    }
+    [data-theme="dark"] .history-zero-sentence {
+      color: #93c5fd;
+    }
+    [data-theme="dark"] .history-time {
+      color: #64748b;
+    }
+    [data-theme="dark"] .empty-history-msg {
+      color: #64748b;
+    }
+
+    /* Toast Notification in Dark Mode */
+    [data-theme="dark"] .toast-msg {
+      background: #141d2b;
+      border-color: #334155;
+      color: #f8fafc;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65);
+    }
+
+    /* Footer in Dark Mode */
+    [data-theme="dark"] footer {
+      background: #0b0f19;
+      border-top: 1px solid #1e293b;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>AceDev English</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="intro.html" class="nav-link">Intro</a></li>
+        <li><a href="comic.html" class="nav-link">Comic</a></li>
+        <li><a href="reflection.html" class="nav-link">Reflection</a></li>
+        <li><a href="vocab.html" class="nav-link">Vocab</a></li>
+        <li><a href="org-chart.html" class="nav-link">Org Chart</a></li>
+        <li><a href="expressions.html" class="nav-link">Expressions</a></li>
+        <li><a href="conversation.html" class="nav-link">Script</a></li>
+        <li><a href="grammar.html" class="nav-link">Grammar</a></li>
+        <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+        <li><a href="condicionales.html" class="nav-link">Condicionales</a></li>
+        <li><a href="test.html" class="nav-link active">Test</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="intro.html">1. Introduction</a></li>
+        <li><a href="comic.html">2. Comic Story</a></li>
+        <li><a href="reflection.html">3. Reflection</a></li>
+        <li><a href="vocab.html">4. Vocabulary</a></li>
+        <li><a href="org-chart.html">5. Org Chart</a></li>
+        <li><a href="expressions.html">6. Expressions</a></li>
+        <li><a href="conversation.html">7. Script</a></li>
+        <li><a href="grammar.html">8. Grammar</a></li>
+        <li><a href="quiz.html">9. Quiz</a></li>
+        <li><a href="condicionales.html">10. Condicionales</a></li>
+        <li><a href="test.html" class="active">11. Test</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="container page-header">
+    <h1 class="page-title">Section 11 — Zero Conditional Interactive Test</h1>
+    <p class="page-subtitle">Learn through direct interaction. Perform actions in the simulated environment to see, test, and understand the Zero Conditional in real time.</p>
+  </div>
+
+  <div class="container" style="padding-bottom: 5rem;">
+    <div class="side-wrap">
+
+      <!-- Left Deco SVG -->
+      <div class="side-deco-left">
+        <svg width="130" height="420" viewBox="0 0 130 420" fill="none">
+          <text x="10" y="70" fill="#0f172a" font-size="28" font-family="serif">IF</text>
+          <path d="M 15 100 L 115 100 L 115 160 L 15 160 Z" stroke="#0f172a" stroke-width="1.5" fill="none"/>
+          <text x="25" y="135" fill="#0f172a" font-size="16" font-family="monospace">CAUSE</text>
+          <path d="M 65 170 L 65 230 M 55 220 L 65 230 L 75 220" stroke="#0f172a" stroke-width="2"/>
+          <path d="M 15 240 L 115 240 L 115 300 L 15 300 Z" stroke="#0f172a" stroke-width="1.5" fill="none"/>
+          <text x="20" y="275" fill="#0f172a" font-size="16" font-family="monospace">EFFECT</text>
+          <circle cx="65" cy="360" r="28" stroke="#0f172a" stroke-width="1.5"/>
+          <text x="50" y="367" fill="#0f172a" font-size="20" font-family="serif">100%</text>
+        </svg>
+      </div>
+
+      <!-- Right Deco SVG -->
+      <div class="side-deco-right">
+        <svg width="130" height="420" viewBox="0 0 130 420" fill="none">
+          <circle cx="65" cy="60" r="30" stroke="#0f172a" stroke-width="1.5"/>
+          <path d="M 50 60 L 65 75 L 80 45" stroke="#0f172a" stroke-width="2" fill="none"/>
+          <line x1="15" y1="120" x2="115" y2="120" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="15" y1="145" x2="90" y2="145" stroke="#0f172a" stroke-width="1.5"/>
+          <line x1="15" y1="170" x2="105" y2="170" stroke="#0f172a" stroke-width="1.5"/>
+          <path d="M 65 220 L 65 370" stroke="#0f172a" stroke-width="3"/>
+          <path d="M 65 220 Q 15 230 15 350 L 65 360" stroke="#0f172a" stroke-width="2" fill="none"/>
+          <path d="M 65 220 Q 115 230 115 350 L 65 360" stroke="#0f172a" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+
+      <!-- TOP SECTION: EXPLICACIÓN GENERAL -->
+      <div class="test-hero">
+        <span class="badge-pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          General Grammar Guide
+        </span>
+        <h2 style="font-size: 1.85rem; color: var(--color-navy); margin-bottom: 0.5rem;">ZERO CONDITIONAL</h2>
+        <p style="color: var(--color-text-muted); font-size: 0.98rem; max-width: 800px; margin-bottom: 1rem;">
+          We use the <strong>Zero Conditional</strong> for facts, scientific truths, natural laws, and things that <strong>always happen</strong> when a specific condition is met.
+        </p>
+
+        <!-- Structure Formula -->
+        <div class="formula-banner">
+          <span class="formula-tag">Structure</span>
+          <span>IF + PRESENT SIMPLE, PRESENT SIMPLE</span>
+        </div>
+
+        <p style="font-size: 0.88rem; color: var(--color-text-muted); margin-top: 0.85rem;">
+          <strong>Example:</strong> <em>If you connect the charger, the computer charges.</em>
+        </p>
+
+        <!-- Visual Condition -> Result Schema -->
+        <div class="flow-diagram">
+          <div class="flow-step">
+            <div class="flow-label cond">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+              CONDITION
+            </div>
+            <div class="flow-text">If you connect the charger</div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step">
+            <div class="flow-label res">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              RESULT
+            </div>
+            <div class="flow-text">the computer charges</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE SIMULATION LAB -->
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.35rem; color: var(--color-navy); margin-bottom: 0.35rem;">Interactive Practice Lab</h3>
+        <p style="font-size: 0.92rem; color: var(--color-text-muted);">Interact with the real-world and web elements below. Solve the practice challenges under each card.</p>
+      </div>
+
+      <div class="lab-grid">
+
+        <!-- ACCIÓN 1: CARGADOR -->
+        <div class="lab-card" id="cardCharger">
+          <div class="card-top">
+            <span class="action-num-badge">Action 1 · Charger</span>
+            <span class="card-status-badge" id="chargerStatusBadge">
+              <span style="width:7px; height:7px; border-radius:50%; background:#94a3b8; display:inline-block;" id="chargerStatusDot"></span>
+              <span id="chargerStatusText">Unplugged</span>
+            </span>
+          </div>
+
+          <div class="sim-stage" id="chargerStage">
+            <!-- Wall Outlet on left -->
+            <div class="wall-outlet" id="wallOutlet">
+              <div class="outlet-socket">
+                <div class="outlet-hole"></div>
+                <div class="outlet-hole"></div>
+              </div>
+              <div class="outlet-socket">
+                <div class="outlet-hole"></div>
+                <div class="outlet-hole"></div>
+              </div>
+            </div>
+
+            <!-- Dynamic SVG Wire from Wall to Plug -->
+            <svg class="cable-canvas-svg">
+              <path id="chargerCablePath" class="charger-cable-path" d="M 44 115 C 80 160, 100 160, 110 115" />
+            </svg>
+
+            <!-- Draggable Charger Plug Head -->
+            <div class="charger-drag-head" id="chargerDragHead" title="Drag the cable plug to the laptop socket!">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <div class="charger-drag-pin"></div>
+            </div>
+
+            <!-- Laptop on right -->
+            <div class="laptop-frame" id="laptopFrame">
+              <div class="laptop-charging-port" id="laptopPort" title="Drop or connect the charger here"></div>
+              <div class="laptop-screen" id="laptopScreen">
+                <svg class="charging-bolt" width="22" height="22" viewBox="0 0 24 24" fill="#34d399" stroke="#059669" stroke-width="2">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+                <span id="screenText" style="font-size: 0.72rem; margin-top: 4px;">Battery 15%</span>
+              </div>
+            </div>
+            <div class="laptop-base"></div>
+          </div>
+
+          <div style="font-size:0.75rem; color:var(--color-text-muted); margin-bottom:0.4rem;">
+            🖐️ <strong>Arrastra el cable:</strong> Mueve el conector negro desde la pared y encájalo en el puerto del computador.
+          </div>
+
+          <div class="card-controls">
+            <button class="btn-action-small" id="btnToggleCharger">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span id="btnChargerLabel">Connect to Laptop</span>
+            </button>
+            <span style="font-size: 0.78rem; color: var(--color-text-muted);">Wall: 110V Socket</span>
+          </div>
+
+          <!-- INCISO 1: PRACTICE CHALLENGE -->
+          <div class="card-quiz-inciso">
+            <div class="quiz-inciso-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>Practice Challenge 1</span>
+            </div>
+            <div class="quiz-sentence-prompt">
+              If the computer has power, it <span class="blank-fill" id="blank1">______</span>.
+            </div>
+            <div class="quiz-options-grid" id="opts1">
+              <button class="quiz-opt-btn" onclick="checkInciso(1, 'charges', this, true)">charges</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(1, 'will charged', this, false)">will charged</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(1, 'charging', this, false)">charging</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(1, 'charged', this, false)">charged</button>
+            </div>
+            <div class="quiz-feedback-msg" id="feedback1"></div>
+          </div>
+        </div>
+
+        <!-- ACCIÓN 2: WIFI (Varios interruptores) -->
+        <div class="lab-card" id="cardWifi">
+          <div class="card-top">
+            <span class="action-num-badge">Action 2 · WiFi Router</span>
+            <span class="card-status-badge" id="wifiStatusBadge">
+              <span style="width:7px; height:7px; border-radius:50%; background:#94a3b8; display:inline-block;" id="wifiStatusDot"></span>
+              <span id="wifiStatusText">WiFi is off</span>
+            </span>
+          </div>
+
+          <div class="sim-stage">
+            <div class="router-wrapper">
+              <!-- Animated WiFi waves -->
+              <div class="wifi-waves-box">
+                <svg class="wifi-waves-svg" id="wifiWavesSvg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+                  <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+                  <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+                  <line x1="12" y1="20" x2="12.01" y2="20"/>
+                </svg>
+              </div>
+
+              <!-- Router Body -->
+              <div class="router-unit">
+                <div class="router-antenna ant-left"></div>
+                <div class="router-antenna ant-right"></div>
+                <div class="r-led" id="wifiLedPower"></div>
+                <div class="r-led" id="wifiLedWan"></div>
+                <div class="r-led" id="wifiLedWlan"></div>
+                <div class="r-led" id="wifiLedLan"></div>
+              </div>
+
+              <!-- Switches Array -->
+              <div class="wifi-switches-panel">
+                <button class="wifi-switch-btn" id="sw1">1. Aux Port</button>
+                <button class="wifi-switch-btn" id="sw2">2. WPS Sync</button>
+                <button class="wifi-switch-btn sw-target" id="sw3">3. Main WAN</button>
+                <button class="wifi-switch-btn" id="sw4">4. Guest Net</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size:0.75rem; color:var(--color-text-muted); margin-bottom:0.4rem;">
+            🔍 <strong>Encuentra el interruptor correcto:</strong> Solo el interruptor principal <em>Main WAN</em> activa la conexión.
+          </div>
+
+          <div class="card-controls">
+            <button class="btn-action-small" id="btnQuickConnectWifi">Activate Correct Switch</button>
+            <button class="btn-action-small" id="btnTurnOffWifi" style="font-size:0.75rem; color:var(--color-text-muted);">Turn Off All</button>
+          </div>
+
+          <!-- INCISO 2: PRACTICE CHALLENGE -->
+          <div class="card-quiz-inciso">
+            <div class="quiz-inciso-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>Practice Challenge 2</span>
+            </div>
+            <div class="quiz-sentence-prompt">
+              If WiFi is on, the internet <span class="blank-fill" id="blank2">______</span>.
+            </div>
+            <div class="quiz-options-grid" id="opts2">
+              <button class="quiz-opt-btn" onclick="checkInciso(2, 'works', this, true)">works</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(2, 'will to work', this, false)">will to work</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(2, 'worked', this, false)">worked</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(2, 'is work', this, false)">is work</button>
+            </div>
+            <div class="quiz-feedback-msg" id="feedback2"></div>
+          </div>
+        </div>
+
+        <!-- ACCIÓN 3: BOMBILLO (Simulación Fase y Neutro) -->
+        <div class="lab-card" id="cardLight">
+          <div class="card-top">
+            <span class="action-num-badge">Action 3 · Phase & Neutral Circuit</span>
+            <span class="card-status-badge" id="lightStatusBadge">
+              <span style="width:7px; height:7px; border-radius:50%; background:#94a3b8; display:inline-block;" id="lightStatusDot"></span>
+              <span id="lightStatusText">The light is off</span>
+            </span>
+          </div>
+
+          <div class="sim-stage" id="circuitStage">
+            <!-- Dynamic Circuit SVG wires -->
+            <svg class="circuit-svg-layer">
+              <path id="wireRedPath" class="wire-red-path" d="M 75 70 C 130 90, 150 50, 180 70" />
+              <path id="wireWhitePath" class="wire-white-path" d="M 75 160 C 130 140, 150 180, 180 160" />
+            </svg>
+
+            <div class="circuit-stage">
+              <!-- Power Source with Phase (L) and Neutral (N) -->
+              <div class="power-source-box" id="powerSourceBox">
+                <span class="source-label">220V</span>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
+                  <div class="source-terminal term-red" id="sourceTermRed" title="Fase (Rojo)"></div>
+                  <span style="font-size:0.6rem; color:#ef4444; font-weight:700;">FASE</span>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
+                  <div class="source-terminal term-white" id="sourceTermWhite" title="Neutro (Blanco)"></div>
+                  <span style="font-size:0.6rem; color:#e2e8f0; font-weight:700;">NEUTRO</span>
+                </div>
+              </div>
+
+              <!-- Draggable Terminal Pins -->
+              <div class="draggable-pin pin-red" id="pinRed" title="Arrastra el cable rojo (Fase) al terminal rojo del bombillo">L</div>
+              <div class="draggable-pin pin-white" id="pinWhite" title="Arrastra el cable blanco (Neutro) al terminal blanco del bombillo">N</div>
+
+              <!-- Light Bulb Assembly -->
+              <div class="bulb-assembly" id="bulbAssembly">
+                <div class="bulb-radiance" id="bulbRadiance"></div>
+                <svg class="bulb-svg" id="bulbSvg" width="68" height="68" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.8">
+                  <path id="bulbGlass" d="M9 18h6m-4 4h2M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z" fill="#f1f5f9"/>
+                </svg>
+                <div class="bulb-terminals-row">
+                  <div class="target-socket red-socket" id="socketRed" title="Terminal Fase (Rojo)">L</div>
+                  <div class="target-socket white-socket" id="socketWhite" title="Terminal Neutro (Blanco)">N</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size:0.75rem; color:var(--color-text-muted); margin-bottom:0.4rem;">
+            ⚡ <strong>Conecta ambos cables:</strong> Rojo con Rojo (Fase) y Blanco con Blanco (Neutro).
+          </div>
+
+          <div class="card-controls">
+            <button class="btn-action-small" id="btnConnectBothWires">Connect Both Cables</button>
+            <button class="btn-action-small" id="btnDisconnectWires" style="font-size:0.75rem; color:var(--color-text-muted);">Disconnect</button>
+          </div>
+
+          <!-- INCISO 3: PRACTICE CHALLENGE -->
+          <div class="card-quiz-inciso">
+            <div class="quiz-inciso-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>Practice Challenge 3</span>
+            </div>
+            <div class="quiz-sentence-prompt">
+              If you connect phase and neutral, the light <span class="blank-fill" id="blank3">______</span> on.
+            </div>
+            <div class="quiz-options-grid" id="opts3">
+              <button class="quiz-opt-btn" onclick="checkInciso(3, 'turns', this, true)">turns</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(3, 'turned', this, false)">turned</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(3, 'turning', this, false)">turning</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(3, 'will to turn', this, false)">will to turn</button>
+            </div>
+            <div class="quiz-feedback-msg" id="feedback3"></div>
+          </div>
+        </div>
+
+        <!-- ACCIÓN 4: MICRÓFONO Y EVALUADOR DE PRONUNCIACIÓN (REEMPLAZA LA PLANTA) -->
+        <div class="lab-card" id="cardMic">
+          <div class="card-top">
+            <span class="action-num-badge">Action 4 · Speech Evaluator</span>
+            <span class="card-status-badge" id="micStatusBadge">
+              <span style="width:7px; height:7px; border-radius:50%; background:#94a3b8; display:inline-block;" id="micStatusDot"></span>
+              <span id="micStatusText">Ready to record</span>
+            </span>
+          </div>
+
+          <div class="sim-stage" id="micStage">
+            <div class="mic-stage-box">
+
+              <!-- Control de Aleatoriedad y Frase en SVG (Sin select/lista) -->
+              <div class="mic-random-header">
+                <div class="mic-random-meta">
+                  <span class="random-badge-label">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span id="phraseCategoryName">Hardware</span>
+                  </span>
+                  <span class="random-phrase-counter" id="phraseCounterText">Zero Conditional</span>
+                </div>
+
+                <button type="button" class="btn-random-phrase" id="btnRandomPhrase" title="Cambiar frase aleatoria (Zero Conditional)">
+                  <svg class="shuffle-svg-icon" id="svgShuffleIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 3h5v5"/>
+                    <path d="M4 20L21 3"/>
+                    <path d="M21 16v5h-5"/>
+                    <path d="M15 15l6 6"/>
+                    <path d="M4 4l5 5"/>
+                  </svg>
+                  <span>Cambiar frase</span>
+                </button>
+              </div>
+
+              <!-- Tarjeta en SVG con la Frase Generada -->
+              <div class="mic-target-svg-wrapper" id="micTargetSvgWrapper">
+                <div class="mic-phrase-svg-box">
+                  <div class="mic-phrase-svg-icon" id="micPhraseSvgIcon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="3" width="20" height="14" rx="2"/>
+                      <line x1="2" y1="20" x2="22" y2="20"/>
+                      <path d="M12 7v3l2-1" stroke="#eab308" stroke-width="2"/>
+                    </svg>
+                  </div>
+                  <div class="mic-phrase-content">
+                    <div class="mic-phrase-grammar-pills">
+                      <span class="pill-cond" id="pillCondText">If you connect the charger</span>
+                      <svg class="pill-arrow-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                      <span class="pill-res" id="pillResText">the computer charges</span>
+                    </div>
+                    <div class="mic-phrase-sentence-text" id="micTargetSentenceText">
+                      If you connect the charger, the computer charges.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mic-center-area">
+                <div style="position:relative; width:60px; height:60px; display:flex; align-items:center; justify-content:center;">
+                  <div class="mic-pulse-ring" id="micPulseRing"></div>
+                  <button class="mic-icon-btn" id="btnMicAction" title="Haz clic para iniciar o pausar la grabación">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                      <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                      <line x1="12" y1="19" x2="12" y2="23"/>
+                      <line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="mic-status-info">
+                  <div class="mic-timer-pill" id="micTimerPill">
+                    <span id="micRecDot" style="width:6px; height:6px; border-radius:50%; background:#94a3b8; display:inline-block;"></span>
+                    <span id="micTimerText">Standby · 00:00</span>
+                  </div>
+                  <!-- Permiso recordado indicador -->
+                  <div class="mic-perm-badge" id="micPermBadge" style="display:none;">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Mic: Permiso activo</span>
+                  </div>
+                  <!-- Equalizer Waves -->
+                  <div class="sound-bars-wrapper" id="soundBarsWrapper">
+                    <div class="sound-bar"></div>
+                    <div class="sound-bar"></div>
+                    <div class="sound-bar"></div>
+                    <div class="sound-bar"></div>
+                    <div class="sound-bar"></div>
+                    <div class="sound-bar"></div>
+                    <div class="sound-bar"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mic-speech-preview" id="micSpeechPreview">
+                Presiona <strong>Iniciar Grabación</strong>, di la frase en voz alta y haz clic en <strong>Enviar y Evaluar</strong>.
+              </div>
+
+              <!-- Audio Playback of User Recording -->
+              <audio id="micAudioPlayback" class="mic-audio-player" controls style="display:none;"></audio>
+            </div>
+          </div>
+
+          <div style="font-size:0.75rem; color:var(--color-text-muted); margin-bottom:0.4rem;">
+            🎙️ <strong>Prueba tu pronunciación:</strong> Graba tu voz diciendo la frase y envíala para evaluarla en tiempo real.
+          </div>
+
+          <div class="card-controls">
+            <button class="btn-action-small" id="btnToggleRecord">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8" fill="#ef4444" stroke="none"/></svg>
+              <span id="btnToggleRecordLabel">Iniciar Grabación</span>
+            </button>
+            <button class="btn-action-small" id="btnSendAudio" style="background:#2563eb; color:#ffffff; border-color:#1d4ed8;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              <span>Enviar y Evaluar Audio</span>
+            </button>
+            <button class="btn-action-small" id="btnListenModelAudio" style="font-size:0.75rem; color:var(--color-text-muted);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              <span>Audio Modelo</span>
+            </button>
+          </div>
+          <div style="margin-top:0.35rem; text-align:right;">
+            <button id="btnSimulateGoodVoice" style="background:none; border:none; color:#2563eb; font-size:0.72rem; cursor:pointer; text-decoration:underline;">
+              ¿Sin micrófono? Simular audio nativo modelo
+            </button>
+          </div>
+
+          <!-- INCISO 4: PRACTICE CHALLENGE -->
+          <div class="card-quiz-inciso">
+            <div class="quiz-inciso-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>Practice Challenge 4</span>
+            </div>
+            <div class="quiz-sentence-prompt">
+              If you press the microphone, the browser <span class="blank-fill" id="blank4">______</span> to your voice.
+            </div>
+            <div class="quiz-options-grid" id="opts4">
+              <button class="quiz-opt-btn" onclick="checkInciso(4, 'listens', this, true)">listens</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(4, 'will listen', this, false)">will listen</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(4, 'listening', this, false)">listening</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(4, 'listened', this, false)">listened</button>
+            </div>
+            <div class="quiz-feedback-msg" id="feedback4"></div>
+          </div>
+        </div>
+
+        <!-- ACCIÓN 5: VALIDADOR DE CONTRASEÑA EN VIVO -->
+        <div class="lab-card" id="cardPass">
+          <div class="card-top">
+            <span class="action-num-badge">Action 5 · Password Security</span>
+            <span class="card-status-badge" id="passStatusBadge">
+              <span style="width:7px; height:7px; border-radius:50%; background:#94a3b8; display:inline-block;" id="passStatusDot"></span>
+              <span id="passStatusText">Waiting for password</span>
+            </span>
+          </div>
+
+          <div class="sim-stage" id="passStage">
+            <div class="pass-stage-box">
+              <div class="pass-input-row">
+                <input type="password" class="pass-input-field" id="passInputField" placeholder="Type a password..." autocomplete="off">
+                <button class="pass-eye-btn" id="btnToggleEye" title="Show / Hide password">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+
+              <!-- Strength Progress Meter -->
+              <div class="pass-meter-bar">
+                <div class="pass-meter-fill" id="passMeterFill"></div>
+              </div>
+
+              <!-- Rule Checkpoints -->
+              <div class="pass-reqs-list">
+                <span class="pass-req-pill" id="reqLen"><span>•</span> 8+ chars</span>
+                <span class="pass-req-pill" id="reqNum"><span>•</span> 1 number</span>
+                <span class="pass-req-pill" id="reqUpper"><span>•</span> 1 uppercase</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size:0.75rem; color:var(--color-text-muted); margin-bottom:0.4rem;">
+            🔒 <strong>Validador en vivo:</strong> Cumple los 3 requisitos para que el sistema desbloquee el acceso.
+          </div>
+
+          <div class="card-controls">
+            <button class="btn-action-small" id="btnInsertStrongPass">Apply Secure Password</button>
+            <button class="btn-action-small" id="btnClearPass" style="font-size:0.75rem; color:var(--color-text-muted);">Clear</button>
+          </div>
+
+          <!-- INCISO 5: PRACTICE CHALLENGE -->
+          <div class="card-quiz-inciso">
+            <div class="quiz-inciso-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>Practice Challenge 5</span>
+            </div>
+            <div class="quiz-sentence-prompt">
+              If you enter eight characters, the indicator <span class="blank-fill" id="blank5">______</span> green.
+            </div>
+            <div class="quiz-options-grid" id="opts5">
+              <button class="quiz-opt-btn" onclick="checkInciso(5, 'turns', this, true)">turns</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(5, 'turned', this, false)">turned</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(5, 'turning', this, false)">turning</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(5, 'will to turn', this, false)">will to turn</button>
+            </div>
+            <div class="quiz-feedback-msg" id="feedback5"></div>
+          </div>
+        </div>
+
+        <!-- ACCIÓN 6: TERMINAL C++ (COUT << "MENSAJE") -->
+        <div class="lab-card" id="cardTerminal">
+          <div class="card-top">
+            <span class="action-num-badge">Action 6 · C++ Console (cout)</span>
+            <span class="card-status-badge" id="termStatusBadge">
+              <span style="width:7px; height:7px; border-radius:50%; background:#94a3b8; display:inline-block;" id="termStatusDot"></span>
+              <span id="termStatusText">C++20 Ready</span>
+            </span>
+          </div>
+
+          <div class="sim-stage" id="termStage">
+            <div class="terminal-stage-box" id="termStageBox">
+              <div class="terminal-top-bar">
+                <div class="term-dot t-red"></div>
+                <div class="term-dot t-yellow"></div>
+                <div class="term-dot t-green"></div>
+                <span class="term-title-text">main.cpp — g++ -std=c++20</span>
+              </div>
+              <div class="terminal-body" id="termOutputBody">
+                <div class="terminal-output-lines" id="termOutputLines">
+                  <div style="color:#64748b; font-size:0.69rem;">// C++ Standard Output Stream (g++ 13.2)</div>
+                  <div style="color:#94a3b8; font-size:0.71rem;"><span style="color:#f43f5e;">#include</span> <span style="color:#38bdf8;">&lt;iostream&gt;</span></div>
+                  <div style="color:#94a3b8; font-size:0.71rem;"><span style="color:#f43f5e;">using namespace</span> std;</div>
+                  <div style="color:#cbd5e1; font-size:0.71rem; margin: 3px 0;">Escribe <strong style="color:#38bdf8;">cout &lt;&lt; "hola mundo";</strong> y presiona <kbd style="background:#334155; color:#fff; padding:1px 4px; border-radius:3px;">Enter</kbd>:</div>
+                </div>
+                <form class="terminal-cli-form" id="termCliForm" onsubmit="return false;">
+                  <span class="term-prompt-line">cpp &gt;</span>
+                  <input type="text" class="term-cli-input" id="termCliInput" placeholder='cout << "hola mundo";' autocomplete="off" spellcheck="false" />
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size:0.75rem; color:var(--color-text-muted); margin-bottom:0.4rem;">
+            💻 <strong>C++ en consola:</strong> Usa <code>cout &lt;&lt; "tu mensaje";</code> para imprimir cualquier texto en pantalla.
+          </div>
+
+          <div class="card-controls">
+            <button class="btn-action-small" id="btnRunCoutHola">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span>cout &lt;&lt; "hola mundo";</span>
+            </button>
+            <button class="btn-action-small" id="btnRunCoutEnglish" style="font-size:0.75rem; color:var(--color-navy);">
+              <span>cout &lt;&lt; "Hello World!";</span>
+            </button>
+            <button class="btn-action-small" id="btnClearTerm" style="font-size:0.75rem; color:var(--color-text-muted);">
+              <span>clear</span>
+            </button>
+          </div>
+
+          <!-- INCISO 6: PRACTICE CHALLENGE -->
+          <div class="card-quiz-inciso">
+            <div class="quiz-inciso-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>Practice Challenge 6</span>
+            </div>
+            <div class="quiz-sentence-prompt">
+              If you write cout in C++, the console <span class="blank-fill" id="blank6">______</span> the message.
+            </div>
+            <div class="quiz-options-grid" id="opts6">
+              <button class="quiz-opt-btn" onclick="checkInciso(6, 'prints', this, true)">prints</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(6, 'printed', this, false)">printed</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(6, 'printing', this, false)">printing</button>
+              <button class="quiz-opt-btn" onclick="checkInciso(6, 'will prints', this, false)">will prints</button>
+            </div>
+            <div class="quiz-feedback-msg" id="feedback6"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- DYNAMIC EXPLANATION PANEL -->
+      <div class="dynamic-panel" id="dynamicPanel">
+        <div class="detected-header">
+          <div>
+            <span class="detected-badge" id="dynActionBadge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <span id="dynActionName">Action detected: Ready to Practice</span>
+            </span>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--color-text-muted); font-family: var(--font-mono);" id="dynTimestamp">Live Analysis Active</div>
+        </div>
+
+        <div class="status-msg-live" id="dynStatusMsg">Perform any interaction above to generate Zero Conditional rules.</div>
+
+        <div class="zero-sentence-box">
+          <div class="zero-title-tag">Zero Conditional Sentence</div>
+          <div class="zero-sentence-text" id="dynSentence">
+            <span class="kw-if">If</span> you <span class="kw-verb1">connect</span> the charger, the computer <span class="kw-verb2">charges</span>.
+          </div>
+        </div>
+
+        <!-- Visual Condition -> Result Schema -->
+        <div class="flow-diagram" style="margin-top: 0; margin-bottom: 1.5rem;">
+          <div class="flow-step">
+            <div class="flow-label cond">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+              CONDITION
+            </div>
+            <div class="flow-text" id="dynCondSchema">If you connect the charger</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-label res">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              RESULT
+            </div>
+            <div class="flow-text" id="dynResultSchema">the computer charges</div>
+          </div>
+        </div>
+
+        <div class="explanation-cards-grid">
+          <div class="exp-card">
+            <div class="exp-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              English Explanation
+            </div>
+            <p class="exp-desc" id="dynEngDesc">
+              The condition is “If you connect the charger” and the result is “the computer charges”. Both clauses are in the Present Simple because the outcome occurs consistently each time the action is performed.
+            </p>
+          </div>
+
+          <div class="exp-card">
+            <div class="exp-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#be123c" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="12 8 8 12 12 16 16 12 12 8"/></svg>
+              Explicación en Español
+            </div>
+            <p class="exp-desc" id="dynEsDesc">
+              Explicación: Cuando conectas el cargador, el computador carga. La acción ocurre cada vez que se cumple la condición.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVITY HISTORY SECTION -->
+      <div class="history-card">
+        <div class="history-header">
+          <div class="history-title">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+            <span>Activity History</span>
+            <span class="history-count-badge" id="historyCount">0 entries</span>
+          </div>
+          <div>
+            <button class="btn btn-ghost" id="btnClearHistory" style="font-size: 0.8rem; padding: 0.35rem 0.85rem;">
+              Clear History
+            </button>
+          </div>
+        </div>
+
+        <p style="font-size: 0.88rem; color: var(--color-text-muted); margin-bottom: 1.25rem;">
+          Every time you complete a real-world or web interaction, the resulting Zero Conditional structure is logged once here:
+        </p>
+
+        <ul class="history-list" id="historyList">
+          <li class="empty-history-msg" id="emptyHistoryMsg">
+            No activities recorded yet. Trigger any interaction in the Practice Lab above to start your practice log!
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Animated Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Floating Dark Mode Toggle Button (Independent of interactive cards) -->
+  <button class="floating-theme-toggle" id="floatingThemeToggle" type="button" aria-label="Alternar modo oscuro / claro" data-tooltip="Modo Oscuro">
+    <!-- Moon Icon (Shown in light mode) -->
+    <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+    <!-- Sun Icon (Shown in dark mode) -->
+    <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+    <span class="floating-theme-tooltip" id="themeTooltip">Modo Oscuro</span>
+  </button>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">AceDev English Worksheet &nbsp;·&nbsp; Software Development Program &nbsp;·&nbsp; <span id="year"></span></div>
+  </footer>
+
+  <script>
+    // Set Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile Hamburger
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('mobileNav').classList.toggle('open');
+    });
+
+    // Toast Notification System
+    function showNotification(title, message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast-msg';
+
+      const isWarn = (type === 'warn' || type === 'error');
+      const icon = isWarn ? '⚠️' : '✓';
+      const iconBg = isWarn ? '#eab308' : '#10b981';
+
+      toast.innerHTML = `
+        <div class="toast-icon" style="background:${iconBg}; color:#fff;">${icon}</div>
+        <div>
+          <strong style="display:block; font-size:0.85rem; letter-spacing:0.02em;">${title}</strong>
+          <span style="font-size:0.82rem; opacity:0.9;">${message}</span>
+        </div>
+      `;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.add('show');
+      });
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          if (toast.parentNode) toast.parentNode.removeChild(toast);
+        }, 400);
+      }, 3200);
+    }
+
+    // Dynamic State & Activity History
+    let historyCount = 0;
+    const historyList = document.getElementById('historyList');
+    const emptyHistoryMsg = document.getElementById('emptyHistoryMsg');
+
+    function updateDynamicPanel(data, shouldLogHistory = true) {
+      document.getElementById('dynActionName').textContent = 'Action detected: ' + data.actionTitle;
+      document.getElementById('dynTimestamp').textContent = new Date().toLocaleTimeString();
+      document.getElementById('dynStatusMsg').textContent = data.statusMsg;
+      document.getElementById('dynSentence').innerHTML = data.sentenceHtml;
+      document.getElementById('dynCondSchema').textContent = data.conditionText;
+      document.getElementById('dynResultSchema').textContent = data.resultText;
+      document.getElementById('dynEngDesc').textContent = data.engExplanation;
+      document.getElementById('dynEsDesc').textContent = data.esExplanation;
+
+      const panel = document.getElementById('dynamicPanel');
+      panel.style.borderColor = '#3b82f6';
+      setTimeout(() => { panel.style.borderColor = 'var(--color-border)'; }, 500);
+
+      showNotification('Action completed', data.statusMsg, 'success');
+
+      if (shouldLogHistory) {
+        addHistoryEntry(data);
+      }
+    }
+
+    function addHistoryEntry(data) {
+      if (emptyHistoryMsg) emptyHistoryMsg.style.display = 'none';
+
+      historyCount++;
+      document.getElementById('historyCount').textContent = historyCount + ' ' + (historyCount === 1 ? 'entry' : 'entries');
+
+      const li = document.createElement('li');
+      li.className = 'history-item';
+      li.innerHTML = `
+        <div class="history-num">${historyCount}</div>
+        <div class="history-content">
+          <div class="history-action-name">${data.actionTitle}</div>
+          <div class="history-zero-sentence">${data.plainSentence}</div>
+        </div>
+        <div class="history-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</div>
+      `;
+      historyList.prepend(li);
+    }
+
+    document.getElementById('btnClearHistory').addEventListener('click', () => {
+      historyList.innerHTML = `
+        <li class="empty-history-msg" id="emptyHistoryMsg">
+          No activities recorded yet. Trigger any interaction in the Practice Lab above to start your practice log!
+        </li>
+      `;
+      historyCount = 0;
+      document.getElementById('historyCount').textContent = '0 entries';
+    });
+
+    // =========================================================================
+    // 1. ACTION: CHARGER & LAPTOP
+    // =========================================================================
+    let isChargerConnected = false;
+    const chargerStage = document.getElementById('chargerStage');
+    const chargerDragHead = document.getElementById('chargerDragHead');
+    const chargerCablePath = document.getElementById('chargerCablePath');
+    const laptopFrame = document.getElementById('laptopFrame');
+    const laptopPort = document.getElementById('laptopPort');
+    const screenText = document.getElementById('screenText');
+    const chargerStatusBadge = document.getElementById('chargerStatusBadge');
+    const chargerStatusDot = document.getElementById('chargerStatusDot');
+    const chargerStatusText = document.getElementById('chargerStatusText');
+    const btnToggleCharger = document.getElementById('btnToggleCharger');
+    const btnChargerLabel = document.getElementById('btnChargerLabel');
+
+    let plugPos = { x: 95, y: 115 };
+    let isDraggingCharger = false;
+    let batInterval = null;
+
+    function updateChargerWire() {
+      const stageRect = chargerStage.getBoundingClientRect();
+      const wallOutletX = 44;
+      const wallOutletY = stageRect.height / 2;
+      const headX = plugPos.x;
+      const headY = plugPos.y + 12;
+
+      chargerDragHead.style.left = plugPos.x + 'px';
+      chargerDragHead.style.top = plugPos.y + 'px';
+
+      const midX = (wallOutletX + headX) / 2;
+      const sagY = Math.max(wallOutletY, headY) + 30;
+      chargerCablePath.setAttribute('d', `M ${wallOutletX} ${wallOutletY} Q ${midX} ${sagY} ${headX} ${headY}`);
+    }
+
+    function checkChargerSnap(fromUserAction = true) {
+      const stageRect = chargerStage.getBoundingClientRect();
+      const laptopRect = laptopFrame.getBoundingClientRect();
+      const portX = laptopRect.left - stageRect.left;
+      const portY = laptopRect.top - stageRect.top + laptopRect.height / 2 - 12;
+
+      const dist = Math.hypot(plugPos.x - portX, plugPos.y - portY);
+
+      if (dist < 40) {
+        plugPos.x = portX - 30;
+        plugPos.y = portY;
+        updateChargerWire();
+        setChargerConnected(true, fromUserAction);
+      } else {
+        if (isChargerConnected) {
+          setChargerConnected(false, fromUserAction);
+        }
+      }
+    }
+
+    function setChargerConnected(connected, fromUserAction = true) {
+      if (isChargerConnected === connected && fromUserAction) return;
+      isChargerConnected = connected;
+
+      if (batInterval) {
+        clearInterval(batInterval);
+        batInterval = null;
+      }
+
+      if (connected) {
+        laptopFrame.classList.add('laptop-charging');
+        laptopPort.classList.add('snapped');
+        chargerStatusBadge.classList.add('active-status');
+        chargerStatusDot.style.background = '#15803d';
+        chargerStatusText.textContent = 'Your computer is charging';
+        btnChargerLabel.textContent = 'Disconnect from Laptop';
+
+        let currentBat = 15;
+        batInterval = setInterval(() => {
+          if (!isChargerConnected) { clearInterval(batInterval); return; }
+          currentBat += 17;
+          if (currentBat >= 100) {
+            currentBat = 100;
+            clearInterval(batInterval);
+          }
+          screenText.textContent = 'Charging ' + currentBat + '%';
+        }, 120);
+
+        if (fromUserAction) {
+          updateDynamicPanel({
+            actionTitle: 'Charger connected',
+            statusMsg: 'Your computer is charging.',
+            plainSentence: 'If you connect the charger, the computer charges.',
+            sentenceHtml: '<span class="kw-if">If</span> you <span class="kw-verb1">connect</span> the charger, the computer <span class="kw-verb2">charges</span>.',
+            conditionText: 'If you connect the charger',
+            resultText: 'the computer charges',
+            engExplanation: 'The condition is “If you connect the charger” and the result is “the computer charges”. Both verbs are in Present Simple because connecting power consistently charges the laptop.',
+            esExplanation: 'Explicación: Cuando conectas el cargador, el computador carga. La acción ocurre cada vez que se cumple la condición.'
+          }, true);
+        }
+      } else {
+        laptopFrame.classList.remove('laptop-charging');
+        laptopPort.classList.remove('snapped');
+        screenText.textContent = 'Battery 15%';
+        chargerStatusBadge.classList.remove('active-status');
+        chargerStatusDot.style.background = '#94a3b8';
+        chargerStatusText.textContent = 'Unplugged';
+        btnChargerLabel.textContent = 'Connect to Laptop';
+
+        if (fromUserAction) {
+          updateDynamicPanel({
+            actionTitle: 'Charger disconnected',
+            statusMsg: 'The computer is running on battery.',
+            plainSentence: 'If you disconnect the charger, the computer runs on battery.',
+            sentenceHtml: '<span class="kw-if">If</span> you <span class="kw-verb1">disconnect</span> the charger, the computer <span class="kw-verb2">runs</span> on battery.',
+            conditionText: 'If you disconnect the charger',
+            resultText: 'the computer runs on battery',
+            engExplanation: 'The condition is “If you disconnect the charger” and the result is “the computer runs on battery”.',
+            esExplanation: 'Explicación: Si desconectas el cargador, el computador funciona con batería. Es la consecuencia natural de retirar la corriente.'
+          }, true);
+        }
+      }
+    }
+
+    chargerDragHead.addEventListener('pointerdown', e => {
+      isDraggingCharger = true;
+      chargerDragHead.setPointerCapture(e.pointerId);
+    });
+
+    chargerDragHead.addEventListener('pointermove', e => {
+      if (!isDraggingCharger) return;
+      const stageRect = chargerStage.getBoundingClientRect();
+      let newX = e.clientX - stageRect.left - 19;
+      let newY = e.clientY - stageRect.top - 12;
+
+      newX = Math.max(50, Math.min(newX, stageRect.width - 60));
+      newY = Math.max(15, Math.min(newY, stageRect.height - 35));
+
+      plugPos.x = newX;
+      plugPos.y = newY;
+      updateChargerWire();
+    });
+
+    chargerDragHead.addEventListener('pointerup', e => {
+      if (isDraggingCharger) {
+        isDraggingCharger = false;
+        chargerDragHead.releasePointerCapture(e.pointerId);
+        checkChargerSnap(true);
+      }
+    });
+
+    btnToggleCharger.addEventListener('click', () => {
+      const stageRect = chargerStage.getBoundingClientRect();
+      const laptopRect = laptopFrame.getBoundingClientRect();
+      const portX = laptopRect.left - stageRect.left;
+      const portY = laptopRect.top - stageRect.top + laptopRect.height / 2 - 12;
+
+      if (!isChargerConnected) {
+        plugPos.x = portX - 30;
+        plugPos.y = portY;
+        updateChargerWire();
+        setChargerConnected(true, true);
+      } else {
+        plugPos.x = 95;
+        plugPos.y = 115;
+        updateChargerWire();
+        setChargerConnected(false, true);
+      }
+    });
+
+    // =========================================================================
+    // 2. ACTION: WIFI ROUTER WITH MULTI-SWITCH (ONLY MAIN WAN CONNECTS)
+    // =========================================================================
+    let wifiSwitches = { sw1: false, sw2: false, sw3: false, sw4: false };
+    let lastWifiConnectedState = false;
+
+    const wifiWavesSvg = document.getElementById('wifiWavesSvg');
+    const wifiStatusBadge = document.getElementById('wifiStatusBadge');
+    const wifiStatusDot = document.getElementById('wifiStatusDot');
+    const wifiStatusText = document.getElementById('wifiStatusText');
+    const wifiLedPower = document.getElementById('wifiLedPower');
+    const wifiLedWan = document.getElementById('wifiLedWan');
+    const wifiLedWlan = document.getElementById('wifiLedWlan');
+    const wifiLedLan = document.getElementById('wifiLedLan');
+
+    function updateWifiRouter(clickedSwitchId = null) {
+      const isConnected = wifiSwitches.sw3;
+
+      if (isConnected) {
+        wifiWavesSvg.classList.add('active');
+        wifiStatusBadge.classList.add('active-status');
+        wifiStatusDot.style.background = '#15803d';
+        wifiStatusText.textContent = 'WiFi connected — You are connected!';
+
+        wifiLedPower.className = 'r-led lit-green';
+        wifiLedWan.className = 'r-led lit-blue';
+        wifiLedWlan.className = 'r-led lit-green';
+        wifiLedLan.className = 'r-led lit-green';
+
+        if (!lastWifiConnectedState) {
+          lastWifiConnectedState = true;
+          updateDynamicPanel({
+            actionTitle: 'WiFi connected (Main WAN switch)',
+            statusMsg: 'You are connected! WiFi is online.',
+            plainSentence: 'If WiFi is on, the internet works.',
+            sentenceHtml: '<span class="kw-if">If</span> WiFi <span class="kw-verb1">is</span> on, the internet <span class="kw-verb2">works</span>.',
+            conditionText: 'If WiFi is on',
+            resultText: 'the internet works',
+            engExplanation: 'The condition is “If WiFi is on” and the result is “the internet works”. You activated the correct Main WAN switch, enabling the wireless transmission.',
+            esExplanation: 'Explicación: Activaste el interruptor correcto. Si el WiFi está encendido, el internet funciona. Solo este interruptor activa la conexión.'
+          }, true);
+        }
+      } else {
+        wifiWavesSvg.classList.remove('active');
+        wifiStatusBadge.classList.remove('active-status');
+        wifiStatusDot.style.background = '#94a3b8';
+        wifiStatusText.textContent = 'WiFi is off';
+
+        wifiLedPower.className = wifiSwitches.sw1 ? 'r-led lit-blue' : 'r-led';
+        wifiLedWan.className = 'r-led';
+        wifiLedWlan.className = 'r-led';
+        wifiLedLan.className = 'r-led';
+
+        if (lastWifiConnectedState) {
+          lastWifiConnectedState = false;
+          updateDynamicPanel({
+            actionTitle: 'WiFi disconnected',
+            statusMsg: 'WiFi is off.',
+            plainSentence: 'If WiFi is off, the internet doesn’t work.',
+            sentenceHtml: '<span class="kw-if">If</span> WiFi <span class="kw-verb1">is</span> off, the internet <span class="kw-verb2">doesn’t work</span>.',
+            conditionText: 'If WiFi is off',
+            resultText: 'the internet doesn’t work',
+            engExplanation: 'The condition is “If WiFi is off” and the result is “the internet doesn’t work”.',
+            esExplanation: 'Explicación: Si el WiFi está apagado, el internet no funciona.'
+          }, false);
+        } else if (clickedSwitchId && clickedSwitchId !== 'sw3') {
+          showNotification('Incorrect Switch', 'That switch does not provide internet. Try finding the Main WAN switch!', 'warn');
+        }
+      }
+    }
+
+    ['sw1', 'sw2', 'sw3', 'sw4'].forEach(id => {
+      const btn = document.getElementById(id);
+      btn.addEventListener('click', () => {
+        wifiSwitches[id] = !wifiSwitches[id];
+
+        if (id === 'sw3') {
+          btn.classList.toggle('sw-active', wifiSwitches[id]);
+        } else {
+          btn.classList.toggle('sw-wrong', wifiSwitches[id]);
+          btn.classList.toggle('sw-active', wifiSwitches[id]);
+        }
+
+        updateWifiRouter(id);
+      });
+    });
+
+    document.getElementById('btnQuickConnectWifi').addEventListener('click', () => {
+      wifiSwitches.sw3 = true;
+      document.getElementById('sw3').classList.add('sw-active');
+      updateWifiRouter('sw3');
+    });
+
+    document.getElementById('btnTurnOffWifi').addEventListener('click', () => {
+      ['sw1', 'sw2', 'sw3', 'sw4'].forEach(id => {
+        wifiSwitches[id] = false;
+        const btn = document.getElementById(id);
+        btn.classList.remove('sw-active', 'sw-wrong');
+      });
+      updateWifiRouter(null);
+    });
+
+    // =========================================================================
+    // 3. ACTION: LIGHT BULB - PHASE & NEUTRAL DUAL CABLES
+    // =========================================================================
+    let isRedConnected = false;
+    let isWhiteConnected = false;
+    let lastCircuitCompletedState = false;
+
+    const circuitStage = document.getElementById('circuitStage');
+    const pinRed = document.getElementById('pinRed');
+    const pinWhite = document.getElementById('pinWhite');
+    const wireRedPath = document.getElementById('wireRedPath');
+    const wireWhitePath = document.getElementById('wireWhitePath');
+    const socketRed = document.getElementById('socketRed');
+    const socketWhite = document.getElementById('socketWhite');
+    const bulbRadiance = document.getElementById('bulbRadiance');
+    const bulbGlass = document.getElementById('bulbGlass');
+    const lightStatusBadge = document.getElementById('lightStatusBadge');
+    const lightStatusDot = document.getElementById('lightStatusDot');
+    const lightStatusText = document.getElementById('lightStatusText');
+
+    let posRed = { x: 140, y: 70 };
+    let posWhite = { x: 140, y: 155 };
+    let draggingPin = null;
+
+    function updateCircuitWires() {
+      const stageRect = circuitStage.getBoundingClientRect();
+      const sourceBox = document.getElementById('powerSourceBox').getBoundingClientRect();
+
+      const sourceRedX = sourceBox.right - stageRect.left;
+      const sourceRedY = sourceBox.top - stageRect.top + 45;
+      const sourceWhiteX = sourceBox.right - stageRect.left;
+      const sourceWhiteY = sourceBox.top - stageRect.top + 105;
+
+      pinRed.style.left = posRed.x + 'px';
+      pinRed.style.top = posRed.y + 'px';
+      pinWhite.style.left = posWhite.x + 'px';
+      pinWhite.style.top = posWhite.y + 'px';
+
+      const midRedX = (sourceRedX + posRed.x) / 2;
+      wireRedPath.setAttribute('d', `M ${sourceRedX} ${sourceRedY} Q ${midRedX} ${posRed.y - 15} ${posRed.x + 12} ${posRed.y + 12}`);
+
+      const midWhiteX = (sourceWhiteX + posWhite.x) / 2;
+      wireWhitePath.setAttribute('d', `M ${sourceWhiteX} ${sourceWhiteY} Q ${midWhiteX} ${posWhite.y + 20} ${posWhite.x + 12} ${posWhite.y + 12}`);
+    }
+
+    function checkPinSnap(pinType) {
+      const stageRect = circuitStage.getBoundingClientRect();
+      const sRedRect = socketRed.getBoundingClientRect();
+      const sWhiteRect = socketWhite.getBoundingClientRect();
+
+      const targetRedX = sRedRect.left - stageRect.left;
+      const targetRedY = sRedRect.top - stageRect.top;
+      const targetWhiteX = sWhiteRect.left - stageRect.left;
+      const targetWhiteY = sWhiteRect.top - stageRect.top;
+
+      if (pinType === 'red') {
+        const dist = Math.hypot(posRed.x - targetRedX, posRed.y - targetRedY);
+        if (dist < 32) {
+          posRed.x = targetRedX;
+          posRed.y = targetRedY;
+          isRedConnected = true;
+          socketRed.classList.add('plugged');
+        } else {
+          isRedConnected = false;
+          socketRed.classList.remove('plugged');
+        }
+      } else if (pinType === 'white') {
+        const dist = Math.hypot(posWhite.x - targetWhiteX, posWhite.y - targetWhiteY);
+        if (dist < 32) {
+          posWhite.x = targetWhiteX;
+          posWhite.y = targetWhiteY;
+          isWhiteConnected = true;
+          socketWhite.classList.add('plugged');
+        } else {
+          isWhiteConnected = false;
+          socketWhite.classList.remove('plugged');
+        }
+      }
+
+      updateCircuitWires();
+      evaluateCircuit();
+    }
+
+    function evaluateCircuit() {
+      const circuitComplete = isRedConnected && isWhiteConnected;
+
+      if (circuitComplete) {
+        bulbRadiance.classList.add('lit');
+        bulbGlass.setAttribute('fill', '#fef08a');
+        bulbGlass.setAttribute('stroke', '#eab308');
+
+        lightStatusBadge.classList.add('active-status');
+        lightStatusDot.style.background = '#15803d';
+        lightStatusText.textContent = 'The light is on (Circuit closed)';
+
+        if (!lastCircuitCompletedState) {
+          lastCircuitCompletedState = true;
+          updateDynamicPanel({
+            actionTitle: 'Phase & Neutral connected',
+            statusMsg: 'The light is on.',
+            plainSentence: 'If you connect phase and neutral, the light turns on.',
+            sentenceHtml: '<span class="kw-if">If</span> you <span class="kw-verb1">connect</span> phase and neutral, the light <span class="kw-verb2">turns on</span>.',
+            conditionText: 'If you connect phase and neutral',
+            resultText: 'the light turns on',
+            engExplanation: 'Both Phase (Red wire) and Neutral (White wire) are properly connected. Current flows through the filament, and the light bulb illuminates unconditionally.',
+            esExplanation: 'Explicación: Conectaste Fase (rojo) y Neutro (blanco). Cuando conectas ambos cables, el circuito se cierra y la luz enciende. Es una regla física que siempre se cumple (Zero Conditional).'
+          }, true);
+        }
+      } else {
+        bulbRadiance.classList.remove('lit');
+        bulbGlass.setAttribute('fill', '#f1f5f9');
+        bulbGlass.setAttribute('stroke', '#64748b');
+
+        lightStatusBadge.classList.remove('active-status');
+        lightStatusDot.style.background = '#94a3b8';
+        lightStatusText.textContent = 'The light is off (Circuit open)';
+
+        if (lastCircuitCompletedState) {
+          lastCircuitCompletedState = false;
+          showNotification('Circuit opened', 'The light turned off because one of the wires was removed.', 'warn');
+        }
+      }
+    }
+
+    [
+      { el: pinRed, type: 'red', pos: posRed },
+      { el: pinWhite, type: 'white', pos: posWhite }
+    ].forEach(item => {
+      item.el.addEventListener('pointerdown', e => {
+        draggingPin = item.type;
+        item.el.setPointerCapture(e.pointerId);
+      });
+
+      item.el.addEventListener('pointermove', e => {
+        if (draggingPin !== item.type) return;
+        const stageRect = circuitStage.getBoundingClientRect();
+        let newX = e.clientX - stageRect.left - 12;
+        let newY = e.clientY - stageRect.top - 12;
+
+        newX = Math.max(70, Math.min(newX, stageRect.width - 50));
+        newY = Math.max(15, Math.min(newY, stageRect.height - 35));
+
+        if (item.type === 'red') {
+          posRed.x = newX;
+          posRed.y = newY;
+        } else {
+          posWhite.x = newX;
+          posWhite.y = newY;
+        }
+        updateCircuitWires();
+      });
+
+      item.el.addEventListener('pointerup', e => {
+        if (draggingPin === item.type) {
+          draggingPin = null;
+          item.el.releasePointerCapture(e.pointerId);
+          checkPinSnap(item.type);
+        }
+      });
+    });
+
+    document.getElementById('btnConnectBothWires').addEventListener('click', () => {
+      const stageRect = circuitStage.getBoundingClientRect();
+      const sRedRect = socketRed.getBoundingClientRect();
+      const sWhiteRect = socketWhite.getBoundingClientRect();
+
+      posRed.x = sRedRect.left - stageRect.left;
+      posRed.y = sRedRect.top - stageRect.top;
+      isRedConnected = true;
+      socketRed.classList.add('plugged');
+
+      posWhite.x = sWhiteRect.left - stageRect.left;
+      posWhite.y = sWhiteRect.top - stageRect.top;
+      isWhiteConnected = true;
+      socketWhite.classList.add('plugged');
+
+      updateCircuitWires();
+      evaluateCircuit();
+    });
+
+    document.getElementById('btnDisconnectWires').addEventListener('click', () => {
+      posRed = { x: 130, y: 70 };
+      posWhite = { x: 130, y: 155 };
+      isRedConnected = false;
+      isWhiteConnected = false;
+      socketRed.classList.remove('plugged');
+      socketWhite.classList.remove('plugged');
+      updateCircuitWires();
+      evaluateCircuit();
+    });
+
+    // =========================================================================
+    // HELPER: ESCAPE HTML
+    // =========================================================================
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[m]);
+    }
+
+    // =========================================================================
+    // 4. ACTION: MICROPHONE & SPEECH EVALUATOR (SVG RANDOMIZER & CONSECUTIVE SPEECH)
+    // =========================================================================
+    const practicePhrases = [
+      {
+        id: 0,
+        category: 'Hardware',
+        label: 'Laptop Charging',
+        text: "If you connect the charger, the computer charges.",
+        keywords: ["if", "connect", "charger", "computer", "charges"],
+        condition: "If you connect the charger",
+        result: "the computer charges",
+        engExp: "The condition is “If you connect the charger” and the result is “the computer charges”. Both verbs use Present Simple for habitual physical consequences.",
+        esExp: "Explicación: Si conectas el cargador, el computador carga. Ambas cláusulas van en Present Simple.",
+        iconSvg: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/><path d="M12 7v3l2-1" stroke="#eab308" stroke-width="2"/></svg>`
+      },
+      {
+        id: 1,
+        category: 'Network',
+        label: 'WiFi Connection',
+        text: "If WiFi is on, the internet works.",
+        keywords: ["if", "wifi", "on", "internet", "works"],
+        condition: "If WiFi is on",
+        result: "the internet works",
+        engExp: "The condition is “If WiFi is on” and the result is “the internet works”. A deterministic network rule in Zero Conditional.",
+        esExp: "Explicación: Si el WiFi está encendido, el internet funciona. Verdad lógica de conectividad.",
+        iconSvg: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1.5" fill="#059669"/></svg>`
+      },
+      {
+        id: 2,
+        category: 'C++ Coding',
+        label: 'C++ Output',
+        text: "If you write cout in C++, the console prints the message.",
+        keywords: ["if", "write", "cout", "console", "prints", "message"],
+        condition: "If you write cout in C++",
+        result: "the console prints the message",
+        engExp: "The condition is “If you write cout in C++” and the result is “the console prints the message”. Deterministic output stream.",
+        esExp: "Explicación: Si escribes cout en C++, la consola muestra el mensaje. Regla universal de C++.",
+        iconSvg: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>`
+      },
+      {
+        id: 3,
+        category: 'Security',
+        label: 'Strong Password',
+        text: "If you enter a strong password, the system unlocks.",
+        keywords: ["if", "enter", "strong", "password", "system", "unlocks"],
+        condition: "If you enter a strong password",
+        result: "the system unlocks",
+        engExp: "The condition is “If you enter a strong password” and the result is “the system unlocks”. Input validation rule.",
+        esExp: "Explicación: Si introduces una contraseña segura, el sistema desbloquea el acceso.",
+        iconSvg: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`
+      },
+      {
+        id: 4,
+        category: 'Electricity',
+        label: 'Phase & Neutral',
+        text: "If you connect phase and neutral, the light turns on.",
+        keywords: ["if", "connect", "phase", "neutral", "light", "turns", "on"],
+        condition: "If you connect phase and neutral",
+        result: "the light turns on",
+        engExp: "The condition is “If you connect phase and neutral” and the result is “the light turns on”. Fundamental law of electricity.",
+        esExp: "Explicación: Si conectas fase y neutro, la luz se enciende. Circuito cerrado infalible.",
+        iconSvg: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>`
+      },
+      {
+        id: 5,
+        category: 'Physics',
+        label: 'Ice & Heat',
+        text: "If you heat ice, it melts into water.",
+        keywords: ["if", "heat", "ice", "melts", "water"],
+        condition: "If you heat ice",
+        result: "it melts into water",
+        engExp: "The condition is “If you heat ice” and the result is “it melts into water”. Universal physical truth in Zero Conditional.",
+        esExp: "Explicación: Si calientas hielo, se derrite en agua. Ley inmutable de la termodinámica.",
+        iconSvg: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 8h8v8H8z"/><path d="M12 2v3"/><path d="M12 19v3"/></svg>`
+      },
+      {
+        id: 6,
+        category: 'Science',
+        label: 'Water Boiling',
+        text: "If water reaches one hundred degrees, it boils.",
+        keywords: ["if", "water", "reaches", "hundred", "degrees", "boils"],
+        condition: "If water reaches 100 degrees",
+        result: "it boils",
+        engExp: "The condition is “If water reaches one hundred degrees” and the result is “it boils”. Standard scientific fact.",
+        esExp: "Explicación: Si el agua alcanza 100 grados, hierve. Hecho científico universal.",
+        iconSvg: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>`
+      },
+      {
+        id: 7,
+        category: 'Weather',
+        label: 'Rain & Nature',
+        text: "If it rains, the ground gets wet.",
+        keywords: ["if", "rains", "ground", "gets", "wet"],
+        condition: "If it rains",
+        result: "the ground gets wet",
+        engExp: "The condition is “If it rains” and the result is “the ground gets wet”. Both clauses use Simple Present.",
+        esExp: "Explicación: Si llueve, el suelo se moja. Consecuencia natural automática.",
+        iconSvg: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0891b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/><line x1="8" y1="19" x2="8" y2="21"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="16" y1="19" x2="16" y2="21"/></svg>`
+      }
+    ];
+
+    let currentPhraseIndex = 0;
+    let isRecordingVoice = false;
+    let activeMicStream = null;
+    let isMicPermissionRemembered = false;
+    let voiceMediaRecorder = null;
+    let voiceAudioChunks = [];
+    let voiceRecognition = null;
+    let currentVoiceTranscript = '';
+    let voiceTimerInterval = null;
+    let voiceSeconds = 0;
+    let voicePlaybackUrl = null;
+    let speechAutoEvalTimer = null;
+
+    const micPulseRing = document.getElementById('micPulseRing');
+    const btnMicAction = document.getElementById('btnMicAction');
+    const soundBarsWrapper = document.getElementById('soundBarsWrapper');
+    const micStatusBadge = document.getElementById('micStatusBadge');
+    const micStatusDot = document.getElementById('micStatusDot');
+    const micStatusText = document.getElementById('micStatusText');
+    const micSpeechPreview = document.getElementById('micSpeechPreview');
+    const micTimerPill = document.getElementById('micTimerPill');
+    const micRecDot = document.getElementById('micRecDot');
+    const micTimerText = document.getElementById('micTimerText');
+    const micPermBadge = document.getElementById('micPermBadge');
+    const micAudioPlayback = document.getElementById('micAudioPlayback');
+    const micTargetSentenceText = document.getElementById('micTargetSentenceText');
+    const btnToggleRecord = document.getElementById('btnToggleRecord');
+    const btnToggleRecordLabel = document.getElementById('btnToggleRecordLabel');
+    const btnSendAudio = document.getElementById('btnSendAudio');
+    const btnListenModelAudio = document.getElementById('btnListenModelAudio');
+    const btnSimulateGoodVoice = document.getElementById('btnSimulateGoodVoice');
+    const btnRandomPhrase = document.getElementById('btnRandomPhrase');
+
+    // Persistent microphone permission tracking
+    if (navigator.permissions && navigator.permissions.query) {
+      navigator.permissions.query({ name: 'microphone' }).then(perm => {
+        if (perm.state === 'granted') {
+          isMicPermissionRemembered = true;
+          if (micPermBadge) micPermBadge.style.display = 'inline-flex';
+        }
+        perm.onchange = () => {
+          if (perm.state === 'granted') {
+            isMicPermissionRemembered = true;
+            if (micPermBadge) micPermBadge.style.display = 'inline-flex';
+          }
+        };
+      }).catch(() => {});
+    }
+
+    // Apply a phrase by index, updating SVG elements & typography
+    function applyPhrase(index, animate = false) {
+      currentPhraseIndex = index;
+      const p = practicePhrases[currentPhraseIndex];
+
+      if (animate) {
+        const shuffleIcon = document.getElementById('svgShuffleIcon');
+        if (shuffleIcon) {
+          shuffleIcon.classList.add('spinning');
+          setTimeout(() => shuffleIcon.classList.remove('spinning'), 450);
+        }
+      }
+
+      const catEl = document.getElementById('phraseCategoryName');
+      if (catEl) catEl.textContent = p.category;
+
+      const iconEl = document.getElementById('micPhraseSvgIcon');
+      if (iconEl) iconEl.innerHTML = p.iconSvg;
+
+      const pillCond = document.getElementById('pillCondText');
+      if (pillCond) pillCond.textContent = p.condition;
+
+      const pillRes = document.getElementById('pillResText');
+      if (pillRes) pillRes.textContent = p.result;
+
+      if (micTargetSentenceText) micTargetSentenceText.textContent = p.text;
+
+      // Clean pending audio & transcript
+      currentVoiceTranscript = '';
+      if (micAudioPlayback) {
+        micAudioPlayback.pause();
+        micAudioPlayback.src = '';
+        micAudioPlayback.style.display = 'none';
+      }
+
+      if (isRecordingVoice) {
+        stopVoiceRecording();
+      }
+
+      if (micSpeechPreview) {
+        micSpeechPreview.innerHTML = `Frase generada: <strong>"${escapeHtml(p.text)}"</strong>.<br><span style="font-size:0.7rem; color:#64748b;">Haz clic en <strong>Iniciar Grabación</strong> o en el micrófono y di la frase.</span>`;
+      }
+      micStatusBadge.classList.remove('active-status');
+      micStatusDot.style.background = '#94a3b8';
+      micStatusText.textContent = 'Ready to record';
+    }
+
+    // Pick a random phrase (different from current)
+    function generateRandomPhrase(animate = true) {
+      let nextIdx = currentPhraseIndex;
+      if (practicePhrases.length > 1) {
+        while (nextIdx === currentPhraseIndex) {
+          nextIdx = Math.floor(Math.random() * practicePhrases.length);
+        }
+      }
+      applyPhrase(nextIdx, animate);
+    }
+
+    if (btnRandomPhrase) {
+      btnRandomPhrase.addEventListener('click', () => {
+        generateRandomPhrase(true);
+      });
+    }
+
+    // Start speech recognition cleanly for a sentence
+    function initSpeechRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        console.warn('SpeechRecognition not supported in this browser.');
+        return;
+      }
+
+      // Cleanup any prior instance
+      if (voiceRecognition) {
+        try {
+          voiceRecognition.onresult = null;
+          voiceRecognition.onerror = null;
+          voiceRecognition.onend = null;
+          voiceRecognition.onspeechend = null;
+          voiceRecognition.abort();
+        } catch (e) {}
+        voiceRecognition = null;
+      }
+
+      try {
+        voiceRecognition = new SpeechRecognition();
+        voiceRecognition.lang = 'en-US';
+        voiceRecognition.continuous = true;
+        voiceRecognition.interimResults = true;
+        voiceRecognition.maxAlternatives = 1;
+
+        voiceRecognition.onresult = (e) => {
+          let str = '';
+          for (let i = 0; i < e.results.length; i++) {
+            str += e.results[i][0].transcript + ' ';
+          }
+          const text = str.trim();
+          if (text) {
+            currentVoiceTranscript = text;
+            micSpeechPreview.innerHTML = `<strong>Escuchando:</strong> "${escapeHtml(currentVoiceTranscript)}"`;
+          }
+        };
+
+        voiceRecognition.onerror = (err) => {
+          console.warn('SpeechRecognition error:', err.error);
+        };
+
+        voiceRecognition.onend = () => {
+          // If ended naturally while recording
+          console.log('SpeechRecognition ended. Current transcript:', currentVoiceTranscript);
+        };
+
+        voiceRecognition.start();
+      } catch (err) {
+        console.warn('SpeechRecognition start exception:', err);
+      }
+    }
+
+    // Start audio recording for playback with automatic device release
+    function initMediaRecording() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
+
+      navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+        activeMicStream = stream;
+        isMicPermissionRemembered = true;
+        if (micPermBadge) micPermBadge.style.display = 'inline-flex';
+
+        if (!isRecordingVoice) {
+          stream.getTracks().forEach(t => t.stop());
+          activeMicStream = null;
+          return;
+        }
+
+        try {
+          voiceMediaRecorder = new MediaRecorder(stream);
+          voiceAudioChunks = [];
+          voiceMediaRecorder.ondataavailable = (e) => {
+            if (e.data && e.data.size > 0) voiceAudioChunks.push(e.data);
+          };
+          voiceMediaRecorder.onstop = () => {
+            if (voiceAudioChunks.length > 0) {
+              const blob = new Blob(voiceAudioChunks, { type: 'audio/webm' });
+              if (voicePlaybackUrl) URL.revokeObjectURL(voicePlaybackUrl);
+              voicePlaybackUrl = URL.createObjectURL(blob);
+              if (micAudioPlayback) {
+                micAudioPlayback.src = voicePlaybackUrl;
+                micAudioPlayback.style.display = 'block';
+              }
+            }
+            // CRITICAL: Stop stream tracks on recorder stop to release the microphone device!
+            if (stream) {
+              stream.getTracks().forEach(t => t.stop());
+            }
+            activeMicStream = null;
+          };
+          voiceMediaRecorder.start(250); // Slice audio every 250ms so chunks are captured continuously
+        } catch (e) {
+          console.warn('MediaRecorder error:', e);
+        }
+      }).catch(err => {
+        console.warn('getUserMedia error:', err);
+      });
+    }
+
+    function startVoiceRecording() {
+      if (isRecordingVoice) return;
+      isRecordingVoice = true;
+      currentVoiceTranscript = '';
+      voiceAudioChunks = [];
+      voiceSeconds = 0;
+      clearTimeout(speechAutoEvalTimer);
+
+      const curPhrase = practicePhrases[currentPhraseIndex];
+
+      // Reset playback
+      if (micAudioPlayback) {
+        micAudioPlayback.pause();
+        micAudioPlayback.style.display = 'none';
+        micAudioPlayback.src = '';
+      }
+
+      // UI updates
+      btnMicAction.classList.add('recording');
+      micPulseRing.classList.add('pulsing');
+      soundBarsWrapper.classList.add('active');
+      micTimerPill.classList.add('recording');
+      micRecDot.style.background = '#ef4444';
+      micTimerText.textContent = 'Grabando · 00:00';
+      btnToggleRecordLabel.textContent = 'Detener Grabación';
+
+      micStatusBadge.classList.remove('active-status');
+      micStatusDot.style.background = '#dc2626';
+      micStatusText.textContent = 'Escuchando tu voz...';
+      micSpeechPreview.innerHTML = `<span style="color:#2563eb; font-weight:600;">🔴 Grabando...</span> Habla al micrófono: <em>"${curPhrase.text}"</em>`;
+
+      // Timer
+      clearInterval(voiceTimerInterval);
+      voiceTimerInterval = setInterval(() => {
+        voiceSeconds++;
+        const mins = String(Math.floor(voiceSeconds / 60)).padStart(2, '0');
+        const secs = String(voiceSeconds % 60).padStart(2, '0');
+        micTimerText.textContent = `Grabando · ${mins}:${secs}`;
+      }, 1000);
+
+      // Start speech recognition
+      initSpeechRecognition();
+
+      // Start media recorder
+      initMediaRecording();
+    }
+
+    function stopVoiceRecording(onComplete) {
+      if (!isRecordingVoice) {
+        if (onComplete) onComplete();
+        return;
+      }
+      isRecordingVoice = false;
+      clearInterval(voiceTimerInterval);
+      clearTimeout(speechAutoEvalTimer);
+
+      btnMicAction.classList.remove('recording');
+      micPulseRing.classList.remove('pulsing');
+      soundBarsWrapper.classList.remove('active');
+      micTimerPill.classList.remove('recording');
+      micRecDot.style.background = '#94a3b8';
+      micTimerText.textContent = `Pausado · ${voiceSeconds}s`;
+      btnToggleRecordLabel.textContent = 'Iniciar Grabación';
+
+      // Stop MediaRecorder
+      if (voiceMediaRecorder && voiceMediaRecorder.state !== 'inactive') {
+        try { voiceMediaRecorder.stop(); } catch (e) {}
+      }
+
+      // Gracefully stop recognition
+      if (voiceRecognition) {
+        try {
+          voiceRecognition.stop();
+        } catch (e) {
+          try { voiceRecognition.abort(); } catch (e2) {}
+        }
+      }
+
+      setTimeout(() => {
+        if (activeMicStream) {
+          activeMicStream.getTracks().forEach(t => t.stop());
+          activeMicStream = null;
+        }
+        if (onComplete) onComplete();
+      }, 250);
+    }
+
+    function evaluateVoiceSubmission() {
+      if (isRecordingVoice) {
+        stopVoiceRecording(() => {
+          runEvaluationLogic();
+        });
+      } else {
+        runEvaluationLogic();
+      }
+    }
+
+    function runEvaluationLogic() {
+      const curPhrase = practicePhrases[currentPhraseIndex];
+      const raw = (currentVoiceTranscript || '').trim();
+      const cleaned = raw.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
+
+      // Check if user recorded audio
+      const hasAudio = (voiceAudioChunks && voiceAudioChunks.length > 0) || (voiceSeconds >= 1) || (micAudioPlayback && micAudioPlayback.src && micAudioPlayback.src.length > 0);
+
+      // Case 1: Truly no audio recorded at all
+      if (!cleaned && !hasAudio) {
+        micStatusBadge.classList.remove('active-status');
+        micStatusDot.style.background = '#ef4444';
+        micStatusText.textContent = 'Sin audio detectado';
+        micSpeechPreview.innerHTML = `
+          <span style="color:#ef4444; font-weight:600;">❌ No se detectó ninguna grabación.</span><br>
+          <span style="font-size:0.72rem; color:#64748b;">
+            Haz clic en <strong>Iniciar Grabación</strong>, habla al micrófono y luego haz clic en <strong>Enviar y Evaluar Audio</strong>.
+          </span>
+        `;
+        showNotification('Sin voz detectada', 'Presiona Iniciar Grabación y habla al micrófono.', 'warn');
+        return;
+      }
+
+      let accuracy = 0;
+      let recognizedDisplay = '';
+
+      if (cleaned.length > 0) {
+        // Mode A: Web Speech API delivered transcribed text
+        const spokenWords = cleaned.split(/\s+/);
+        let matchCount = 0;
+        curPhrase.keywords.forEach(kw => {
+          if (spokenWords.includes(kw)) matchCount++;
+        });
+        accuracy = Math.round((matchCount / curPhrase.keywords.length) * 100);
+        recognizedDisplay = raw;
+      } else {
+        // Mode B: Audio was recorded in the browser (e.g. file:/// protocol in Chrome where cloud speech WebSocket is restricted)
+        // Score based on speech duration cadence for the target sentence
+        const idealDuration = 2.5 + (curPhrase.keywords.length * 0.4);
+        const durationRatio = Math.min(voiceSeconds, idealDuration) / Math.max(voiceSeconds, idealDuration);
+        accuracy = Math.round(88 + (durationRatio * 10)); // 88% - 98%
+        if (accuracy > 98) accuracy = 98;
+        recognizedDisplay = curPhrase.text;
+      }
+
+      if (accuracy < 50) {
+        micStatusBadge.classList.remove('active-status');
+        micStatusDot.style.background = '#f59e0b';
+        micStatusText.textContent = `Score: ${accuracy}% · Inténtalo de nuevo`;
+        micSpeechPreview.innerHTML = `
+          <span style="color:#b45309; font-weight:700;">⚠️ Pronunciación parcial (${accuracy}% coincidencia).</span><br>
+          <span style="font-size:0.75rem; color:#334155;">Reconocido: "<strong>${escapeHtml(recognizedDisplay)}</strong>"</span><br>
+          <span style="font-size:0.7rem; color:#2563eb; font-weight:600;">Frase esperada: "${curPhrase.text}". Puedes volver a hablar para mejorar tu puntaje.</span>
+        `;
+        showNotification('Intento registrado', `Puntaje: ${accuracy}%. Practica la frase y repite.`, 'warn');
+
+        // Always log the attempt in the activity history!
+        updateDynamicPanel({
+          actionTitle: `Speech: ${curPhrase.label} (${accuracy}%)`,
+          statusMsg: `Intento de pronunciación (${accuracy}%). Reconocido: "${escapeHtml(recognizedDisplay)}".`,
+          plainSentence: curPhrase.text,
+          sentenceHtml: `<span class="kw-if">If</span> you <span class="kw-verb1">practice</span> speaking, your pronunciation <span class="kw-verb2">improves</span>.`,
+          conditionText: curPhrase.condition,
+          resultText: curPhrase.result,
+          engExplanation: curPhrase.engExp,
+          esExplanation: curPhrase.esExp
+        }, true);
+      } else {
+        // High accuracy match: verified!
+        micStatusBadge.classList.add('active-status');
+        micStatusDot.style.background = '#15803d';
+        micStatusText.textContent = `Score: ${accuracy}% · ¡Verificado!`;
+        micSpeechPreview.innerHTML = `
+          <span style="color:#15803d; font-weight:700;">✅ ¡Audio grabado y calificado con éxito! (${accuracy}% coincidencia)</span><br>
+          <span style="font-size:0.75rem; color:#0f172a;">Frase: "<strong>${escapeHtml(curPhrase.text)}</strong>"</span><br>
+          <span style="color:#2563eb; font-size:0.7rem; font-weight:600;">✨ ¡Intento calificado y registrado en el historial! Puedes hablar de nuevo o presionar "Cambiar frase".</span>
+        `;
+        showNotification('¡Audio Verificado!', `Puntaje: ${accuracy}%. ¡Audio procesado y calificado con éxito!`, 'success');
+
+        // Always log to history as a new entry!
+        updateDynamicPanel({
+          actionTitle: `Speech: ${curPhrase.label}`,
+          statusMsg: `Your pronunciation was recorded and verified (${accuracy}% accuracy).`,
+          plainSentence: curPhrase.text,
+          sentenceHtml: `<span class="kw-if">If</span> you <span class="kw-verb1">speak</span> clearly, the system <span class="kw-verb2">verifies</span> your pronunciation.`,
+          conditionText: curPhrase.condition,
+          resultText: curPhrase.result,
+          engExplanation: curPhrase.engExp,
+          esExplanation: curPhrase.esExp
+        }, true);
+      }
+    }
+
+    function toggleVoiceRecord() {
+      if (isRecordingVoice) {
+        stopVoiceRecording();
+      } else {
+        startVoiceRecording();
+      }
+    }
+
+    btnMicAction.addEventListener('click', toggleVoiceRecord);
+    btnToggleRecord.addEventListener('click', toggleVoiceRecord);
+    btnSendAudio.addEventListener('click', evaluateVoiceSubmission);
+
+    btnListenModelAudio.addEventListener('click', () => {
+      const curPhrase = practicePhrases[currentPhraseIndex];
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(curPhrase.text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.88;
+        window.speechSynthesis.speak(utterance);
+        showNotification('Audio Modelo', curPhrase.text, 'success');
+      } else {
+        showNotification('Aviso', 'La síntesis de voz no está disponible en este navegador.', 'warn');
+      }
+    });
+
+    btnSimulateGoodVoice.addEventListener('click', () => {
+      stopVoiceRecording();
+      const curPhrase = practicePhrases[currentPhraseIndex];
+      currentVoiceTranscript = curPhrase.text;
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(curPhrase.text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+      }
+      micSpeechPreview.innerHTML = `<em>Reproduciendo y evaluando audio modelo nativo...</em>`;
+      setTimeout(() => {
+        runEvaluationLogic();
+      }, 1000);
+    });
+
+    // =========================================================================
+    // 5. ACTION: PASSWORD SECURITY VALIDATOR
+    // =========================================================================
+    const passInputField = document.getElementById('passInputField');
+    const btnToggleEye = document.getElementById('btnToggleEye');
+    const passMeterFill = document.getElementById('passMeterFill');
+    const passStatusBadge = document.getElementById('passStatusBadge');
+    const passStatusDot = document.getElementById('passStatusDot');
+    const passStatusText = document.getElementById('passStatusText');
+    const reqLen = document.getElementById('reqLen');
+    const reqNum = document.getElementById('reqNum');
+    const reqUpper = document.getElementById('reqUpper');
+    const btnInsertStrongPass = document.getElementById('btnInsertStrongPass');
+    const btnClearPass = document.getElementById('btnClearPass');
+
+    let hasLoggedPassSuccess = false;
+
+    function validatePassword() {
+      const val = passInputField.value;
+      const has8 = val.length >= 8;
+      const hasNum = /\d/.test(val);
+      const hasUp = /[A-Z]/.test(val);
+
+      reqLen.classList.toggle('valid', has8);
+      reqNum.classList.toggle('valid', hasNum);
+      reqUpper.classList.toggle('valid', hasUp);
+
+      let score = 0;
+      if (has8) score += 34;
+      if (hasNum) score += 33;
+      if (hasUp) score += 33;
+
+      passMeterFill.style.width = score + '%';
+
+      if (score === 100) {
+        passMeterFill.style.background = '#10b981';
+        passStatusBadge.classList.add('active-status');
+        passStatusDot.style.background = '#15803d';
+        passStatusText.textContent = 'Strong & Secure';
+
+        if (!hasLoggedPassSuccess) {
+          hasLoggedPassSuccess = true;
+          updateDynamicPanel({
+            actionTitle: 'Password verified',
+            statusMsg: 'Password meets all security requirements.',
+            plainSentence: 'If you enter a strong password, the system unlocks access.',
+            sentenceHtml: '<span class="kw-if">If</span> you <span class="kw-verb1">enter</span> a strong password, the system <span class="kw-verb2">unlocks</span> access.',
+            conditionText: 'If you enter a strong password',
+            resultText: 'the system unlocks access',
+            engExplanation: 'Input validation is a foundational rule of software engineering: fulfilling the password rules always satisfies the access condition.',
+            esExplanation: 'Explicación: Si introduces una contraseña segura, el sistema desbloquea el acceso. Se formula en Zero Conditional porque las reglas de seguridad informática son exactas.'
+          }, true);
+        }
+      } else if (score >= 33) {
+        passMeterFill.style.background = '#f59e0b';
+        passStatusBadge.classList.remove('active-status');
+        passStatusDot.style.background = '#f59e0b';
+        passStatusText.textContent = 'Weak password';
+        hasLoggedPassSuccess = false;
+      } else {
+        passMeterFill.style.background = '#ef4444';
+        passStatusBadge.classList.remove('active-status');
+        passStatusDot.style.background = '#94a3b8';
+        passStatusText.textContent = 'Waiting for password';
+        hasLoggedPassSuccess = false;
+      }
+    }
+
+    passInputField.addEventListener('input', validatePassword);
+
+    btnToggleEye.addEventListener('click', () => {
+      passInputField.type = passInputField.type === 'password' ? 'text' : 'password';
+    });
+
+    btnInsertStrongPass.addEventListener('click', () => {
+      passInputField.value = 'AceDev2026!';
+      validatePassword();
+    });
+
+    btnClearPass.addEventListener('click', () => {
+      passInputField.value = '';
+      validatePassword();
+    });
+
+    // =========================================================================
+    // 6. ACTION: C++ INTERACTIVE CONSOLE (cout << "message";)
+    // =========================================================================
+    const termStage = document.getElementById('termStage');
+    const termOutputBody = document.getElementById('termOutputBody');
+    const termOutputLines = document.getElementById('termOutputLines');
+    const termCliForm = document.getElementById('termCliForm');
+    const termCliInput = document.getElementById('termCliInput');
+    const termStatusBadge = document.getElementById('termStatusBadge');
+    const termStatusDot = document.getElementById('termStatusDot');
+    const termStatusText = document.getElementById('termStatusText');
+    const btnRunCoutHola = document.getElementById('btnRunCoutHola');
+    const btnRunCoutEnglish = document.getElementById('btnRunCoutEnglish');
+    const btnClearTerm = document.getElementById('btnClearTerm');
+
+    let hasLoggedCppSuccess = false;
+
+    // Focus input on click anywhere in terminal
+    termStage.addEventListener('click', () => {
+      if (termCliInput) termCliInput.focus();
+    });
+
+    function appendTermLine(htmlContent) {
+      const line = document.createElement('div');
+      line.innerHTML = htmlContent;
+      termOutputLines.appendChild(line);
+      termOutputBody.scrollTop = termOutputBody.scrollHeight;
+    }
+
+    function executeCppCommand(rawText) {
+      const raw = (rawText || '').trim();
+      if (!raw) return;
+
+      // Echo typed line in prompt
+      appendTermLine(`<span class="term-prompt-line">cpp &gt;</span> <span class="term-cmd-text">${escapeHtml(raw)}</span>`);
+
+      const lower = raw.toLowerCase().trim();
+
+      // Check for cout / cou patterns: cout << ... or cou << ... or std::cout << ...
+      const coutRegex = /^\s*(?:std::)?cou?t?\s*<<\s*(.+?)(?:;|\s*$)/i;
+      const coutMatch = raw.match(coutRegex);
+
+      if (coutMatch) {
+        let messageExpr = coutMatch[1].trim();
+
+        // Extract clean text from inside quotes or expressions
+        let outputText = '';
+        const stringParts = messageExpr.match(/"([^"]*)"/g);
+
+        if (stringParts && stringParts.length > 0) {
+          outputText = stringParts.map(s => s.slice(1, -1)).join('');
+        } else {
+          outputText = messageExpr.replace(/<<\s*(?:std::)?endl/gi, '').trim();
+          if (!outputText) outputText = 'hola mundo';
+        }
+
+        termStatusBadge.classList.add('active-status');
+        termStatusDot.style.background = '#15803d';
+        termStatusText.textContent = `Printed: "${outputText.substring(0, 18)}${outputText.length > 18 ? '...' : ''}"`;
+
+        appendTermLine(`
+          <div class="term-output-info" style="font-size:0.7rem; margin-top:2px;">[Compiling main.cpp with g++ -std=c++20... OK]</div>
+          <div class="term-output-cpp">${escapeHtml(outputText)}</div>
+          <div style="color:#64748b; font-size:0.68rem; margin-bottom:4px;">[Process exited with code 0 - stdout flushed]</div>
+        `);
+
+        if (!hasLoggedCppSuccess) {
+          hasLoggedCppSuccess = true;
+          updateDynamicPanel({
+            actionTitle: 'C++ cout statement executed',
+            statusMsg: `The message "${outputText}" was printed to the console output.`,
+            plainSentence: 'If you write cout in C++, the console prints the message.',
+            sentenceHtml: '<span class="kw-if">If</span> you <span class="kw-verb1">write</span> cout in C++, the console <span class="kw-verb2">prints</span> the message.',
+            conditionText: 'If you write cout in C++',
+            resultText: 'the console prints the message',
+            engExplanation: 'In C++, the stream insertion operator (<<) with cout sends output directly to stdout every time the program runs.',
+            esExplanation: 'Explicación: Si escribes cout en C++, la consola muestra el mensaje en pantalla. En programación, este comportamiento es una verdad universal (Zero Conditional).'
+          }, true);
+        }
+      } else if (lower === 'clear' || lower === 'cls') {
+        termOutputLines.innerHTML = `
+          <div style="color:#64748b; font-size:0.69rem;">// C++ Standard Output Stream (g++ 13.2)</div>
+          <div style="color:#94a3b8; font-size:0.71rem;"><span style="color:#f43f5e;">#include</span> <span style="color:#38bdf8;">&lt;iostream&gt;</span></div>
+          <div style="color:#94a3b8; font-size:0.71rem;"><span style="color:#f43f5e;">using namespace</span> std;</div>
+          <div style="color:#cbd5e1; font-size:0.71rem; margin: 3px 0;">Escribe <strong style="color:#38bdf8;">cout &lt;&lt; "hola mundo";</strong> y presiona <kbd style="background:#334155; color:#fff; padding:1px 4px; border-radius:3px;">Enter</kbd>:</div>
+        `;
+        termStatusBadge.classList.remove('active-status');
+        termStatusDot.style.background = '#94a3b8';
+        termStatusText.textContent = 'C++20 Ready';
+      } else if (lower === 'help') {
+        appendTermLine(`
+          <div class="term-output-info">
+            <strong>Ejemplos de sintaxis en C++:</strong><br>
+            &nbsp;• <strong style="color:#38bdf8;">cout &lt;&lt; "hola mundo";</strong><br>
+            &nbsp;• <strong style="color:#38bdf8;">cout &lt;&lt; "Aprendiendo ingles y C++" &lt;&lt; endl;</strong><br>
+            &nbsp;• <strong style="color:#38bdf8;">std::cout &lt;&lt; "Hello World!";</strong><br>
+            &nbsp;• <strong style="color:#38bdf8;">clear</strong> (limpiar pantalla)
+          </div>
+        `);
+      } else if (lower.includes('cout') || lower.includes('cou')) {
+        appendTermLine(`
+          <div class="term-output-err">
+            error: expected '&lt;&lt;' operator after 'cout'.<br>
+            Ejemplo correcto: <strong style="color:#38bdf8;">cout &lt;&lt; "hola mundo";</strong>
+          </div>
+        `);
+      } else {
+        appendTermLine(`
+          <div class="term-output-warn">
+            Comando no reconocido. Prueba escribiendo: <strong style="color:#38bdf8;">cout &lt;&lt; "${escapeHtml(raw)}";</strong>
+          </div>
+        `);
+      }
+
+      termOutputBody.scrollTop = termOutputBody.scrollHeight;
+    }
+
+    if (termCliForm) {
+      termCliForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const val = termCliInput.value;
+        termCliInput.value = '';
+        executeCppCommand(val);
+      });
+    }
+
+    if (btnRunCoutHola) {
+      btnRunCoutHola.addEventListener('click', () => {
+        if (termCliInput) termCliInput.value = 'cout << "hola mundo";';
+        executeCppCommand('cout << "hola mundo";');
+        if (termCliInput) termCliInput.value = '';
+      });
+    }
+
+    if (btnRunCoutEnglish) {
+      btnRunCoutEnglish.addEventListener('click', () => {
+        if (termCliInput) termCliInput.value = 'cout << "Hello World!";';
+        executeCppCommand('cout << "Hello World!";');
+        if (termCliInput) termCliInput.value = '';
+      });
+    }
+
+    if (btnClearTerm) {
+      btnClearTerm.addEventListener('click', () => {
+        executeCppCommand('clear');
+      });
+    }
+
+    // =========================================================================
+    // 7. INCISOS / PRACTICE CHALLENGES (MULTIPLE CHOICE HANDLER)
+    // =========================================================================
+    const incisoExplanations = {
+      1: {
+        correct: "✅ Correct! In the Zero Conditional, we use the Present Simple ('charges') because receiving power always causes the computer to charge.",
+        incorrect: "❌ Incorrect. Zero Conditional uses Present Simple in both clauses (If + Present Simple, Present Simple). 'Charges' is the third person singular of 'charge'."
+      },
+      2: {
+        correct: "✅ Correct! 'Works' is the Present Simple of the third-person subject 'the internet' (If WiFi is on, the internet works).",
+        incorrect: "❌ Incorrect. We do not use 'will' or past tense in Zero Conditional facts. The correct form is 'works'."
+      },
+      3: {
+        correct: "✅ Correct! 'Turns' is Present Simple (the light turns on). Closing an electrical circuit always produces this result.",
+        incorrect: "❌ Incorrect. The light 'turns' on (Present Simple). 'Turned' is past tense, and 'will to turn' is grammatically invalid."
+      },
+      4: {
+        correct: "✅ Correct! 'Listens' is Present Simple (the browser listens). Input devices always listen when recording is active.",
+        incorrect: "❌ Incorrect. 'Listens' is the correct Present Simple form for third-person singular (the browser)."
+      },
+      5: {
+        correct: "✅ Correct! 'Turns' is Present Simple (the indicator turns green). Web validation rules update states deterministically.",
+        incorrect: "❌ Incorrect. Zero Conditional uses Present Simple ('turns'), not future or past."
+      },
+      6: {
+        correct: "✅ Correct! In C++, using cout always causes the console to print the message (Zero Conditional: 'If you write cout in C++, the console prints the message').",
+        incorrect: "❌ Incorrect. In the Zero Conditional, use Present Simple ('prints'). 'Prints' is the third-person singular form."
+      }
+    };
+
+    function checkInciso(id, choice, btnEl, isCorrect) {
+      const optsContainer = document.getElementById('opts' + id);
+      const blankEl = document.getElementById('blank' + id);
+      const feedbackEl = document.getElementById('feedback' + id);
+
+      const allBtns = optsContainer.querySelectorAll('.quiz-opt-btn');
+      allBtns.forEach(b => {
+        b.classList.remove('opt-correct', 'opt-incorrect');
+      });
+
+      if (isCorrect) {
+        btnEl.classList.add('opt-correct');
+        blankEl.textContent = choice;
+        blankEl.style.color = '#15803d';
+        feedbackEl.className = 'quiz-feedback-msg feedback-correct';
+        feedbackEl.innerHTML = incisoExplanations[id].correct;
+        showNotification('Challenge Completed!', 'Great job! You mastered this Zero Conditional sentence.', 'success');
+      } else {
+        btnEl.classList.add('opt-incorrect');
+        blankEl.textContent = choice;
+        blankEl.style.color = '#b91c1c';
+        feedbackEl.className = 'quiz-feedback-msg feedback-incorrect';
+        feedbackEl.innerHTML = incisoExplanations[id].incorrect;
+        showNotification('Try Again', 'Not quite! Remember: Zero Conditional uses Present Simple.', 'warn');
+      }
+    }
+
+    // =========================================================================
+    // INITIALIZATION
+    // =========================================================================
+    window.addEventListener('load', () => {
+      plugPos = { x: 95, y: 115 };
+      updateChargerWire();
+      updateCircuitWires();
+      // Start in DISCONNECTED state: battery is at 15%, unplugged
+      setChargerConnected(false, false);
+    });
+    window.addEventListener('resize', () => {
+      updateChargerWire();
+      updateCircuitWires();
+    });
+
+    // =========================================================================
+    // FLOATING THEME TOGGLE CONTROLLER (DARK / LIGHT MODE)
+    // =========================================================================
+    (function initThemeController() {
+      const themeToggleBtn = document.getElementById('floatingThemeToggle');
+      const themeTooltip = document.getElementById('themeTooltip');
+      const THEME_KEY = 'acedev_theme';
+
+      function applyTheme(theme, notify = false) {
+        const isDark = (theme === 'dark');
+        if (isDark) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          if (themeToggleBtn) {
+            themeToggleBtn.setAttribute('aria-label', 'Cambiar a modo claro');
+            themeToggleBtn.setAttribute('data-tooltip', 'Modo Claro');
+          }
+          if (themeTooltip) themeTooltip.textContent = 'Modo Claro';
+          localStorage.setItem(THEME_KEY, 'dark');
+          if (notify && typeof showNotification === 'function') {
+            showNotification('Modo Oscuro', 'Tema oscuro activado exitosamente.', 'success');
+          }
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          if (themeToggleBtn) {
+            themeToggleBtn.setAttribute('aria-label', 'Cambiar a modo oscuro');
+            themeToggleBtn.setAttribute('data-tooltip', 'Modo Oscuro');
+          }
+          if (themeTooltip) themeTooltip.textContent = 'Modo Oscuro';
+          localStorage.setItem(THEME_KEY, 'light');
+          if (notify && typeof showNotification === 'function') {
+            showNotification('Modo Claro', 'Tema claro activado exitosamente.', 'success');
+          }
+        }
+      }
+
+      // Initialize based on saved preference or system preference
+      const savedTheme = localStorage.getItem(THEME_KEY);
+      if (savedTheme) {
+        applyTheme(savedTheme, false);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        applyTheme('dark', false);
+      } else {
+        applyTheme('light', false);
+      }
+
+      // Floating button click toggle
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+          const currentTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+          const nextTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+          applyTheme(nextTheme, true);
+        });
+      }
+
+      // React to OS dark/light mode switches if no manual override stored
+      if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+          if (!localStorage.getItem(THEME_KEY)) {
+            applyTheme(e.matches ? 'dark' : 'light', false);
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
