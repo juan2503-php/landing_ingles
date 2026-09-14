@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Questions 1st Conditional | AceDev English Tech Platform</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .video-container {
+      max-width: 600px;
+      margin: 0 auto 3rem auto;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+    }
+    video {
+      width: 100%;
+      display: block;
+    }
+    .questions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .question-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .q-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--color-navy);
+    }
+    .a-text {
+      font-size: 0.95rem;
+      color: var(--color-text-muted);
+      background: var(--color-bg);
+      padding: 0.75rem 1rem;
+      border-radius: var(--border-radius-sm);
+      border-left: 3px solid var(--color-navy-mid);
+    }
+    @media (max-width: 768px) {
+      .questions-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>AceDev</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="intro.html" class="nav-link">Intro</a></li>
+        <li><a href="comic.html" class="nav-link">Comic</a></li>
+        <li><a href="reflection.html" class="nav-link">Reflection</a></li>
+        <li><a href="vocab.html" class="nav-link">Vocab</a></li>
+        <li><a href="org-chart.html" class="nav-link">Org Chart</a></li>
+        <li><a href="expressions.html" class="nav-link">Expressions</a></li>
+        <li><a href="conversation.html" class="nav-link">Script</a></li>
+        <li><a href="grammar.html" class="nav-link">Grammar</a></li>
+        <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+        <li><a href="condicionales.html" class="nav-link">Condicionales</a></li>
+        <li><a href="test.html" class="nav-link">Test</a></li>
+        <li><a href="video-questions.html" class="nav-link active">Video Qs</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <ul>
+        <li><a href="intro.html" class="nav-link">1. Introduction</a></li>
+        <li><a href="comic.html" class="nav-link">2. Comic Story</a></li>
+        <li><a href="reflection.html" class="nav-link">3. Reflection</a></li>
+        <li><a href="vocab.html" class="nav-link">4. Vocabulary</a></li>
+        <li><a href="org-chart.html" class="nav-link">5. Org Chart</a></li>
+        <li><a href="expressions.html" class="nav-link">6. Expressions</a></li>
+        <li><a href="conversation.html" class="nav-link">7. Script</a></li>
+        <li><a href="grammar.html" class="nav-link">8. Grammar</a></li>
+        <li><a href="quiz.html" class="nav-link">9. Quiz</a></li>
+        <li><a href="condicionales.html" class="nav-link">10. Condicionales</a></li>
+        <li><a href="test.html" class="nav-link">11. Test</a></li>
+        <li><a href="video-questions.html" class="nav-link active">12. Video Questions</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="container">
+      <h1 class="page-title">Video Questions</h1>
+      <p class="page-subtitle">Watch the video and explore the 1st conditional questions about web scenarios.</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section style="padding-top: 0;">
+    <div class="container">
+      
+      <!-- Video Container -->
+      <div class="video-container reveal">
+        <video controls>
+          <source src="questions.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <!-- Questions Grid -->
+      <div class="questions-grid">
+        
+        <div class="card question-card reveal">
+          <div class="q-title">1. What will happen if the user closes the website by mistake?</div>
+          <div class="a-text">The system will save their data.</div>
+        </div>
+
+        <div class="card question-card reveal">
+          <div class="q-title">2. What will the website show if the interactive org-chart fails to load?</div>
+          <div class="a-text">It will show a static image.</div>
+        </div>
+
+        <div class="card question-card reveal">
+          <div class="q-title">3. How will the system react if a visitor clicks the same button ten times quickly?</div>
+          <div class="a-text">It will ignore the extra clicks.</div>
+        </div>
+
+        <div class="card question-card reveal">
+          <div class="q-title">4. How will the user know if the server goes down during a critical process?</div>
+          <div class="a-text">They will receive an email.</div>
+        </div>
+
+        <div class="card question-card reveal">
+          <div class="q-title">5. What will happen to the animations if someone uses a very old web browser?</div>
+          <div class="a-text">They won't work properly.</div>
+        </div>
+
+        <div class="card question-card reveal">
+          <div class="q-title">6. Who will fix the issue if the database deletes a user's profile accidentally?</div>
+          <div class="a-text">The administrator will fix it.</div>
+        </div>
+
+        <div class="card question-card reveal">
+          <div class="q-title">7. What will the security system do if a hacker tries to log in?</div>
+          <div class="a-text">It will block their IP address.</div>
+        </div>
+
+        <div class="card question-card reveal">
+          <div class="q-title">8. What will the website display if the internet connection drops suddenly?</div>
+          <div class="a-text">It will display an offline message.</div>
+        </div>
+
+        <div class="card question-card reveal">
+          <div class="q-title">9. Which features will break if a user turns off JavaScript in their browser?</div>
+          <div class="a-text">The interactive features will break.</div>
+        </div>
+
+        <div class="card question-card reveal">
+          <div class="q-title">10. How will the design change if the user switches the device to dark mode?</div>
+          <div class="a-text">The colors will adjust automatically.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      AceDev English Worksheet &nbsp;·&nbsp; Software Development Program &nbsp;·&nbsp; <span id="year"></span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    hamburger.addEventListener('click', () => mobileNav.classList.toggle('open'));
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
